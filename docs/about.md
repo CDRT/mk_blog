@@ -10,7 +10,7 @@ With a broad portfolio of products to support and the related content that goes 
 
 ### Enterprise Client Management Forum
 
-The Commercial Deployment Readiness Team maintains working Configuration Manager and MDT lab environments so we can recreate customer issues that we receive through our [**Enterprise Client Management Forum**](http://forums.lenovo.com/t5/Enterprise-Management-Board/bd-p/sa01_eg). This forum is targeted again to those IT admins that are deploying and managing many Lenovo PCs.  This is often the quickest way to get an answer to deployment questions. Our team monitors this forum daily and we also have some great members that offer answers and insights as well.
+The Commercial Deployment Readiness Team maintains working Configuration Manager and MDT lab environments so we can recreate customer issues that we receive through our [**Enterprise Client Management Forum**](http://forums.lenovo.com/t5/Enterprise-Management-Board/bd-p/sa01_eg). This forum is targeted again to those IT admins that are deploying and managing many Lenovo PCs. This is often the quickest way to get an answer to deployment questions. Our team monitors this forum daily and we also have some great members that offer answers and insights as well.
 
 ### Lenovo CDRT Docs Site
 

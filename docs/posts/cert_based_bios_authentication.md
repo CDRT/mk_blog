@@ -7,9 +7,8 @@ authors:
 categories:
     - "2023"
 title: Certificate-based BIOS Authentication
+cover_image: \img\2023\cert_based_bios_authentication\signed_settings.png
 ---
-
-![Signed BIOS Settings](img\2023\cert_based_bios_authentication\signed_settings.png)
 
 Beginning with 2022 ThinkPad models, it is now possible to configure systems to use a digital signing certificate instead of a supervisor password. Although this feature does not eliminate the challenge of initially securing the device, it does eliminate the need to exchange passwords in plain text when scripting BIOS settings changes.
 <!-- more -->

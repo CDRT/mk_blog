@@ -5,10 +5,8 @@ authors:
 categories:
     - "2023"
 title: Windows 365 and ThinkPhone
+cover_image: \img\2023\thinkphone_w365\w365.jpg
 ---
-
-![W365](img\2023\thinkphone_w365\w365.jpg)
-![Moto](img\2023\thinkphone_w365\motorola.png)
 
 This article will serve as a basic walkthrough for bringing the full Windows 365 experience to your [Lenovo ThinkPhone](https://motorolanews.com/motorola-partners-with-microsoft-to-bring-new-productivity-features-to-the-thinkphone/).
 

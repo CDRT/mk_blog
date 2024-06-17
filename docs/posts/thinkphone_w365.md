@@ -33,36 +33,36 @@ I'm going to enroll using a [QR code](https://learn.microsoft.com/mem/intune/enr
 !!! info ""
     For demo purposes, this is what the QR/token looks like and will be revoked after this blog is published
 
-![QR](img\2023\thinkphone_w365\image1.jpg)
+![QR](https://cdrt.github.io/mk_blog/img\2023\thinkphone_w365\image1.jpg)
 
 Next, connect to a Wi-Fi network and follow the many on-screen prompts.
 
 !!! info ""
     There's at least a dozen different screens to transition through during enrollment so I'm only adding a handful of the important ones
 
-![Setup](img\2023\thinkphone_w365\image2.jpg)
+![Setup](https://cdrt.github.io/mk_blog/img\2023\thinkphone_w365\image2.jpg)
 
-![Setup](img\2023\thinkphone_w365\image3.jpg)
+![Setup](https://cdrt.github.io/mk_blog/img\2023\thinkphone_w365\image3.jpg)
 
-![Setup](img\2023\thinkphone_w365\image4.jpg)
+![Setup](https://cdrt.github.io/mk_blog/img\2023\thinkphone_w365\image4.jpg)
 
-![Setup](img\2023\thinkphone_w365\image5.jpg)
+![Setup](https://cdrt.github.io/mk_blog/img\2023\thinkphone_w365\image5.jpg)
 
 ## Connecting to Windows 365
 
 Upon successful enrollment, pair your ThinkPhone to your Bluetooth keyboard/mouse and connect to a monitor via USB-C cable. Moto Connect will extend to your monitor and what's first in the list of apps to choose? Windows 365?!
 
-![Connect](img\2023\thinkphone_w365\image6.jpg)
+![Connect](https://cdrt.github.io/mk_blog/img\2023\thinkphone_w365\image6.jpg)
 
 Click on Windows 365. Notice the screen change to the Windows 365 wallpaper and on your phone, choose which cloud PC to connect to
 
-![Connect](img\2023\thinkphone_w365\image7.jpg)
-![Connect](img\2023\thinkphone_w365\image8.jpg)
+![Connect](https://cdrt.github.io/mk_blog/img\2023\thinkphone_w365\image7.jpg)
+![Connect](https://cdrt.github.io/mk_blog/img\2023\thinkphone_w365\image8.jpg)
 
 Enter your credentials and you'll be taken to your Windows 365 cloud PC.
 
-![Connect](img\2023\thinkphone_w365\image9.jpg)
-![Connect](img\2023\thinkphone_w365\image10.jpg)
+![Connect](https://cdrt.github.io/mk_blog/img\2023\thinkphone_w365\image9.jpg)
+![Connect](https://cdrt.github.io/mk_blog/img\2023\thinkphone_w365\image10.jpg)
 
 ## Deploying the Motorola Ready For Assistant
 
@@ -73,24 +73,24 @@ Login to the [Intune admin center](https://intune.microsoft.com/#view/Microsoft_
 Go to the Apps blade. Click **+Add** to create a new app.
 
 Select **Microsoft Store app (new)** for App type and click **Select**
-![Add App](img\2023\thinkphone_w365\image13.png)
+![Add App](https://cdrt.github.io/mk_blog/img\2023\thinkphone_w365\image13.png)
 
 Click **Search the Microsoft Store app (new)**. If you search the store for **Ready For Assistant**, you won't get any results. However, you can search using the app ID **XP8JRF5SXV03ZM** to add it
 
-![Find App](img\2023\thinkphone_w365\image14.png)
+![Find App](https://cdrt.github.io/mk_blog/img\2023\thinkphone_w365\image14.png)
 
 Click on the app and then click **Select**. Once the app is added, find it in the list and open its Properties.
 
-![App Properties](img\2023\thinkphone_w365\image15.png)
+![App Properties](https://cdrt.github.io/mk_blog/img\2023\thinkphone_w365\image15.png)
 
 Scroll to the bottom and click **Edit** next to Assignments
 
-![Edit Assignment](img\2023\thinkphone_w365\image16.png)
+![Edit Assignment](https://cdrt.github.io/mk_blog/img\2023\thinkphone_w365\image16.png)
 
 Configure the assignments as desired and then click **Review + save**
 
-![Assign App](img\2023\thinkphone_w365\image17.png)
+![Assign App](https://cdrt.github.io/mk_blog/img\2023\thinkphone_w365\image17.png)
 
 Devices will then get the app based on the configuration of the Assignment. It may require the devices to get to their scheduled sync before the offer is made.
 
-You can force a sync by going to the device in the Devices view and clicking the ![Sync](img\2023\thinkphone_w365\image18.png) button.
+You can force a sync by going to the device in the Devices view and clicking the ![Sync](https://cdrt.github.io/mk_blog/img\2023\thinkphone_w365\image18.png) button.

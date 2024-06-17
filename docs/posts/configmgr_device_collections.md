@@ -121,4 +121,4 @@ Else {
 
 This was tested in a lab with very few devices so this may or may not take some time to finish depending on the amount of endpoints in your environment.  In the end, you should see a **Lenovo** subfolder containing all of your Lenovo Device Collections.  Hopefully this helps with organization!
 
-![Device Collections](img/2022/configmgr_device_collections/image1.jpg)
+![Device Collections](https://cdrt.github.io/mk_blog/img/2022/configmgr_device_collections/image1.jpg)

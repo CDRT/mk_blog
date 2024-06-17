@@ -43,23 +43,23 @@ ThinInstaller.exe /CM -search A -action INSTALL -repository \\URrepo\LenovoUpdat
 
 Launching WMIExplorer on a target system and navigating to the newly created Namespace/Class, we can see the 5 properties have been created
 
-![WMI Explorer - Lenovo Namespace](img/2018/ti_update_history_configmgr/image1.jpg)
+![WMI Explorer - Lenovo Namespace](https://cdrt.github.io/mk_blog/img/2018/ti_update_history_configmgr/image1.jpg)
 
 On the Instances tab, you'll notice 17 entries. This means that 17 applicable updates to this system were found in my Update Retriever repository.
 
-![WMI Explorer - Lenovo Updates](img/2018/ti_update_history_configmgr/image2.jpg)
+![WMI Explorer - Lenovo Updates](https://cdrt.github.io/mk_blog/img/2018/ti_update_history_configmgr/image2.jpg)
 
 Each instance will display the PackageID of the update it found. If you click on an instance, you can see the result of the update that attempted to install on the system. In this case, the latest Chipset Software is already installed.
 
-![WMI Explorer - Package Status](img/2018/ti_update_history_configmgr/image3.jpg)
+![WMI Explorer - Package Status](https://cdrt.github.io/mk_blog/img/2018/ti_update_history_configmgr/image3.jpg)
 
 Reviewing another instance, a newer version of the Camera Driver was installed successfully
 
-![WMI Explorer - Package Status](img/2018/ti_update_history_configmgr/image4.jpg)
+![WMI Explorer - Package Status](https://cdrt.github.io/mk_blog/img/2018/ti_update_history_configmgr/image4.jpg)
 
 One more example, this Bluetooth Driver returned as Not Applicable because it only applies to Windows 10 1703. The system I ran Thin Installer on is Windows 10 1803.
 
-![WMI Explorer - Package Status](img/2018/ti_update_history_configmgr/image5.jpg)
+![WMI Explorer - Package Status](https://cdrt.github.io/mk_blog/img/2018/ti_update_history_configmgr/image5.jpg)
 
 ## Collecting the data with Hardware Inventory
 
@@ -77,11 +77,11 @@ class Lenovo_Updates: SMS_Class_Template
 };
 ```
 
-![WMI Explorer - Package Status](img/2018/ti_update_history_configmgr/image6.jpg)
+![WMI Explorer - Package Status](https://cdrt.github.io/mk_blog/img/2018/ti_update_history_configmgr/image6.jpg)
 
 Once the client has received the updated Client Settings and the Hardware Inventory cycle has processed, you can start up Resource Explorer and review the data.
 
-![WMI Explorer - Package Status](img/2018/ti_update_history_configmgr/image7.jpg)
+![WMI Explorer - Package Status](https://cdrt.github.io/mk_blog/img/2018/ti_update_history_configmgr/image7.jpg)
 
 ## Tracking Thin Installer Version and Last Scan
 
@@ -115,4 +115,4 @@ KeyName="ThinInstaller";
 
 Upon the next Hardware Inventory cycle, these registry keys will be collected and can be reviewed in Resource Explorer
 
-![WMI Explorer - Package Status](img/2018/ti_update_history_configmgr/image8.jpg)
+![WMI Explorer - Package Status](https://cdrt.github.io/mk_blog/img/2018/ti_update_history_configmgr/image8.jpg)

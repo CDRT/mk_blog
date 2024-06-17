@@ -7,7 +7,7 @@ categories:
     - "2019"
 title: Hosting a repository in an Azure blob
 ---
-![Azure](img/2019/az_blob/azureblob.png)
+![Azure](https://cdrt.github.io/mk_blog/img/2019/az_blob/azureblob.png)
 
 !!! info ""
     System Update v5.07.0110 and later supports Blob storage access via HTTPS
@@ -26,7 +26,7 @@ I won't cover creating the Storage account or Blob, just the process of uploadin
 
 First, you'll need to download any new updates to your local machine or network share.  Currently, you can only set a repository location to a local drive or UNC path.
 
-![](img/2019/az_blob/image1.jpg)
+![](https://cdrt.github.io/mk_blog/img/2019/az_blob/image1.jpg)
 
 You can take advantage of configuring your Update Retriever repository as a "Lenovo cloud repository" so that only the package XML's will be downloaded rather than the full updates.  This process is covered [here](https://thinkdeploy.blogspot.com/2020/05/deep-dive-setting-up-lenovo-cloud.html).  Once all updates are downloaded successfully, you'll need to upload them to the Blob.  There's a few different ways to accomplish this. 
 
@@ -36,21 +36,21 @@ You can take advantage of configuring your Update Retriever repository as a "Len
 
 **Method 1: Storage Explorer** Authenticate to your Storage account, navigate to the folder containing your updates and choose to upload by folder.
 
-![](img/2019/az_blob/image2.jpg)
+![](https://cdrt.github.io/mk_blog/img/2019/az_blob/image2.jpg)
 
 Once complete, you should see all data uploaded in the Activities pane.
 
-![](img/2019/az_blob/image3.jpg)
+![](https://cdrt.github.io/mk_blog/img/2019/az_blob/image3.jpg)
 
 **Method 2: AzCopy** You'll need a few more pieces of information before uploading with AzCopy.
 
 * Blob Container URL (Storage Account/Blobs/Blob Container/Properties)
 
-![](img/2019/az_blob/image4.jpg)
+![](https://cdrt.github.io/mk_blog/img/2019/az_blob/image4.jpg)
 
 * [Storage Account Access Keys](https://docs.microsoft.com/azure/storage/common/storage-account-manage#access-keys) (*There will be 2 keys presented.  Either can be used*) or a [SAS token](https://docs.microsoft.com/azure/storage/common/storage-dotnet-shared-access-signature-part-1).  It's highly recommended to use a SAS token.
 
-![](img/2019/az_blob/image5.jpg)
+![](https://cdrt.github.io/mk_blog/img/2019/az_blob/image5.jpg)
 
 With this information, you should now be able to upload the content.  Starting in AzCopyv10, you can sync directories.  Here's a sample command to execute using AzCopy:
 
@@ -60,7 +60,7 @@ AzCopy.exe sync 'C:\lenovoUpdates' 'https://your-blob.core.windows.net/updateret
 
 The results will look something like this
 
-![](img/2019/az_blob/image6.jpg)
+![](https://cdrt.github.io/mk_blog/img/2019/az_blob/image6.jpg)
 
 **Method 3: PowerShell** Similar to AzCopy but instead using the **Set-AzStorageBlobContent** cmdlet.  You'll need the [Azure PowerShell module](https://docs.microsoft.com/powershell/azure/install-az-ps?view=azps-1.7.0) installed first.  Below is a simple, sample script that was pieced together from the examples provided by the MS docs.
 
@@ -78,7 +78,7 @@ ls -File $srcPath -Recurse | Set-AzStorageBlobContent `
 
 An example capture once the upload kicks off
 
-![](img/2019/az_blob/image7.jpg)
+![](https://cdrt.github.io/mk_blog/img/2019/az_blob/image7.jpg)
 
 ## Client side configuration
 
@@ -86,11 +86,11 @@ An example capture once the upload kicks off
 
 Now that the repository is ready, you'll need to make a quick change to the Thin Installer Configuration XML to direct the client to the Blob container.  Open the **ThinInstaller.exe.configuration** file and set the new repo path the Blob Container URL as noted earlier. 
 
-![](img/2019/az_blob/image8.jpg)
+![](https://cdrt.github.io/mk_blog/img/2019/az_blob/image8.jpg)
 
 When Thin Installer is launched it will connect to the Update Retriever repository in Azure.
 
-![](img/2019/az_blob/image9.jpg)
+![](https://cdrt.github.io/mk_blog/img/2019/az_blob/image9.jpg)
 
 ### System Update
 

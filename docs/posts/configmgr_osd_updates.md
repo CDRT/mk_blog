@@ -20,7 +20,7 @@ In some scenarios, there may be the desire to leverage the Lenovo Updates Catalo
 
 After subscribing and synchronizing the Lenovo Updates Catalog, open the Software Update Point Component Properties and check the box next to the **Lenovo** product tree to sync Lenovo Updates and the LUCAgent.
 
-![Selecting products](img/2022/configmgr_osd_updates/image1.jpg)
+![Selecting products](https://cdrt.github.io/mk_blog/img/2022/configmgr_osd_updates/image1.jpg)
 
 Initiate a site-wide synchronization of software updates to sync the metadata for all updates in the Lenovo catalog. Once the sync has completed, go to the **Software Library** workspace, expand **Software Updates**, and select the **All Software Updates** node. All Lenovo updates should be populated here.
 
@@ -36,7 +36,7 @@ In the **All Software Updates** node, filter the updates by adding the following
 !!! info ""
     Optionally, save this search by clicking **Save Current Search** in the ribbon bar
 
-![Search criteria](img/2022/configmgr_osd_updates/image2.jpg)
+![Search criteria](https://cdrt.github.io/mk_blog/img/2022/configmgr_osd_updates/image2.jpg)
 
 Select the Lenovo Updates Catalog Agent update and select **Publish Third-Party Software Update Content** to download the update binaries, which is stored in the WSUSContent directory. Initiate a site-wide synchronization of software updates. Once complete, the icon beside the update should flip from blue (metadata-only) to green (deployable).
 
@@ -59,7 +59,7 @@ Set the following property filters and search criteria as follows:
 
 Click Preview and 1 updates should return
 
-![Preview](img/2022/configmgr_osd_updates/image3.jpg)
+![Preview](https://cdrt.github.io/mk_blog/img/2022/configmgr_osd_updates/image3.jpg)
 
 Specify the recurring schedule for the rule. I chose to run the rule after any software update point synchronization.
 
@@ -74,7 +74,7 @@ Proceed through the wizard to complete the creation of the ADR, which will then 
 
 Select the **Software Update Groups** node to verify the Lenovo Updates Catalog Agent SUG has been created and populated with the update.
 
-![Software Updates Groups](img/2022/configmgr_osd_updates/image4.jpg)
+![Software Updates Groups](https://cdrt.github.io/mk_blog/img/2022/configmgr_osd_updates/image4.jpg)
 
 ---
 
@@ -104,7 +104,7 @@ Save this script as **Import-WsusSigningCertificate.ps1** to a source location. 
 
 In my lab, I saved both items to **\\share\ConfigMgr\Content\OSD\Certificates**
 
-![Source files](img/2022/configmgr_osd_updates/image5.jpg)
+![Source files](https://cdrt.github.io/mk_blog/img/2022/configmgr_osd_updates/image5.jpg)
 
 ---
 
@@ -125,7 +125,7 @@ Create a new or Task Sequence or edit an existing one. After the **Setup Windows
 - Select the package that you just created and enter the script name **Import-WsusSigningCertificate.ps1**
 - Set the PowerShell execution policy to **Bypass**
 
-![Run PowerShell Script](img/2022/configmgr_osd_updates/image6.jpg)
+![Run PowerShell Script](https://cdrt.github.io/mk_blog/img/2022/configmgr_osd_updates/image6.jpg)
 
 Add an **Install Software Updates** step
 
@@ -133,10 +133,10 @@ Add an **Install Software Updates** step
 
 Deploy this Task Sequence to an Unknown Lenovo device. Monitoring the **smsts.log**, I see the Windows Update agent policy to accept trusted publishers has been set and the certificate has been added to the certificate stores.
 
-![Log](img/2022/configmgr_osd_updates/image7.jpg)
+![Log](https://cdrt.github.io/mk_blog/img/2022/configmgr_osd_updates/image7.jpg)
 
 A bit further down, The installation of the LUC Agent has completed successfully.
 
-![Success](img/2022/configmgr_osd_updates/image8.jpg)
+![Success](https://cdrt.github.io/mk_blog/img/2022/configmgr_osd_updates/image8.jpg)
 
 If these steps weren't added, you would see a **0x800b0109** error in the log, which translates to "A certificate chain processed, but terminated in a root certificate which is not trusted by the trust provider."

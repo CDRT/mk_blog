@@ -8,7 +8,7 @@ categories:
 title: Managing System Update with Intune
 ---
 
-![System Update Icon](img/2020/manage_su_intune/su.png)
+![System Update Icon](https://cdrt.github.io/mk_blog/img/2020/manage_su_intune/su.png)
 
 This post will describe how you can manage Lenovo System Update on Windows 10/11 devices with Intune.
 <!-- more -->
@@ -47,7 +47,7 @@ Assign the profile to a group. This group should only include devices that have 
 
 Verify the settings have pushed to a device by launching Regedit and navigating to **HKLM\SOFTWARE\Microsoft\PolicyManager\AdmxDefault**
 
-![Regedit](img/2020/manage_su_intune/image1.jpg)
+![Regedit](https://cdrt.github.io/mk_blog/img/2020/manage_su_intune/image1.jpg)
 
 ## Creating a TVSU Policy
 
@@ -71,7 +71,7 @@ Repeat the steps above by adding an additional configuration setting. This examp
 <data id="Policy_TextBox_Element_Admin_CommandLine_155" value="/CM -search R -action INSTALL -includerebootpackages 3 -noicon -noreboot -nolicense"/>
 ```
 
-![OMA-URI](img/2020/manage_su_intune/image2.jpg)
+![OMA-URI](https://cdrt.github.io/mk_blog/img/2020/manage_su_intune/image2.jpg)
 
 ### Example 2
 
@@ -96,11 +96,11 @@ This example will set custom repository paths
 <data id="Policy_TextBox_Element_Repository_Location_121" value="\\CustomRepoPath3"/>
 ```
 
-![OMA-URI](img/2020/manage_su_intune/image3.jpg)
+![OMA-URI](https://cdrt.github.io/mk_blog/img/2020/manage_su_intune/image3.jpg)
 
 Verify the policies have pushed down to the device by launching Regedit and navigating to **HKLM\SOFTWARE\Policies\Lenovo\System Update\UserSettings\General**
 
-![OMA-URI](img/2020/manage_su_intune/image4.jpg)
+![OMA-URI](https://cdrt.github.io/mk_blog/img/2020/manage_su_intune/image4.jpg)
 
 #### Further Reading
 

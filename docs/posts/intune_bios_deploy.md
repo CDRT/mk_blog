@@ -25,7 +25,7 @@ Once this information is entered, you will see the tool validate the package par
 
 Login to the Microsoft Intune [admin center](https://intune.microsoft.com/#view/Microsoft_Intune_DeviceSettings/AppsWindowsMenu/~/windowsApps) to add a new Windows app. Choose **Windows app (Win32)** as the app type.
 
-![App Type](img/2019/intune_bios_deploy//image1.jpg)
+![App Type](https://cdrt.github.io/mk_blog/img/2019/intune_bios_deploy//image1.jpg)
 
 Select the newly created **.intunewin** file to upload
 
@@ -33,7 +33,7 @@ Select the newly created **.intunewin** file to upload
 
 Fill out the required app information and any optional fields.
 
-![App Information](img/2019/intune_bios_deploy/image2.jpg)
+![App Information](https://cdrt.github.io/mk_blog/img/2019/intune_bios_deploy/image2.jpg)
 
 ### Program Information
 
@@ -49,7 +49,7 @@ Change the device restart behavior to **Intune will force a mandatory restart**.
 
 Leave the default return codes as-is. We'll need to add an additional code to verify a successful installation. Click **+Add**, set the value to **1** and select **Soft Reboot** for the code type.  For ThinkPad BIOS, a return code 1 indicates a successful BIOS update and no reboot (a silent install).  You can find a list of Winuptp return codes here.
 
-![Program Information](img/2019/intune_bios_deploy/image3.jpg)
+![Program Information](https://cdrt.github.io/mk_blog/img/2019/intune_bios_deploy/image3.jpg)
 
 ### Requirements
 
@@ -80,13 +80,13 @@ Value:
 ThinkPad P1 Gen 5
 ```
 
-![Requirement Rule](img/2019/intune_bios_deploy/image4.jpg)
+![Requirement Rule](https://cdrt.github.io/mk_blog/img/2019/intune_bios_deploy/image4.jpg)
 
 ### Detection rules
 
 Detection Rules can be handled several different ways. In this example, I'm choosing to look at the **BIOSVersion** value in the registry. The value in the screenshot below is after installing the latest BIOS update for my test system. This is what will be evaluated at the time of install, so if the client has an older BIOS installed, it should evaluate as **False** and proceed with the install.
 
-![Detection Rule](img/2019/intune_bios_deploy/image5.jpg)
+![Detection Rule](https://cdrt.github.io/mk_blog/img/2019/intune_bios_deploy/image5.jpg)
 
 !!! info ""
     This detection method assumes a newer BIOS version is being deployed to a system on an older version. If you're attempting to deploy an older BIOS version, the rule will still evaluate as false and attempt to install the older version. If for some reason you're deploying an older BIOS version, make sure the **Secure Rollback Prevention** BIOS setting is disabled.
@@ -111,7 +111,7 @@ N3JET37W (1.21 )
 
 You can find the BIOS ID in the version release matrix on the support site.
 
-![BIOS ID](img/2019/intune_bios_deploy/image6.jpg)
+![BIOS ID](https://cdrt.github.io/mk_blog/img/2019/intune_bios_deploy/image6.jpg)
 
 Values will vary across models so you'll need to confirm this data in the registry.
 
@@ -125,25 +125,25 @@ Target a group for app assignment. If you're going to deploy multiple BIOS updat
 
 Since we configured Intune to force a mandatory restart, we can configure restart grace period options, such as notifying the user when the device will be restarted and a countdown timer leading up to the event.
 
-![Assignment Settings](img/2019/intune_bios_deploy//image7.jpg)
+![Assignment Settings](https://cdrt.github.io/mk_blog/img/2019/intune_bios_deploy//image7.jpg)
 
 ### Client Side Experience
 
 Once the app has been assigned, open the Company Portal on the client (if deployed as available) and choose to install the newly delivered app. If the app is required, the user should be presented with Windows toast notifications stating the update has been installed and requires a restart to complete installation.
 
-![Restart Notification](img/2019/intune_bios_deploy//image8.jpg)
+![Restart Notification](https://cdrt.github.io/mk_blog/img/2019/intune_bios_deploy//image8.jpg)
 
 A restart countdown prompt will then be displayed before the machine is forced to restart.
 
-![Restart Notification](img/2019/intune_bios_deploy//image9.jpg)
+![Restart Notification](https://cdrt.github.io/mk_blog/img/2019/intune_bios_deploy//image9.jpg)
 
 ### Monitor
 
 You can trace the workflow in the **IntuneManagementExtension.log** located under **C:\ProgramData\Microsoft\IntuneManagementExtension\Logs**. Highlighted below is during the app detection step and installation using the install commands specified.
 
-![Detection](img/2019/intune_bios_deploy//image10.jpg)
+![Detection](https://cdrt.github.io/mk_blog/img/2019/intune_bios_deploy//image10.jpg)
 
-![Instalation](img/2019/intune_bios_deploy//image11.jpg)
+![Instalation](https://cdrt.github.io/mk_blog/img/2019/intune_bios_deploy//image11.jpg)
 
 The device installation status in Intune may show failed (app not detected after install) due to the fact that the system has not restarted. This will return as "Installed" once the device has restarted and checks back into the Intune service.
 

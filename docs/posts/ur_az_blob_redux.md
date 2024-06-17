@@ -25,11 +25,11 @@ Open Update Retriever, select the models you want to get updates for.
 
 Filter by type, selecting **Bios**. Proceed to downloading the packages.
 
-![Update Retriever](img/2022/ur_az_blob_redux/image1.jpg)
+![Update Retriever](https://cdrt.github.io/mk_blog/img/2022/ur_az_blob_redux/image1.jpg)
 
 Once the packages are downloaded, under **Manage repository** > **Update view**, you'll see the **Reboot type** is either a **Forces a reboot** or **Reboot Delayed**. By default, the command line to install these packages is **winuptp.exe -r**, which results in the forced reboot.
 
-![Update Retriever](img/2022/ur_az_blob_redux/image2.jpg)
+![Update Retriever](https://cdrt.github.io/mk_blog/img/2022/ur_az_blob_redux/image2.jpg)
 
 With some PowerShell, we can save time by automatically altering the XML package descriptors to support a completely silent installation of Bios updates using Thin Installer. At this time, only ThinkPad is supported. The script can be found on [GitHub](https://github.com/philjorgensen/Azure/blob/main/Blob/Sync-Repositories.ps1).
 
@@ -160,13 +160,13 @@ Disconnect-AzAccount
 
 After running the code, you should see the AzCopy statistics and a log file path for more details.
 
-![AzCopy](img/2022/ur_az_blob_redux/image5.jpg)
+![AzCopy](https://cdrt.github.io/mk_blog/img/2022/ur_az_blob_redux/image5.jpg)
 
 Refresh Update Retriever and you'll see the Reboot type is now **Requires a reboot** and the command line is **winuptp.exe -s**
 
-![Update Retriever](img/2022/ur_az_blob_redux/image3.jpg)
+![Update Retriever](https://cdrt.github.io/mk_blog/img/2022/ur_az_blob_redux/image3.jpg)
 
-![Update Retriever](img/2022/ur_az_blob_redux/image4.jpg)
+![Update Retriever](https://cdrt.github.io/mk_blog/img/2022/ur_az_blob_redux/image4.jpg)
 
 As an example, the following Thin Installer command line will pull these packages down for install
 

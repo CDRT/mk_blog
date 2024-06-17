@@ -17,7 +17,7 @@ Once the zip has been downloaded and extracted, use the Content Prep [Tool](http
 IntuneWinAppUtil.exe -c "C:\IntuneWin\LenovoCommercialVantage_10.2010.11.0_v1" -s "setup-commercial-vantage.bat" -o "C:\IntuneWin\output" -q
 ```
 
-![Create package](img/2020/cv_intune_deploy/image1.jpg)
+![Create package](https://cdrt.github.io/mk_blog/img/2020/cv_intune_deploy/image1.jpg)
 
 ## Creating the Win32 App
 
@@ -25,7 +25,7 @@ Login to the [MEM admin center](https://endpoint.microsoft.com/#blade/Microsoft_
 
 Fill out the necessary fields in the App information section and click Review + save
 
-![Application information](img/2020/cv_intune_deploy/image2.jpg)
+![Application information](https://cdrt.github.io/mk_blog/img/2020/cv_intune_deploy/image2.jpg)
 
 In the Edit application section, this is where the install/uninstall commands will be specified.
 
@@ -43,13 +43,13 @@ C:\Windows\Sysnative\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypa
 
 Set Device restart behavior to **Determine behavior based on return codes**.
 
-![Program details](img/2020/cv_intune_deploy/image3.jpg)
+![Program details](https://cdrt.github.io/mk_blog/img/2020/cv_intune_deploy/image3.jpg)
 
 In the Requirements section, set the Operating system architecture to **64-bit** and Minimum operating system to **1809**
 
 Add an additional Registry type requirement rule that will only apply to Lenovo branded systems.
 
-![Requirement](img/2020/cv_intune_deploy/image4.jpg)
+![Requirement](https://cdrt.github.io/mk_blog/img/2020/cv_intune_deploy/image4.jpg)
 
 - Key path
 
@@ -73,7 +73,7 @@ SystemManufacturer
 LENOVO
 ```
 
-![Requirement rule](img/2020/cv_intune_deploy/image5.jpg)
+![Requirement rule](https://cdrt.github.io/mk_blog/img/2020/cv_intune_deploy/image5.jpg)
 
 For the detection rule, a custom script detection will be used. Commercial Vantage depends on these 2 services to run
 
@@ -140,7 +140,7 @@ catch {
 }
 ```
 
-![Detection rules](img/2020/cv_intune_deploy/image6.jpg)
+![Detection rules](https://cdrt.github.io/mk_blog/img/2020/cv_intune_deploy/image6.jpg)
 
 Click Review and then Save to complete the app creation and content upload to Intune. Once the upload has finished, assign to a group.
 
@@ -156,12 +156,12 @@ Track the installation through the **IntuneManagementExtension.log**
 
 Here we can see the minimum OS version requirement has been met
 
-![Log](img/2020/cv_intune_deploy/image7.jpg)
+![Log](https://cdrt.github.io/mk_blog/img/2020/cv_intune_deploy/image7.jpg)
 
 The additional requirement to check if the system is in fact a Lenovo system is true
 
-![Log](img/2020/cv_intune_deploy/image8.jpg)
+![Log](https://cdrt.github.io/mk_blog/img/2020/cv_intune_deploy/image8.jpg)
 
 The PowerShell detection script finds both services and app are now present
 
-![Log](img/2020/cv_intune_deploy/image9.jpg)
+![Log](https://cdrt.github.io/mk_blog/img/2020/cv_intune_deploy/image9.jpg)

@@ -28,7 +28,7 @@ A reference guide to the PowerShell module is available at [https://docs.lenovoc
 
 The first step in trying this out will be to generate a compatible code signing certificate. In this article we will use OpenSSL to create the certificate. In this guide we will be using OpenSSL Light for this. This can be installed on an administrator’s system using Winget:
 
-![Install OpenSSL Light](img\2023\cert_based_bios_authentication\installopenssl.png)
+![Install OpenSSL Light](https://cdrt.github.io/mk_blog/img\2023\cert_based_bios_authentication\installopenssl.png)
 
 Once it is installed, add the path to the CLI tool to the Path environment variable.
 
@@ -42,7 +42,7 @@ Then run the following command to generate a private key as a .PEM file:
 openssl genrsa -out privateKey.pem 2048
 ```
 
-![Create certificate](img\2023\cert_based_bios_authentication\createkey.png)
+![Create certificate](https://cdrt.github.io/mk_blog/img\2023\cert_based_bios_authentication\createkey.png)
 
 This file should be kept secure with access only given to an administrator. Having access to this file would be analogous to knowing a Supervisor Password.
 
@@ -75,7 +75,7 @@ openssl req -new -x509 -days 7300 -key privateKey.pem -out biosCert.pem -sha256 
 !!! info ""
     If you installed the Lite version of OpenSSL for Windows, the config file will not be there so you can ignore the -config openssl.cnf parameter.
 
-![Create certificate](img\2023\cert_based_bios_authentication\createbioscert.png)
+![Create certificate](https://cdrt.github.io/mk_blog/img\2023\cert_based_bios_authentication\createbioscert.png)
 
 ## Deploy the LnvBiosCerts Module
 
@@ -89,7 +89,7 @@ or
 
 The first location is preferable as it allows any user or admin process on the machine to access the module.  The second location only makes the module available for that particular user.
 
-![PowerShell Modules Folder](img\2023\cert_based_bios_authentication\screen1.png)
+![PowerShell Modules Folder](https://cdrt.github.io/mk_blog/img\2023\cert_based_bios_authentication\screen1.png)
 
 Open a new Administrator PowerShell terminal. This ensures the module just copied to this system will be loaded. If, however, the commands below are not recognized you may need to explicitly import the module with this command:
 
@@ -103,7 +103,7 @@ Run the following command in the folder where the **biosCert.pem** file is locat
 Set-LnvBiosCertificate -Certfile .\biosCert.pem -Password pass1word
 ```
 
-![PowerShell Modules Folder](img\2023\cert_based_bios_authentication\installcert.png)
+![PowerShell Modules Folder](https://cdrt.github.io/mk_blog/img\2023\cert_based_bios_authentication\installcert.png)
 
 !!! info ""
     The -Password parameter passes the current Supervisor Password that exists on the device and this password will be removed and replaced with the certificate. The target device must either have a Supervisor Password already set or must be in the System Deployment Boot Mode with the command being run from a script under WinPE of a PXE boot image.
@@ -130,7 +130,7 @@ Get-LnvSignedWmiCommand -Method SetBiosSetting -SettingName WakeOnLANDock -Setti
 This will generate a text file for you containing the signed command.
 
 <!-- 
-![Generate signed command](img\2023\cert_based_bios_authentication\generatesignedcommand.png)
+![Generate signed command](https://cdrt.github.io/mk_blog/img\2023\cert_based_bios_authentication\generatesignedcommand.png)
 -->
 
 !!! info ""
@@ -144,7 +144,7 @@ On the test machine where the certificate has been applied and the LnvBiosCerts 
 Submit-LnvBiosChange -Command “(text from text file)”
 ```
 
-![Apply signed command](img\2023\cert_based_bios_authentication\applycommand.png)
+![Apply signed command](https://cdrt.github.io/mk_blog/img\2023\cert_based_bios_authentication\applycommand.png)
 
 Repeat this step for all the signed commands and make sure the last one applied is the one that references the SaveBiosSettings method. Restart the system for the settings changes to take effect.
 
@@ -156,11 +156,11 @@ The Lenovo BIOS Cert Tool provides an easy to use graphical interface to work wi
 
 The Think BIOS Config Tool is a separate tool that provides the ability to list all the available settings and values on a system. The settings can be configured as desired and an INI file can be generated with changed settings. The Lenovo BIOS Certificate Tool can convert one of these INI files into a text file containing the signed WMI commands to apply the settings.
 
-![Convert Config File Window](img\2023\cert_based_bios_authentication\convertconfigfilewindow.png)
+![Convert Config File Window](https://cdrt.github.io/mk_blog/img\2023\cert_based_bios_authentication\convertconfigfilewindow.png)
 
 The generated file can be used on the ***Apply Signed Commands*** page of the Lenovo BIOS Certificate Tool or can easily be incorporated into your own PowerShell script.
 
-![Apply Signed Commands Window](img\2023\cert_based_bios_authentication\applysignedcommandwindow.png)
+![Apply Signed Commands Window](https://cdrt.github.io/mk_blog/img\2023\cert_based_bios_authentication\applysignedcommandwindow.png)
 
 ### Unlocking System Secured with Certificate
 
@@ -174,7 +174,7 @@ When a system is secured with a certificate, you cannot access BIOS Setup direct
 1. Administrator sends Unlock Code to Technician
 1. Technician enters Unlock Code and continues to BIOS Setup
 
-![Unlock BIOS Window](img\2023\cert_based_bios_authentication\unlockbioswindow.png)
+![Unlock BIOS Window](https://cdrt.github.io/mk_blog/img\2023\cert_based_bios_authentication\unlockbioswindow.png)
 
 ## Final Notes
 

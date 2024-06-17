@@ -18,11 +18,11 @@ While it's available to install from the winget repository, the manifest does no
 
 On my test machine, I installed an older version of Thin Installer via winget. Executing a simple get-childitem command verifies this, however, the **list** command of the winget tool says otherwise
 
-![TI_Winget](img/2023/ti_winget_pr/image1.png)
+![TI_Winget](https://cdrt.github.io/mk_blog/img/2023/ti_winget_pr/image1.png)
 
 What about the **upgrade** command of winget?
 
-![TI_Winget](img/2023/ti_winget_pr/image2.png)
+![TI_Winget](https://cdrt.github.io/mk_blog/img/2023/ti_winget_pr/image2.png)
 
 Nope. Can't upgrade if it's not there. So how can this tool be kept current without having to create a separate Win32 App?
 
@@ -86,16 +86,16 @@ catch {
 
 Tracking the **AgentExecutor.log** on my test system with an older version of Thin Installer, I see the version is not current.
 
-![TI_Winget](img/2023/ti_winget_pr/image3.png)
+![TI_Winget](https://cdrt.github.io/mk_blog/img/2023/ti_winget_pr/image3.png)
 
 Remediation kicks in and downloads the current version.
 
-![TI_Winget](img/2023/ti_winget_pr/image4.png)
+![TI_Winget](https://cdrt.github.io/mk_blog/img/2023/ti_winget_pr/image4.png)
 
 Detection reevaluates and shows it's now current.
 
-![TI_Winget](img/2023/ti_winget_pr/image5.png)
+![TI_Winget](https://cdrt.github.io/mk_blog/img/2023/ti_winget_pr/image5.png)
 
 Checking back in the Intune console, I can see issues were fixed and all is well.
 
-![TI_Winget](img/2023/ti_winget_pr/image6.png)
+![TI_Winget](https://cdrt.github.io/mk_blog/img/2023/ti_winget_pr/image6.png)

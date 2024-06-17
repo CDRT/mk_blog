@@ -25,7 +25,7 @@ Once complete, login to the [Intune admin center](https://intune.microsoft.com/#
 
 Fill out the app information:
 
-![AppInfo](..\img/2023/update_intel_mefw/image1.jpg)
+![AppInfo](\img/2023/update_intel_mefw/image1.jpg)
 
 Enter the install command line:
 
@@ -44,11 +44,11 @@ cmd.exe /c rmdir C:\IntelMEFW /s /q
 
 Change the device restart behavior to **Intune will force a mandatory restart**. This will allow you to set restart grace periods and restart notifications when you assign it.
 
-![ProgramInfo](..\img/2023/update_intel_mefw/image2.jpg)
+![ProgramInfo](\img/2023/update_intel_mefw/image2.jpg)
 
 Set requirements. Refer to the package ReadMe for minimum supported operating systems.
 
-![Requirements](..\img/2023/update_intel_mefw/image3.jpg)
+![Requirements](\img/2023/update_intel_mefw/image3.jpg)
 
 For detection rules, choose to use a custom script for detection. Below is an example PowerShell script that can be used:
 
@@ -75,12 +75,12 @@ The syntax for the filter is:
 
 For my testing, I assigned the app to All Devices and only including T14s Gen 3's using the device filter I just created.
 
-![Assignment](..\img/2023/update_intel_mefw/image4.jpg)
+![Assignment](\img/2023/update_intel_mefw/image4.jpg)
 
 As I mentioned earlier, you can configure restart grace periods, restart notifications, and/or allowing the user to snooze the restart notification.
 
-![Assignment](..\img/2023/update_intel_mefw/image5.jpg)
+![Assignment](\img/2023/update_intel_mefw/image5.jpg)
 
 Once the app finishes installing, a toast notification is presented prompting for a reboot.(This screenshot was taken from an L14)
 
-![ToastNotification](..\img/2023/update_intel_mefw/image6.jpg)
+![ToastNotification](\img/2023/update_intel_mefw/image6.jpg)

@@ -8,7 +8,7 @@ categories:
 title: Dynamically Updating Think Product BIOS with ConfigMgr
 ---
 
-![Holy Grail](..\img/2017/dynamic_bios_update/holygrail.jpg)
+![Holy Grail](\img/2017/dynamic_bios_update/holygrail.jpg)
 
 !!! info ""
     What follows is a brief look at what is possible and not necessarily recommended for everyone.  Hopefully someone finds it useful.
@@ -19,7 +19,7 @@ I was inspired by their session and wanted to see if this could work with Lenovo
 
 Here's the layout of the Task Sequence:
 
-![](..\img/2017/dynamic_bios_update/image1.jpg)
+![](\img/2017/dynamic_bios_update/image1.jpg)
 
 ## Creating the Package(s)
 You'll need to download the latest BIOS for your model from Lenovo's support site and extract the contents to a source directory.  Here's the folder structure I use in my lab:
@@ -36,11 +36,11 @@ The BIOS used here is for a ThinkPad Yoga 370.  You can find the SMBiosBiosVersi
 
 You can also find this on the BIOS Update Utility page for your system, near the bottom under Previous Version.
 
-![](..\img/2017/dynamic_bios_update/image2.jpg)
+![](\img/2017/dynamic_bios_update/image2.jpg)
 
 Back in the ConfigMgr console, create a standard package (no program).  Here's my Yoga 370 example:
 
-[![](..\img/2017/dynamic_bios_update/image3.jpg)](https://blog.lenovocdrt.com/img/2017/dynamic_bios_update/image3.jpg)
+[![](\img/2017/dynamic_bios_update/image3.jpg)](https://blog.lenovocdrt.com/img/2017/dynamic_bios_update/image3.jpg)
 
 You can name these however you want as long as you have the 1st 4 characters of the BIOS in the Name field.  Also recommended to include the version of the BIOS and for easy access to future BIOS updates, I added the URL to the Update Utility page for the system in the Comment field.  Distribute the newly created Package to your distribution points.
 
@@ -86,11 +86,11 @@ $tsenv.Value('OSDDownloadDownloadPackages') = $PackageID.InnerXML
 1. **Run PowerShell Script** step, calling the **Get-BIOSPackages.ps1**
 
 1. [**Download Package Content**](https://docs.microsoft.com/en-us/sccm/osd/understand/task-sequence-steps#BKMK_DownloadPackageContent) step:  Choose any Package here as it will be overridden anyway.
-![](..\img/2017/dynamic_bios_update/image4.jpg)
+![](\img/2017/dynamic_bios_update/image4.jpg)
 
     Tick the box to save the path as a variable named **BIOS**.  What happens here is when there's a package match to download, it will be saved to the C:\_SMSTaskSequence\Packages directory while also setting the custom variable of **BIOS01**, which is the first package being downloaded.  Here's what it looks like in the smsts.log.
 
-    ![](..\img/2017/dynamic_bios_update/image5.jpg)
+    ![](\img/2017/dynamic_bios_update/image5.jpg)
 
     !!! info ""
         Notice the PackageID of **PS100077**.  This matches the Yoga 370 Package that was created earlier.
@@ -100,17 +100,17 @@ $tsenv.Value('OSDDownloadDownloadPackages') = $PackageID.InnerXML
     !!! info ""
         If you have a combination of Think products, add a second and/or third step with the appropriate WMI query. See screenshots
 
-    ![](..\img/2017/dynamic_bios_update/image6.jpg)
+    ![](\img/2017/dynamic_bios_update/image6.jpg)
 
     The command line here is simply executing winuptp64.exe with the silent switch, which is the BIOS flash utility.  The 64-bit version of winuptp should be found in just about all BIOS Update Utility packages for systems dating back to the Haswell line.
 
     In the **Start in:** field, enter **%BIOS01%** as this will tell winuptp64.exe to execute from the directory as explained above.
 
-    ![](..\img/2017/dynamic_bios_update/image7.jpg)
+    ![](\img/2017/dynamic_bios_update/image7.jpg)
 
 1. Task Sequence Variable to reboot system.  This will complete the flash operation.
 
-    ![](..\img/2017/dynamic_bios_update/image8.jpg)
+    ![](\img/2017/dynamic_bios_update/image8.jpg)
 
     To finish the Task Sequence cleanly, I'm using the **SMSTSPostAction** variable with the value being **wpeutil reboot** (if in WinPE).  If in FullOS, use the native restart computer step.
 

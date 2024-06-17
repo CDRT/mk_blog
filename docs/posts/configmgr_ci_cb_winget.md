@@ -7,7 +7,7 @@ categories:
 title: Using Winget to Install Applications as Part of a Configuration Manager Configuration Baseline
 ---
 
-![Winget Icon](..\img/2022/configmgr_ci_cb_winget/winget.png)
+![Winget Icon](\img/2022/configmgr_ci_cb_winget/winget.png)
 
 ## Brief Background
 
@@ -34,15 +34,15 @@ I'll use Thin Installer for this demonstration.
 
 Start off by navigating to the **Assets and Compliance** workspace in the console, expand **Compliance Settings**, and select **Configuration Items**. Click **Create Configuration Item** from the ribbon bar and enter a name for the CI.
 
-![CI Wizard - General](..\img/2022/configmgr_ci_cb_winget/image1.jpg)
+![CI Wizard - General](\img/2022/configmgr_ci_cb_winget/image1.jpg)
 
 I specified Windows 10 and Windows 11 for **Supported Platforms**
 
-![CI Wizard - Supported Platforms](..\img/2022/configmgr_ci_cb_winget/image2.jpg)
+![CI Wizard - Supported Platforms](\img/2022/configmgr_ci_cb_winget/image2.jpg)
 
 Add a new setting, choose **Script** for the setting type and **Boolean** for data type.
 
-![CI Wizard - Deployment Type Setting](..\img/2022/configmgr_ci_cb_winget/image3.jpg)
+![CI Wizard - Deployment Type Setting](\img/2022/configmgr_ci_cb_winget/image3.jpg)
 
 Click **Edit Script...** in the **Discovery script** section. Choose **Windows PowerShell** as the script language and copy/paste the code below
 
@@ -73,22 +73,22 @@ Configure the compliance condition rule as:
 - The value returned by the specified script - **Equals** **True**
 - Tick the box to **Run the specified remediation script when this setting is noncompliant**
 
-![CI Wizard - Deployment Rule Type](..\img/2022/configmgr_ci_cb_winget/image4.jpg)
+![CI Wizard - Deployment Rule Type](\img/2022/configmgr_ci_cb_winget/image4.jpg)
 
 Complete the wizard to create the new Configuration Item.
 
 Navigate to the **Configuration Baselines** node. Click **Create Configuration Baseline** in the ribbon bar. Specify a name, add the CI that was just created, and lick Ok.
 
-![CB Wizard - General](..\img/2022/configmgr_ci_cb_winget/image5.jpg)
+![CB Wizard - General](\img/2022/configmgr_ci_cb_winget/image5.jpg)
 
 **Deploy** the baseline to a Collection. Tick the box to **Remediate noncompliant rules when supported**.
 
-![CB Wizard - Deploy](..\img/2022/configmgr_ci_cb_winget/image6.jpg)
+![CB Wizard - Deploy](\img/2022/configmgr_ci_cb_winget/image6.jpg)
 
 Hop over to a test machine and open the Configuration Manager Client Applet to force a machine policy retrieval. Once the new baseline appears under the **Configurations** tab, click **Evaluate** and wait for the magic to happen. When the baseline completes, scroll over to the **Compliance** column to confirm the status shows **Compliant**.
 
 The remediation script also outputs the winget log to **C:\Winget-ThinInstaller.log**. Open it up and near the bottom you should see **Installation process succeeded**
 
-![Client Log](..\img/2022/configmgr_ci_cb_winget/image7.jpg)
+![Client Log](\img/2022/configmgr_ci_cb_winget/image7.jpg)
 
 This is a simple example of what can be possible with winget moving forward. At the time of testing, I also attempted to deploy this same remediation script through Intune as a Win32 app but it fails. I have no idea why since the process is essentially the same. This article will be updated once that's solved.

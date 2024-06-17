@@ -8,7 +8,7 @@ categories:
 title: "Introducing: Lenovo Device Management Module"
 ---
 
-![LDMM Toolbox](..\img\2024\intro_ldmm\toolbox.png)
+![LDMM Toolbox](\img\2024\intro_ldmm\toolbox.png)
 
 The Lenovo Device Management Module is a PowerShell module that provides several useful cmdlets for making it easier to manage Lenovo commercial PCs. The module supports Lenovo's commercial portfolio of ThinkPad, ThinkCentre and ThinkStation products.
 <!-- more -->

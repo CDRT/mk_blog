@@ -8,11 +8,11 @@ categories:
 title: Hosting a repository in an Azure file share
 ---
 
-![Azure](..\img/2020/az_fs/azurefs.jpg)
+![Azure](\img/2020/az_fs/azurefs.jpg)
 
 This option leverages the Lenovo cloud repository feature in Update Retriever.  By choosing this option, only the package XML's will be downloaded to the repository while the full content will be hosted by Lenovo.
 <!-- more -->
-![Lenovo Cloud Repository](..\img/2020/az_fs/image1.jpg)
+![Lenovo Cloud Repository](\img/2020/az_fs/image1.jpg)
 
 If you're moving your on-prem repository to the cloud, this option will most definitely cut down storage costs as these XML's are only a couple of Kilobytes in size.
 
@@ -30,11 +30,11 @@ After creation, go to the new storage account and scroll down to the **File serv
 
 The URL of the share can be found in **Properties**
 
-![Properties](..\img/2020/az_fs/image2.jpg)
+![Properties](\img/2020/az_fs/image2.jpg)
 
 You'll need to take note of one of the **Access keys** for the storage account, which will be used to later on.  These can be found under **Settings + networking**.
 
-![Access keys](..\img/2020/az_fs/image3.jpg)
+![Access keys](\img/2020/az_fs/image3.jpg)
 
 If you need to lock down access to specific vNets and/or IP ranges, you can configure this under **Networking**.
 
@@ -50,17 +50,17 @@ You should see cmdkey return a Credential added successfully message.  You can v
 
 Now, launch Update Retriever and select Lenovo Cloud repository.  Instead of entering the URL of the file share, enter it as a UNC path:
 
-![Repository path](..\img/2020/az_fs/image4.jpg)
+![Repository path](\img/2020/az_fs/image4.jpg)
 
 Set any other options and click **Continue**.  You may see a spinning wheel for a bit but will eventually proceed to the **Get new updates** screen.  Here you can add your MTM's and check for updates.  You should see Update Retriever connect to your Azure file share and download content.
 
 If you look in Event Viewer under **Applications and Services Logs > Lenovo > ThinkVantage > UpdateRetriever** and look through the **This is the operational log of ThinkVantage UpdateRetriever** log, you'll see Events like this:
 
-![Log](..\img/2020/az_fs/image5.jpg)
+![Log](\img/2020/az_fs/image5.jpg)
 
 Back in the Azure portal, navigate to your file share and you should now see all of the package ID directories with corresponding .xml's, as well as the database.xml.
 
-![Content](..\img/2020/az_fs/image6.jpg) ![Content](..\img/2020/az_fs/image7.jpg)
+![Content](\img/2020/az_fs/image6.jpg) ![Content](\img/2020/az_fs/image7.jpg)
 
 ## Client side configuration
 
@@ -81,11 +81,11 @@ To confirm everything works, manually start the scheduled task and monitor the *
 
 I can see the client connects to the repository and finds the database.xml
 
-![Log](..\img/2020/az_fs/image8.jpg)
+![Log](\img/2020/az_fs/image8.jpg)
 
 And further down the log, once the client parses through the database.xml for applicable updates, the packages are downloaded from Lenovo
 
-![Log](..\img/2020/az_fs/image10.jpg)
+![Log](\img/2020/az_fs/image10.jpg)
 
 I've set my AdminCommandLine to list the updates so I can select which ones to install.
 
@@ -95,7 +95,7 @@ I've set my AdminCommandLine to list the updates so I can select which ones to i
 
 And here's a screenshot of updates that are applicable to download and install
 
-![Applicable updates](..\img/2020/az_fs/image11.jpg)
+![Applicable updates](\img/2020/az_fs/image11.jpg)
 
 If you're using Commercial Vantage, ensure you've configured the Local Repository GPO to point to the UNC of your Azure file share.
 

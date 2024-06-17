@@ -1,6 +1,6 @@
 site_name: ThinkDeploy Blog
 site_description: "Ideas for managing Lenovo devices in the corporate environment."
-site_url: https://blog.lenovocdrt.com
+site_url: https://cdrt.github.io/mk_blog
 
 theme:
   name: material

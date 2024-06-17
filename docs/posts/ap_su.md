@@ -234,7 +234,7 @@ Once all pre-requisites are downloaded to a source location, run the Content Pre
 IntuneWinAppUtil.exe -c "C:\SU\" -s "Configure-TVSUandScheduledTask.ps1" -o "C:\SU\output"
 ```
 
-![Create package](img/2020/ap_su/image1.jpg)
+![Create package](..\img/2020/ap_su/image1.jpg)
 
 ## Preparing the Win32 App (New method)
 
@@ -252,7 +252,7 @@ Add a new Win32 app in [Intune](https://intune.microsoft.com/#view/Microsoft_Int
 
 Fill out the necessary information for each section.
 
-![App information](img/2020/ap_su/image2.jpg)
+![App information](..\img/2020/ap_su/image2.jpg)
 
 For the Install command enter the following:
 
@@ -266,7 +266,7 @@ Uninstall command to uninstall System Update:
 "%ProgramFiles(x86)%\Lenovo\System Update\unins000.exe" /SILENT
 ```
 
-![Install command](img/2020/ap_su/image3.jpg)
+![Install command](..\img/2020/ap_su/image3.jpg)
 
 Additional Requirement type: **Registry**
 
@@ -277,17 +277,17 @@ Additional Requirement type: **Registry**
 - Value: **LENOVO**
 This ensures the app will only run on Lenovo systems
 
-![Requirement](img/2020/ap_su/image4.jpg)
+![Requirement](..\img/2020/ap_su/image4.jpg)
 
 Detection rule type: **File**
 
-![Detection rules](img/2020/ap_su/image5.jpg)
+![Detection rules](..\img/2020/ap_su/image5.jpg)
 
 - Path: **%ProgramData%\Lenovo\SystemUpdate\sessionSE**
 - File or folder: **update_history.txt**
 - Detection method: **File or folder exists**
 
-![Detection rule](img/2020/ap_su/image6.jpg)
+![Detection rule](..\img/2020/ap_su/image6.jpg)
 
 The update_history.txt is generated since we're specifying the **-exporttowmi** switch in the AdminCommandLine.  Since the system will be going through Autopilot for the first time, this obviously won't be present.
 
@@ -295,17 +295,17 @@ Assign the app to a group containing Autopilot registered devices.
 
 If you already have an Enrollment Status Page profile configured, add this app to the list of selected apps that are required to install before the device can be used.  This ensures System Update completes before proceeding to the next phase.
 
-![Required app](img/2020/ap_su/image7.jpg)
+![Required app](..\img/2020/ap_su/image7.jpg)
 
 ## Viewing the Results
 
 A look through the IntuneManagementExtension.log, you'll see the update_history.txt file was not detected
 
-![Log](img/2020/ap_su/image8.jpg)
+![Log](..\img/2020/ap_su/image8.jpg)
 
 Several minutes later, it's now detected
 
-![Log](img/2020/ap_su/image9.jpg)
+![Log](..\img/2020/ap_su/image9.jpg)
 
 You can then run the following PowerShell command to see which updates were installed
 
@@ -315,4 +315,4 @@ Get-ChildItem -Path C:\ProgramData\lenovo\SystemUpdate\sessionSE\update_history.
 
 The screenshot below shows the results from a ThinkPad T480s preloaded with Windows 10 1903. 13 drivers updated successfully!
 
-![Results](img/2020/ap_su/image10.jpg)
+![Results](..\img/2020/ap_su/image10.jpg)

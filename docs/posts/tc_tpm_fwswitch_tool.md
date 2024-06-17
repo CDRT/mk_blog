@@ -37,15 +37,15 @@ Create a Package in your ConfigMgr console, no program, pointing to the source l
 
 Below is a sample Task Sequence that shows the workflow of how this tool can be used to switch TPM Spec versions while applying the latest firmware:
 
-![](img/2018/tc_tpm_fwswitch_tool/image1.jpg)
+![](..\img/2018/tc_tpm_fwswitch_tool/image1.jpg)
 
 ## Group 1-Set TS Variables
 
 - Check SecurityChipStatus - Task Sequence Variable
 
-![](img/2018/tc_tpm_fwswitch_tool/image2.jpg)
+![](..\img/2018/tc_tpm_fwswitch_tool/image2.jpg)
 
-![](img/2018/tc_tpm_fwswitch_tool/image3.jpg)
+![](..\img/2018/tc_tpm_fwswitch_tool/image3.jpg)
 
 WMI Query to check if the Security Chip is Spec 1.2
 
@@ -58,9 +58,9 @@ SELECT * From Lenovo_BiosSetting WHERE CurrentSetting LIKE 'Security Chip 1.2,Ac
 
 - Set **OSDBitLockerStatus** task sequence variable (credit to [Mike Terrill](https://miketerrill.net/2017/04/19/how-to-detect-suspend-and-re-enable-bitlocker-during-a-task-sequence/)).
 
-![](img/2018/tc_tpm_fwswitch_tool/image4.jpg)
+![](..\img/2018/tc_tpm_fwswitch_tool/image4.jpg)
 
-![](img/2018/tc_tpm_fwswitch_tool/image5.jpg)
+![](..\img/2018/tc_tpm_fwswitch_tool/image5.jpg)
 
 WMI Query to check if the system drive is encrypted and protection is on.
 
@@ -73,9 +73,9 @@ SELECT * From Win32_EncryptableVolume WHERE DriveLetter = 'C:' and ProtectionsSt
 !!! info ""
     This will invoke the flash due to the required shutdown. Remember this was removed from **flash.cmd** earlier, otherwise the task sequence would break.
 
-![](img/2018/tc_tpm_fwswitch_tool/image6.jpg)
+![](..\img/2018/tc_tpm_fwswitch_tool/image6.jpg)
 
-![](img/2018/tc_tpm_fwswitch_tool/image7.jpg)
+![](..\img/2018/tc_tpm_fwswitch_tool/image7.jpg)
 
 WMI Query to check if the system is a ThinkCentre
 
@@ -87,26 +87,26 @@ SELECT * FROM Win32_ComputerSystemProduct WHERE Version LIKE 'ThinkCentre%'
 
 - Native Disable BitLocker step
 
-![](img/2018/tc_tpm_fwswitch_tool/image8.jpg)
+![](..\img/2018/tc_tpm_fwswitch_tool/image8.jpg)
 
-![](img/2018/tc_tpm_fwswitch_tool/image9.jpg)
+![](..\img/2018/tc_tpm_fwswitch_tool/image9.jpg)
 
 Add a condition to check if Task Sequence Variable **OSDBitLockerStatus** status equals **Protected**.
 
 ## Group 3-Configure TPM
 
-![](img/2018/tc_tpm_fwswitch_tool/image10.jpg)
+![](..\img/2018/tc_tpm_fwswitch_tool/image10.jpg)
 
 Add a condition to check if Task Sequence Variable **SecurityChipStatus** does not equal **Ready**.
 
 - Download Think BIOS Config Tool - Download Package Content Step
     - I'm using the [Think BIOS Config Tool](https://docs.lenovocdrt.com/#/tbct/tbct_top) to enable the security chip.
 
-![](img/2018/tc_tpm_fwswitch_tool/image11.jpg)
+![](..\img/2018/tc_tpm_fwswitch_tool/image11.jpg)
 
 - Run Command Line - Enable TPM
 
-![](img/2018/tc_tpm_fwswitch_tool/image12.jpg)
+![](..\img/2018/tc_tpm_fwswitch_tool/image12.jpg)
 
 ```cmd
 cmd.exe /c %BIOSConfig01%\ThinkBiosConfig.hta "file=BIOSConfig.ini" "pass=1234567"
@@ -116,17 +116,17 @@ By using the BIOS Config Tool, I'm calling the configuration file .ini that hold
 
 - Restart Computer Step - Back to Operating System
 
-![](img/2018/tc_tpm_fwswitch_tool/image13.jpg)
+![](..\img/2018/tc_tpm_fwswitch_tool/image13.jpg)
 
 ## Group4-ThinkCentre
 
-![](img/2018/tc_tpm_fwswitch_tool/image14.jpg)
+![](..\img/2018/tc_tpm_fwswitch_tool/image14.jpg)
 
 These WMI queries will check the first 4 characters of the BIOS version, which matches to each of the affected ThinkCentres as noted in the security bulletin matrix. Refer to the [Deployment Recipe Card](https://download.lenovo.com/cdrt/ddrc/RecipeCardWeb.html) for these queries.
 
 ## Group5-TPM Spec 1.2 to 2.0
 
-![](img/2018/tc_tpm_fwswitch_tool/image15.jpg)
+![](..\img/2018/tc_tpm_fwswitch_tool/image15.jpg)
 
 WMI Query to check the TPM Spec is 1.2 before continuing to switch to 2.0.
 
@@ -138,7 +138,7 @@ SELECT * From Win32_Tpm WHERE SpecVersion LIKE '1.2%'
 
 - Run Command Line-Update TPM Firmware
 
-![](img/2018/tc_tpm_fwswitch_tool/image16.jpg)
+![](..\img/2018/tc_tpm_fwswitch_tool/image16.jpg)
 
 ```cmd
 flash.cmd /2 1234567 /s

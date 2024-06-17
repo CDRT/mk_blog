@@ -9,7 +9,7 @@ categories:
 title: Reporting on Update Status, BIOS Level, CVEs, and More
 ---
 
-![Azure Workbooks Icon](img/2022/log_analytics_device_health/azure-workbooks.png)
+![Azure Workbooks Icon](..\img/2022/log_analytics_device_health/azure-workbooks.png)
 
 This post will walk through deploying a [Remediation](https://learn.microsoft.com/mem/intune/fundamentals/remediations) script that will collect data from specific Lenovo WMI classes using the [HTTP Data Collector API](https://learn.microsoft.com/azure/azure-monitor/logs/data-collector-api). As a result, the data will be sent to a [Log Analytics Workspace](https://learn.microsoft.com/azure/azure-monitor/logs/log-analytics-workspace-overview) in Azure Monitor.
 <!-- more -->
@@ -25,11 +25,11 @@ We can then create an [Azure Monitor Workbook](https://learn.microsoft.com/azure
 
 > Lists all updates by package ID and title with their respective install statuses
 
-![UpdateStatus](img/2022/log_analytics_device_health/image1.jpg)
+![UpdateStatus](..\img/2022/log_analytics_device_health/image1.jpg)
 
-![UpdateStatus](img/2022/log_analytics_device_health/image2_1.jpg)
+![UpdateStatus](..\img/2022/log_analytics_device_health/image2_1.jpg)
 
-![UpdateStatus](img/2022/log_analytics_device_health/image2_2.jpg)
+![UpdateStatus](..\img/2022/log_analytics_device_health/image2_2.jpg)
 
 ---
 
@@ -37,15 +37,15 @@ We can then create an [Azure Monitor Workbook](https://learn.microsoft.com/azure
 
 > Displays BIOS level information for each model and if the model is affected by any CVEs.
 
-![BIOS](img/2022/log_analytics_device_health/image3_1.jpg)
+![BIOS](..\img/2022/log_analytics_device_health/image3_1.jpg)
 
-![BIOS](img/2022/log_analytics_device_health/image3_2.jpg)
+![BIOS](..\img/2022/log_analytics_device_health/image3_2.jpg)
 
 ## Battery Health Status
 
 > Lists all endpoints and health of their battery.
 
-![BatteryHealth](img/2022/log_analytics_device_health/image2.jpg)
+![BatteryHealth](..\img/2022/log_analytics_device_health/image2.jpg)
 
 ---
 
@@ -53,7 +53,7 @@ We can then create an [Azure Monitor Workbook](https://learn.microsoft.com/azure
 
 > Lists the warranty end dates of all endpoints
 
-![WarrantyEnd](img/2022/log_analytics_device_health/image3.jpg)
+![WarrantyEnd](..\img/2022/log_analytics_device_health/image3.jpg)
 
 ## **Prerequisites**
 
@@ -82,7 +82,7 @@ Download both files from our GitHub [here](https://github.com/CDRT/Library/tree/
 
 Assuming a Log Analytics Workspace has been created, you'll need the **Workspace ID** and **Primary Key**. This can be found under **Agents management** of your workspace.
 
-![LA-Workspace](img/2022/log_analytics_device_health/image5.jpg)
+![LA-Workspace](..\img/2022/log_analytics_device_health/image5.jpg)
 
 ## Deploying the Remediation
 
@@ -106,7 +106,7 @@ As devices receive the policy, review the **Device status** blade to verify if d
 
 You can check what data is being collected by looking at the **Custom fields** tab in **Custom logs** in your Workspace
 
-![CustomFields](img/2022/log_analytics_device_health/image4.jpg)
+![CustomFields](..\img/2022/log_analytics_device_health/image4.jpg)
 
 Everything being inventoried here can be found on the device in the **root/Lenovo** WMI namespace under one of the following classes
 
@@ -123,7 +123,7 @@ Add the sample Workbook to your Log Analytics Workspace
 - Click **+New**
 - Click the **Advanced Editor** button
 
-![LA-Workspace](img/2022/log_analytics_device_health/image6.jpg)
+![LA-Workspace](..\img/2022/log_analytics_device_health/image6.jpg)
 
 - Clear the contents and copy/paste the contents from **Lenovo-DeviceStatus.json** here
 - Click **Apply**

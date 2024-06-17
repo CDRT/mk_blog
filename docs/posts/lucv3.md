@@ -19,13 +19,13 @@ Previously when subscribing to the V2 catalog, all the updates in the catalog wo
 
 The categories can be selected when initially syncing the catalog or right-clicking on the catalog and selecting properties.
 
-![Initial sync](img/2020/selectedCategories.png)
+![Initial sync](..\img/2020/selectedCategories.png)
 
-![Properties dialog](img/2020/properties.png)
+![Properties dialog](..\img/2020/properties.png)
 
 Once categories are selected, the content can be staged which means it will be automatically downloaded to the top-level Software Update Point. This will remove the need to download the content through the Configuration Manager console prior to deployment.
 
-![Staging update content](img/2020/prestage.png)
+![Staging update content](..\img/2020/prestage.png)
 
 ### Summary
 

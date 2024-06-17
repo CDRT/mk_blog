@@ -9,7 +9,7 @@ categories:
 title: Creating Local Repository Using PowerShell
 ---
 
-![PowerShell](img/2023/scripted_repo_creation/ps_icon.png)
+![PowerShell](..\img/2023/scripted_repo_creation/ps_icon.png)
 
 There are various scenarios where one might want to quickly generate a local repository of Lenovo updates that can be consumed by Thin Installer or System Update in a scripted manner. This article will describe a PowerShell script that can be leveraged to create a repository for a specified machine type and OS. A scenario where this script might be used will also be described.
 <!-- more -->
@@ -26,14 +26,14 @@ In the first scenario, Thin Installer will be leveraged in a Microsoft Configura
 The child task sequence will be added after the **Setup Windows and Configuration Manager** step in your parent Operating System Deployment task sequence
 
 The top level group **Prepare Thin Installer** queries the device to determine if it is a ThinkPad, ThinkCentre or ThinkStation commercial PC product.
-![Prepare Thin Installer](img/2023/scripted_repo_creation/image1.png)
+![Prepare Thin Installer](..\img/2023/scripted_repo_creation/image1.png)
 
 A WQL query is used to check if the Operating System build is 22H1 or earlier. If it is, then Thin Installer is installed using a legacy Package in the 'Package' group:
-![Package: Thin Installer](img/2023/scripted_repo_creation/image2.png)
-![Package: Thin Installer](img/2023/scripted_repo_creation/image3.png)
+![Package: Thin Installer](..\img/2023/scripted_repo_creation/image2.png)
+![Package: Thin Installer](..\img/2023/scripted_repo_creation/image3.png)
 
 Another WQL query is used to check if the Operating System build is 22H2 or later in the 'Winget' group. This group contains a step to install Thin Installer from the Winget repository. Windows 11 22H2 contains Winget automatically while earlier versions of Windows must install Winget from the Microsoft.DesktopAppInstaller package. If Winget is available in your environment on earlier OS builds, you can change the conditions on these groups and leverage the Winget install task instead.
-![Winget: Thin Installer](img/2023/scripted_repo_creation/image4.png)
+![Winget: Thin Installer](..\img/2023/scripted_repo_creation/image4.png)
 
 PowerShell script to install Thin Installer using Winget:
 
@@ -56,7 +56,7 @@ PowerShell script **Get-LnvUpdatesRepo.ps1** will download current updates from 
 
 This filters the updates to include 1/Applications, 2/Drivers, 3/BIOS, and 4/Firmware packages; and updates with Reboot Type 0 (No reboot required), 3 (Reboot required but not forced), and 5 (Delayed forced reboot). The -RT5toRT3 parameter is a special case to be used in task sequences which will control the rebooting of the system after Thin Installer runs. It will cause the script to change Reboot Type 5 updates to Reboot Type 3 which will cause Thin Installer to not perform the reboot. **After these types of updates are applied, the system needs to be rebooted immediately to avoid possible damage to the system. This is taken care of by the task sequence.**
 
-![Get Lenovo Updates](img/2023/scripted_repo_creation/image5.png)
+![Get Lenovo Updates](..\img/2023/scripted_repo_creation/image5.png)
 
 !!! info ""
     The **All Updates** group contains the necessary parameters and Thin Installer command line to include Reboot Type 5 packages (BIOS/Firmware). The **Drivers** group will only download Reboot Type 0 and 3 packages (Drivers), and is disabled by default.
@@ -65,7 +65,7 @@ Once all content is downloaded to the device, 3 passes of Thin Installer (with a
 
 ### First Pass
 
-![Run Thin Installer](img/2023/scripted_repo_creation/image6.png)
+![Run Thin Installer](..\img/2023/scripted_repo_creation/image6.png)
 
 If a BIOS update is applicable, this package gets installed first using this Thin Installer command line
 
@@ -75,7 +75,7 @@ ThinInstaller.exe /CM -repository "C:\ProgramData\Lenovo\ThinInstaller\Repositor
 
 ### Second Pass
 
-![Run Thin Installer](img/2023/scripted_repo_creation/image7.png)
+![Run Thin Installer](..\img/2023/scripted_repo_creation/image7.png)
 
 Only drivers and apps are filtered for installation using this command line
 
@@ -88,7 +88,7 @@ ThinInstaller.exe /CM -repository "C:\ProgramData\Lenovo\ThinInstaller\Repositor
 
 ### Final Pass
 
-![Run Thin Installer](img/2023/scripted_repo_creation/image8.png)
+![Run Thin Installer](..\img/2023/scripted_repo_creation/image8.png)
 
 Firmware packages, such as Intel ME Firmware, are installed in the final pass using this command line
 

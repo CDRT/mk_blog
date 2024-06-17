@@ -8,18 +8,18 @@ categories:
 title: Preparing the TPM for BitLocker Pre-provisioning using ConfigMgr
 ---
 
-![](img/2017/tpm_pre_provision/bitlocker.jpg)
+![](..\img/2017/tpm_pre_provision/bitlocker.jpg)
 
 There are some definite advantages to pre-provisioning BitLocker. Pre-provisioning the disk will encrypt only used space, so when this step executes, the drive will be encrypted before the operating system has been laid down to the client, saving a ton of time.
 
 The catch here is that in order for pre-provisioning to work, a TPM has to be present on the system AND enabled, as stated in the Pre-provision BitLocker step.
 <!-- more -->
 
-![](img/2017/tpm_pre_provision/image1.jpg)
+![](..\img/2017/tpm_pre_provision/image1.jpg)
 
 All Lenovo ThinkPads with Discrete TPM 1.2 are shipped from the factory with the TPM enabled but **NOT** Active. Systems with TPM 2.0 only should already be Enabled. If the system runs through a deployment without activating the TPM in BIOS, pre-provisioning will not work. If you review the **OSDOfflineBitlocker.exe** section of the **smsts.log**, you'll see the failure
 
-![](img/2017/tpm_pre_provision/image2.jpg)
+![](..\img/2017/tpm_pre_provision/image2.jpg)
 
 In a few simple steps, here's how to activate the TPM on newly shipped systems with Discrete TPM 1.2:
 
@@ -40,7 +40,7 @@ powershell.exe -Executionpolicy Bypass -Command "(Get-WmiObject -Namespace "root
 
 That's all! You will notice the computer restart twice for the settings to be applied. Once the deployment finishes, verify BitLocker is in fact on.
 
-![](img/2017/tpm_pre_provision/image3.jpg)
+![](..\img/2017/tpm_pre_provision/image3.jpg)
 
 For more control over the **Configure Security Chip** group, you can add conditions that determines whether or not the group executes. For example, if the Security Chip is already Active and Enabled, it's not really necessary to go through these steps every time.
 
@@ -73,7 +73,7 @@ One thing to be aware of is that the value set in WMI for the Security Chip may 
 
 Look for Security Chip and note the value, like below:
 
-![](img/2017/tpm_pre_provision/image4.jpg)
+![](..\img/2017/tpm_pre_provision/image4.jpg)
 
 You may encounter on some systems the value is slightly different, i.e. **Security Chip,Active** or **SecurityChip,Enable** or **Security Chip,Enabled**
 

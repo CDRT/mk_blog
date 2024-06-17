@@ -94,7 +94,7 @@ Set-Service -Name $Service.Name -StartupType Disabled
 
 When you're ready to deploy the baseline, be sure to tick the box to remediate noncompliant rules when supported.
 
-![Baseline Deploy](img/2022/qualcomm_remediation/image1.jpg)
+![Baseline Deploy](..\img/2022/qualcomm_remediation/image1.jpg)
 
 ### Monitoring
 

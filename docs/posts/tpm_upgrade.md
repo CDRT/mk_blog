@@ -8,7 +8,7 @@ categories:
 title: Upgrading TPM Spec 1.2 to 2.0 on ThinkPad using ConfigMgr Current Branch
 ---
 
-![TPM](img/2019/tpm_upgrade/image1.jpg)
+![TPM](..\img/2019/tpm_upgrade/image1.jpg)
 
 Now that your Windows 7 to 10 migration is complete, you may want to upgrade the TPM Spec version from 1.2 to 2.0 to take full advantage of Windows 10's security features, like Device Guard and Credential Guard.
 <!-- more -->
@@ -27,7 +27,7 @@ First, create a Package in your console after you've downloaded and extracted th
 
 ## Task Sequence Overview
 
-![](img/2019/tpm_upgrade/image2.jpg)
+![](..\img/2019/tpm_upgrade/image2.jpg)
 
 **Group 1. Disable BitLocker**
 
@@ -37,15 +37,15 @@ Assuming the systems have already been deployed and are in full OS, you'll need 
 
 Add a Download Package Content Step, specifying the Package created earlier containing SRSetup. I'm choosing to drop into the ccmcache directory and saving the path as a variable named Content.
 
-![](img/2019/tpm_upgrade/image3.jpg)
+![](..\img/2019/tpm_upgrade/image3.jpg)
 
 **Group 3. Upgrade TPM-ThinkPad**
 
 I added the following 2 conditions on this group.
 
-![](img/2019/tpm_upgrade/image4.jpg)
+![](..\img/2019/tpm_upgrade/image4.jpg)
 
-![](img/2019/tpm_upgrade/image5.jpg)
+![](..\img/2019/tpm_upgrade/image5.jpg)
 
 **Clear TPM**
 
@@ -77,13 +77,13 @@ The /Z switch is undocumented and must be done independently from other BIOS set
 
 In the **Start in:** field, enter %Content01%
 
-![](img/2019/tpm_upgrade/image6.jpg)
+![](..\img/2019/tpm_upgrade/image6.jpg)
 
 Add a Restart Computer step (back into OS) followed by a group to Re-Enable BitLocker.  Once you're logged back in, you can confirm the TPM Spec Version in the TPM Management Console.
 
 A new task sequence variable **OSDDoNotLogCommand** was introduced in ConfigMgr version 1806. When set to True, sensitive data is prevented from being displayed or logged. This only applied to the Install Package step. In version 1902, this variable now applies to Run Command Line steps. If you prefer not having your Supervisor password in clear text, set this variable to True. Here's an example of what this will look like in your log once the srsetup utility is executed:
 
-![](img/2019/tpm_upgrade/image7.jpg)
+![](..\img/2019/tpm_upgrade/image7.jpg)
 
 ## Further Reading
 

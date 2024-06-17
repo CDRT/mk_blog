@@ -55,11 +55,11 @@ Login to the Microsoft Intune [admin center](https://intune.microsoft.com/#view/
 (device.manufacturer -eq "LENOVO")
 ```
 
-![RemediationPackage](\img/2023/cv_su_logging/image1.jpg)
+![RemediationPackage](img/2023/cv_su_logging/image1.jpg)
 
 Once the device retrieves the policy for Remediation scripts, track the **HealthScripts.log** for details. In this screenshot, I can see logging was enabled and verified in the Registry
 
-![Remediation](\img/2023/cv_su_logging/image2.jpg)
+![Remediation](img/2023/cv_su_logging/image2.jpg)
 
 The next time the System Update feature of Commercial Vantage runs, you can find the log in the following location:
 
@@ -75,12 +75,12 @@ Download the **Baseline** [here](https://download.lenovo.com/cdrt/blog/CB_Enable
 
 If you look at the properties of the Configuration Item, you'll see this is a simple Registry value setting type and a single compliance rule.
 
-![CI](\img/2023/cv_su_logging/image3.jpg)
+![CI](img/2023/cv_su_logging/image3.jpg)
 
-![CI](\img/2023/cv_su_logging/image4.jpg)
+![CI](img/2023/cv_su_logging/image4.jpg)
 
 When you deploy the Baseline, be sure to check the options to **Remediate noncompliant rules when supported** and **Allow remediation outside the maintenance window**.
 
-![CI](\img/2023/cv_su_logging/image5.jpg)
+![CI](img/2023/cv_su_logging/image5.jpg)
 
 Happy logging!

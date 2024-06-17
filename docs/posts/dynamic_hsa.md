@@ -29,7 +29,7 @@ We can achieve this in essentially 3 steps in a Task Sequence.
 
 First, you'll need to download/extract the contents of the HSA pack to a desired location and place the **Install-HSA.ps1** file in the top level directory.
 
-![HSA pack](\img/2020/dynamic_hsa/image1.jpg)
+![HSA pack](img/2020/dynamic_hsa/image1.jpg)
 
 #### Create Legacy Package(s)
 
@@ -41,7 +41,7 @@ In the ConfigMgr console, create a Package (No Program) and enter the following 
 - **Description/Comment** - This is the first 4 characters of the Machine Type Model. For Example, **21D6,21D7**
   - Also found in the deployment recipe card
 
-![Package details](\img/2020/dynamic_hsa/image2.jpg)
+![Package details](img/2020/dynamic_hsa/image2.jpg)
 
 - **MIF File Name** - HSA
 - **MIF Name** - OS version. **win10** or **win11**
@@ -51,17 +51,17 @@ In the ConfigMgr console, create a Package (No Program) and enter the following 
 !!! info ""
     If there are no 23H2 HSA packs available, use the 22H2 packs.
 
-![MIF Matching](\img/2020/dynamic_hsa/image3.jpg)
+![MIF Matching](img/2020/dynamic_hsa/image3.jpg)
 
 ### Download HSA Pack (Automated Way)
 
 We have added a new node in the Think Deploy [catalog](https://download.lenovo.com/cdrt/td/catalogv2.xml) for HSAs. With this, we can automate the download, extraction, and creation of ConfigMgr packages with the PowerShell script **New-LnvHsaConfigMgrPackage.ps1**.
 
-![Select HSA pack](\img/2020/dynamic_hsa/image4.jpg)
+![Select HSA pack](img/2020/dynamic_hsa/image4.jpg)
 
 You can select a single pack to download or ctrl + click for multiple. The packs will download and extract to the temp directory, moved to the share you specify, and finally ConfigMgr Packages are created.
 
-![Script completion](\img/2020/dynamic_hsa/image5.jpg)
+![Script completion](img/2020/dynamic_hsa/image5.jpg)
 
 !!! info ""
     You'll need to distribute the content to your Distribution Points
@@ -87,7 +87,7 @@ Get-WmiObject -Class SMS_Package -Namespace root\SMS\Site_$SiteCode | Select-Obj
 
 If you open the XML, the contents should be similar to this
 
-![XML](\img/2020/dynamic_hsa/image6.jpg)
+![XML](img/2020/dynamic_hsa/image6.jpg)
 
 Copy this XML to your Scripts folder.  Along with the XML, another piece to the puzzle is needed to be able to grab the correct HSA Package during the Task Sequence.  The below PowerShell script (**Get-DynamicHsaPackages.ps1**) will look at the Packages.xml, match the Name/MTM to it's corresponding HSA Package, and leverage the **OSDDownloadDownloadPackages** override variable in the Download Package Content step.  This script needs to be saved in your Scripts folder as well.
 
@@ -165,13 +165,13 @@ In my testing, I created a Child Task Sequence containing everything above and h
 
 **PowerShell execution policy**: Set to Bypass
 
-![Task sequence](\img/2020/dynamic_hsa/image7.jpg)
+![Task sequence](img/2020/dynamic_hsa/image7.jpg)
 
 **Download Package Content**: This step will eventually get overridden due to the OSDDownloadDownloadPackages variable being set in the Get-DynamicHsaPackages script. So create an empty Package and add it here.
 
 **Custom path**: This is where the HSA Package will be downloaded to on the client. Here, I'm using the %_SMSTSMDataPath% (I have my drivers set to download here as well). On the client, this will resolve to C:\_SMSTaskSequence\HSAs\HSA_PackageID
 
-![Task sequence](\img/2020/dynamic_hsa/image8.jpg)
+![Task sequence](img/2020/dynamic_hsa/image8.jpg)
 
 **Run Command Line**: This step calls PowerShell to execute the Install-HSA.ps1 with parameters to install all HSAs offline (WinPE).
 
@@ -179,8 +179,8 @@ In my testing, I created a Child Task Sequence containing everything above and h
 powershell.exe -ExecutionPolicy Bypass -Command (%_SMSTSMDataPath%\HSAs\*\Install-HSAs.ps1 -Offline -All -DebugInformation)
 ```
 
-![Task sequence](\img/2020/dynamic_hsa/image9.jpg)
+![Task sequence](img/2020/dynamic_hsa/image9.jpg)
 
 This being a Child Task Sequence, I've added it to my main Task Sequence right after my Install Drivers step and before the Setup Windows and ConfigMgr Client step
 
-![Child task sequence](\img/2020/dynamic_hsa/image10.jpg)
+![Child task sequence](img/2020/dynamic_hsa/image10.jpg)

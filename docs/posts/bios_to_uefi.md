@@ -111,7 +111,7 @@ Create a new Package in your ConfigMgr console that contains the HTA and the .in
 !!! info ""
     HTA support will need to be added to the boot image
 
-![](\img/2017/bios_to_uefi/image1.jpg)
+![](img/2017/bios_to_uefi/image1.jpg)
 
 ```cmd
 cmd.exe /c ThinkBiosConfig.hta "file=ThinkPadConfig.ini"
@@ -119,6 +119,6 @@ cmd.exe /c ThinkBiosConfig.hta "file=ThinkPadConfig.ini"
 
 If you have a Supervisor password set on your clients, you can generate an encryption key in the BIOS Config Tool that will be used to pass the Supervisor password to set the BIOS changes. For more info, refer to the documentation. In the below screenshot, the command line now includes the "pass" switch with the encryption key I generated from the tool
 
-![](\img/2017/bios_to_uefi/image2.jpg)
+![](img/2017/bios_to_uefi/image2.jpg)
 
 That's it! You'll notice the system restart twice for the changes to take effect but the task sequence will resume and boot into PE to finish out the deployment since the boot image was staged to the hard drive prior to restart.

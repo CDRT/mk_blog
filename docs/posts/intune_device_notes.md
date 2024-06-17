@@ -82,4 +82,4 @@ foreach ($device in $managedDevices) {
 
 Once finished, check a device's notes in the portal to find it's friendly name.
 
-![DeviceNote](\img/2023/intune_device_notes/image1.png)
+![DeviceNote](img/2023/intune_device_notes/image1.png)

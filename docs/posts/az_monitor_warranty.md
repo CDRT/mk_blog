@@ -8,7 +8,7 @@ categories:
 title: Collecting and Storing Lenovo Warranty <br> Information to Azure Monitor
 ---
 
-![Dial](\img/2021/az_monitor_warranty/image1.jpg)
+![Dial](img/2021/az_monitor_warranty/image1.jpg)
 
 A feature add (by popular demand) in Commercial Vantage is the ability to write the device's warranty information to WMI.  
 
@@ -37,13 +37,13 @@ Once you're starting to see script execution has succeeded on your devices in th
 
 Here's an example of what you should expect to see in [Graph Explorer](https://developer.microsoft.com/en-us/graph/graph-explorer).
 
-![Graph Explorer](\img/2021/az_monitor_warranty/image2.jpg)
+![Graph Explorer](img/2021/az_monitor_warranty/image2.jpg)
 
 Now that we have data, we're going to send this to the Azure Monitor [HTTP Data Collector API](https://docs.microsoft.com/en-au/azure/azure-monitor/logs/data-collector-api) using PowerShell.  You'll need to note the Workspace ID and Primary Key of the Log Analytics workspace you intend on using.
 
 You can find this information under **Log Analytics workspace > Agents management**
 
-![Agents management](\img/2021/az_monitor_warranty/image3.jpg)
+![Agents management](img/2021/az_monitor_warranty/image3.jpg)
 
 Next, we're going to setup a [PowerShell Runbook](https://docs.microsoft.com/en-us/azure/automation/automation-runbook-types#powershell-runbooks) that will create a POST request to the HTTP Data Collector API that includes our list of devices to send.
 
@@ -65,11 +65,11 @@ if (!(Get-AzAutomationModule -ResourceGroupName $ResourceGroup -AutomationAccoun
 
 Verify the module's status shows **Available**
 
-![Module status](\img/2021/az_monitor_warranty/image4.jpg)
+![Module status](img/2021/az_monitor_warranty/image4.jpg)
 
 Two Azure Automation string type variables that will hold an Azure user account/encrypted password to authenticate to Graph (make sure this account has the appropriate permissions).  These will be called using the [Get-AutomationVariable](https://docs.microsoft.com/en-us/azure/automation/shared-resources/variables?tabs=azure-powershell#internal-cmdlets-to-access-variables) internal cmdlets.
 
-![Automation account](\img/2021/az_monitor_warranty/image5.jpg)
+![Automation account](img/2021/az_monitor_warranty/image5.jpg)
 
 Once everything is ready to go, choose the Azure Automation account you want to use and click **Runbooks** and **Create a runbook**.  Enter a name and choose **PowerShell** for the runbook type.
 
@@ -172,11 +172,11 @@ Post-LogAnalyticsData -customerId $customerId -sharedKey $sharedKey -body ([Syst
 
 Click on **Test pane** and click on **Start**.  After a few seconds, you should see **Complete**
 
-![Test](\img/2021/az_monitor_warranty/image6.jpg)
+![Test](img/2021/az_monitor_warranty/image6.jpg)
 
 Let's check out the new Custom Log in our [workspace](https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/lawsInsights).  Click the **Custom logs** blade.  There should now be a **WarrantyInformation_CL** visible.  Notice the type is **Ingestion API**.  
 
-![Custom log](\img/2021/az_monitor_warranty/image7.jpg)
+![Custom log](img/2021/az_monitor_warranty/image7.jpg)
 
 Head over to the [Azure Monitor Logs](https://portal.azure.com/#blade/Microsoft_Azure_Monitoring/AzureMonitoringBrowseBlade/logs) and run the following query to see our devices.
 
@@ -186,7 +186,7 @@ WarrantyInformation_CL
 | distinct Product_s, StartDate_s, EndDate_s
 ```
 
-![Warranty Informaton](\img/2021/az_monitor_warranty/image8.jpg)
+![Warranty Informaton](img/2021/az_monitor_warranty/image8.jpg)
 
 Yay!  Warranty data!
 
@@ -200,11 +200,11 @@ WarrantyInformation_CL
 | where EndDate_s contains "2020"
 ```
 
-![Warranty details](\img/2021/az_monitor_warranty/image9.jpg)
+![Warranty details](img/2021/az_monitor_warranty/image9.jpg)
 
 You can also pin a specific query to your dashboard if you desire
 
-![Pin to dashboard](\img/2021/az_monitor_warranty/image10.jpg)
-![Analytics](\img/2021/az_monitor_warranty/image11.jpg)
+![Pin to dashboard](img/2021/az_monitor_warranty/image10.jpg)
+![Analytics](img/2021/az_monitor_warranty/image11.jpg)
 
 Now we can set up a recurring [schedule](https://docs.microsoft.com/en-us/azure/automation/shared-resources/schedules#create-a-schedule) for the Runbook to monitor our fleet's warranty.

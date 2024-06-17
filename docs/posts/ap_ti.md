@@ -131,7 +131,7 @@ You'll also need to adjust the [Enrollment Status Page](https://learn.microsoft.
 
 Under the **Block device use until required apps are installed if they are assigned to the user/device**, add the **Get Lenovo Updates** app to the list here.
 
-![ESP](\img/2023/ap_ti/image1.jpg)
+![ESP](img/2023/ap_ti/image1.jpg)
 
 #### Checking the Results
 
@@ -139,7 +139,7 @@ Prior to resealing the device and handing off to the user, you can review the re
 
 On my test device, you can see almost a dozen drivers have been updated, including the BIOS
 
-![Results](\img/2023/ap_ti/image2.jpg)
+![Results](img/2023/ap_ti/image2.jpg)
 
 ---
 

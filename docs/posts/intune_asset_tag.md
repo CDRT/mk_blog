@@ -8,7 +8,7 @@ categories:
 title: Setting an Asset Tag on ThinkPads using Intune Proactive Remediations
 ---
 
-![Asset Tag Icon](\img/2022/intune_asset_tag/assettag.jpg)
+![Asset Tag Icon](img/2022/intune_asset_tag/assettag.jpg)
 
 For the unaware, Lenovo provides a [Windows Utility to Read and Write Asset ID Information](https://support.lenovo.com/downloads/ds039503), specifically for ThinkPad. With this utility, you are able to set asset ID data such as an Owner Name, Owner Location, Asset Number and several other pieces of information.
 <!-- more -->
@@ -42,13 +42,13 @@ Sign-in to the Microsoft Endpoint Manager [admin center](https://endpoint.micros
 
 Click **Create new script package**. Provide a Name and description (if necessary)
 
-![Create custom script](\img/2022/intune_asset_tag/image1.jpg)
+![Create custom script](img/2022/intune_asset_tag/image1.jpg)
 
 On the **Settings** section, upload both the **Detection script file** and the **Remediation script file** by browsing to the location where the **.ps1** files were saved.
 
 Configure the option to **Run script in 64-bit PowerShell** to Yes
 
-![Create custom script](\img/2022/intune_asset_tag/image2.jpg)
+![Create custom script](img/2022/intune_asset_tag/image2.jpg)
 
 Assign any scope tags and a group to deploy the script package to. For testing purposes, I set the schedule to run every hour.
 
@@ -59,7 +59,7 @@ Assign any scope tags and a group to deploy the script package to. For testing p
 
 Check the overview of your detection and remediation status under **Reporting > Endpoint Analytics - Proactive remediations**. Review the **Device status** to get details for each device.
 
-![Create custom script](\img/2022/intune_asset_tag/image3.jpg)
+![Create custom script](img/2022/intune_asset_tag/image3.jpg)
 
 !!! warning
     Remember to change the Owner Data variables in the remediation script. The USERASSETDATA.ASSET_NUMBER is based off the UniqueID of the device and is what I decided to use for this scenario.

@@ -14,7 +14,7 @@ This post will provide an alternate method for configuring BIOS settings using o
 <!-- more -->
 Before proceeding, make sure you have an exported .ini file that contains the desired BIOS settings you want applied to your target systems.   Refer to the documentation provided in the TBCT zip on how to obtain this file.  For this demonstration, I've exported the following .ini from a T14s (Intel)
 
-![BIOS settings INI](\img/2021/intune_bios_settings/image1.jpg)
+![BIOS settings INI](img/2021/intune_bios_settings/image1.jpg)
 
 Since my target systems have a Supervisor password already set, the first line is the encrypted Supervisor password which was created using the specified secret key as part of the tool's capture process.  Note, there's no way to set an initial Supervisor password with this tool.
 
@@ -56,19 +56,19 @@ catch {
 
 Your directory should have 3 items
 
-![Files](\img/2021/intune_bios_settings/image2.jpg)
+![Files](img/2021/intune_bios_settings/image2.jpg)
 
 ## Create and Upload the Win32 App
 
 We're going to use the Win32 Content Prep [tool](https://github.com/Microsoft/Microsoft-Win32-Content-Prep-Tool) to create an .intunewin file that will be uploaded to Intune.
 
-![Create package](\img/2021/intune_bios_settings/image3.jpg)
+![Create package](img/2021/intune_bios_settings/image3.jpg)
 
 Once the .intunewin file has been created, sign into the MEM [admin center](https://endpoint.microsoft.com/#blade/Microsoft_Intune_DeviceSettings/AppsWindowsMenu/windowsApps) and create a new Windows client app.  Choose **Windows app (Win32)** for the app type and select the .intunewin package file to upload.
 
 Specify the **App Information**
 
-![App details](\img/2021/intune_bios_settings/image4.jpg)
+![App details](img/2021/intune_bios_settings/image4.jpg)
 
 Enter the **Install** command
 
@@ -82,7 +82,7 @@ and **Uninstall** command
 cmd.exe /c del %ProgramData%\Lenovo\ThinkBiosConfig\ThinkBiosConfig.tag
 ```
 
-![Application](\img/2021/intune_bios_settings/image5.jpg)
+![Application](img/2021/intune_bios_settings/image5.jpg)
 
 Set Operating system architecture to **64-bit** and Minimum operating system to **Windows 10 1607**
 
@@ -98,7 +98,7 @@ Operator: **Equals**
 
 Value: **LENOVO**
 
-![Registry requirement](\img/2021/intune_bios_settings/image6.jpg)
+![Registry requirement](img/2021/intune_bios_settings/image6.jpg)
 
 Add a File type rule to check for the presence of the tag that gets created by the PowerShell script.  We'll use this for the detection method.
 
@@ -108,17 +108,17 @@ File or folder: **ThinkBiosConfig**
 
 Detection method: **File or folder exists**
 
-![File type rule](\img/2021/intune_bios_settings/image7.jpg)
+![File type rule](img/2021/intune_bios_settings/image7.jpg)
 
 Finally, Review + Save to create the new app and deploy to a Device Group.  
 
 On my test machine, I see toast notifications that show the BIOS has been configured and to reboot.
 
-![Toast notification](\img/2021/intune_bios_settings/image8.jpg)
+![Toast notification](img/2021/intune_bios_settings/image8.jpg)
 
 The tool generates a log file so here you can see my Supervisor password has been validated with the encrypting key and the settings have been applied successfully.
 
-![Log](\img/2021/intune_bios_settings/image9.jpg)
+![Log](img/2021/intune_bios_settings/image9.jpg)
 
 ### Additional Notes
 

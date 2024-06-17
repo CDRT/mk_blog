@@ -11,7 +11,7 @@ title: "Configuration Manager - Driver Import Error: Some packages cannot be upd
 Recently we have experienced an increase of reported issues when importing drivers into Configuration Manager.  After a successful import, the import wizard goes to copy the drivers to the package and distribute the package to the distribution point(s), yet an error is received.
 <!-- more -->
 
-![DriverImport](\img/2024/cm_drivers_import/cm_error.png)
+![DriverImport](img/2024/cm_drivers_import/cm_error.png)
 
 While there is no issue with the import process, the process to update driver packages where the content is stored fails.
 

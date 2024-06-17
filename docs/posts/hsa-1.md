@@ -25,7 +25,7 @@ Starting in late June of 2020 you will begin to see these show up on the Lenovo 
 
 The HSA Pack will be a self-extracting executable file like our SCCM Driver Packs.  When you extract one you will get a folder structure with each app's source files contained in their own folder.  By default a folder with a random name will be used to prevent any kind of symlink vulnerability.
 
-![HSA directory](\img/2020/hsa_directory.png)
+![HSA directory](img/2020/hsa_directory.png)
 
 ### Scripted Install of Hardware Support Apps during a Task Sequence
 
@@ -422,7 +422,7 @@ For MEM/SCCM and MDT implementations, we are providing the following guidance fo
 
 ### Windows PE Optional Components Requirements
 
-![PE Components](\img/2020/hsa_winpe_oc.png)
+![PE Components](img/2020/hsa_winpe_oc.png)
 
 * Microsoft .NET (WinPE-NetFx)
 * Windows PowerShell (WinPE-PowerShell)
@@ -430,7 +430,7 @@ For MEM/SCCM and MDT implementations, we are providing the following guidance fo
 
 ### Packaging
 
-![HSA folder](\img/2020/hsa_folder_structure_w_script.png)
+![HSA folder](img/2020/hsa_folder_structure_w_script.png)
 
 1. Download and extract the required HSA package from Lenovo's website.
 2. Copy the **Install-HSA.ps1** script to the directory where the HSA package was extracted.
@@ -442,9 +442,9 @@ For MEM/SCCM and MDT implementations, we are providing the following guidance fo
 
 ### Task Sequence
 
-![Run PowerShell Script](\img/2020/hsa_ts_ps_task_1.png)
+![Run PowerShell Script](img/2020/hsa_ts_ps_task_1.png)
 
-![Options](\img/2020/hsa_ts_ps_task_2.png)
+![Options](img/2020/hsa_ts_ps_task_2.png)
 
 1. After the Apply Operating System task, but before the Setup Windows and Configuration Manager task, add a **Run PowerShell Script** task.
 1. On the Properties tab, choose the **Select a package with a PowerShell script** option.  Click the Browse button to locate and select the package created above.
@@ -456,7 +456,7 @@ For MEM/SCCM and MDT implementations, we are providing the following guidance fo
 
 ### WinPE Features Requirements
 
-![PE components](\img/2020/hsa_winpe.png)
+![PE components](img/2020/hsa_winpe.png)
 
 * .NET Framework
 * Windows PowerShell
@@ -464,7 +464,7 @@ For MEM/SCCM and MDT implementations, we are providing the following guidance fo
 
 ### Application
 
-![HSA folder](\img/2020/hsa_folder.png)
+![HSA folder](img/2020/hsa_folder.png)
 
 1. Download and extract the required HSA package from Lenovo's website.
 1. Copy the **Install-HSA.ps1** script to the directory where the HSA package was extracted.
@@ -475,9 +475,9 @@ For MEM/SCCM and MDT implementations, we are providing the following guidance fo
 
 ### MDT Task Sequence
 
-![Run command line](\img/2020/hsa_mdt_ts1.png)
+![Run command line](img/2020/hsa_mdt_ts1.png)
 
-![Options](\img/2020/hsa_mdt_ts2.png)
+![Options](img/2020/hsa_mdt_ts2.png)
 
 1. In the Task Sequence, after the Apply Operating System task in the Install phase, but before the Restart Computer task in the PostInstall phase, add a Run Command Line task and give it a name.
 1. In the command line, enter the following command:

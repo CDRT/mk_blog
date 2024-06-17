@@ -35,13 +35,13 @@ First, you'll need to extend hardware inventory.  To make this a bit easier, the
 
 Open the Default Client Settings, select Hardware Inventory, and click Set Classes
 
-![](\img/2018/bios_reporting/image1.jpg)
+![](img/2018/bios_reporting/image1.jpg)
 
 On the Hardware Inventory Class window, click Import.  Select the MOF file containing the Lenovo WMI Classes.  Leave the default radio button selected to import both the inventory classes and settings and Click Import.  Click Ok to complete.
 
-![](\img/2018/bios_reporting/image2.jpg)
+![](img/2018/bios_reporting/image2.jpg)
 
-![](\img/2018/bios_reporting/image3.jpg)
+![](img/2018/bios_reporting/image3.jpg)
 
 Once the clients receive the updated Client Settings, the two Lenovo classes will be inventoried and can be reviewed in Resource Explorer.  If you have a mixed environment of different vendors, it may be a good idea to create Custom Client Settings and deploy only to a Collection containing Lenovo hardware.
 
@@ -49,11 +49,11 @@ Once the clients receive the updated Client Settings, the two Lenovo classes wil
 
 Also at the bottom of the page is a sample report you can import into your SSRS.  Assuming you have the Reporting Services Point role installed and configured, find the URL of your Report Manager.  This can be found in the Console under the **Monitoring Workspace / Reporting Node**
 
-![](\img/2018/bios_reporting/image4.jpg)
+![](img/2018/bios_reporting/image4.jpg)
 
 Open Internet Explorer, navigate to the Report Manager URL and choose a path to upload the report to.  Once uploaded, edit the report in Report Builder.  You'll need to replace the Data Source and make any other customizations to fit your environment.  Here's an example of what will be presented
 
-![](\img/2018/bios_reporting/image5.jpg)
+![](img/2018/bios_reporting/image5.jpg)
 
 You'll notice in the example, different values under the BIOS Password(s) column.  These correspond to the integer that's displayed in the Password State property when querying the Lenovo_BiosPasswordSettings class.  There were 8 new values introduced in the Whisky Lake generation of ThinkPad.  Complete list below:
 

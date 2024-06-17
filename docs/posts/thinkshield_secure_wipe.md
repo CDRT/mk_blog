@@ -9,7 +9,7 @@ categories:
 title: ThinkShield Secure Wipe
 ---
 
-![Logo](\img/2021/thinkshield_secure_wipe/thinkshield.jpg)
+![Logo](img/2021/thinkshield_secure_wipe/thinkshield.jpg)
 
 ## Overview
 
@@ -60,19 +60,19 @@ The following examples will demonstrate how to invoke the ThinkShield secure wip
 
 Navigate to Software Library > Scripts > Create Script and either import **Invoke-ThinkShieldSecureWipe.ps1** or copy the contents into the script editor field
 
-![CreateScript](\img/2021/thinkshield_secure_wipe/image1.jpg)
+![CreateScript](img/2021/thinkshield_secure_wipe/image1.jpg)
 
 Specify the **EraseMethod**, **PasswordType**, and **Password** parameters. Details for each parameter is explained in the script header.
 
-![ScriptParameters](\img/2021/thinkshield_secure_wipe/image2.jpg)
+![ScriptParameters](img/2021/thinkshield_secure_wipe/image2.jpg)
 
 Complete the **Create Script** wizard and Approve it
 
-![WizardCompletion](\img/2021/thinkshield_secure_wipe/image3.jpg)
+![WizardCompletion](img/2021/thinkshield_secure_wipe/image3.jpg)
 
 Deploy to a single system or collection of systems. If successful, you should see a message stating the secure wipe succeeded and that the system needs to reboot to finish.
 
-![Success](\img/2021/thinkshield_secure_wipe/image4.jpg)
+![Success](img/2021/thinkshield_secure_wipe/image4.jpg)
 
 #### SCENARIO 1b - Deploying as a Task Sequence
 
@@ -82,27 +82,27 @@ Browse to **Invoke-ThinkShieldSecureWipe.ps1** or copy the contents into the scr
 
 In the **Parameters** field, enter the required parameters.
 
-![Parameters](\img/2021/thinkshield_secure_wipe/image5.jpg)
+![Parameters](img/2021/thinkshield_secure_wipe/image5.jpg)
 
 Add a **Restart Computer** step to transition the system to secure wipe. In my lab, I deployed as an available Task Sequence and customized the notification texts.
 
-![Restart](\img/2021/thinkshield_secure_wipe/image6.jpg)
+![Restart](img/2021/thinkshield_secure_wipe/image6.jpg)
 
 ### Intune
 
 Package the **Invoke-ThinkShieldSecureWipe.ps1** as a Win32 app using the Microsoft Win32 Content Prep Tool.
 
-![Create package](\img/2021/thinkshield_secure_wipe/image7.jpg)
+![Create package](img/2021/thinkshield_secure_wipe/image7.jpg)
 
 Log into the Intune [admin center](https://intune.microsoft.com/#view/Microsoft_Intune_DeviceSettings/AppsWindowsMenu/~/windowsApps) and add a new **Win32 app**. Browse to the **Invoke-ThinkShieldSecureWipe.intunewin** file and add it for upload.
 
 Specify App Information such as a **Name**, **Description**, and **Publisher**
 
-![Application details](\img/2021/thinkshield_secure_wipe/image8.jpg)
+![Application details](img/2021/thinkshield_secure_wipe/image8.jpg)
 
 Specify Program details
 
-![Program details](\img/2021/thinkshield_secure_wipe/image9.jpg)
+![Program details](img/2021/thinkshield_secure_wipe/image9.jpg)
 
 - Install Command
 
@@ -122,7 +122,7 @@ Set the OS architecture to **64-bit** and Minimum OS to **Windows 10 1607**
 
 Add an additional requirement rule to check the system is Lenovo.
 
-![Requirements](\img/2021/thinkshield_secure_wipe/image10.jpg)
+![Requirements](img/2021/thinkshield_secure_wipe/image10.jpg)
 
 - **Registry Type**
   - **Key Path**: HKEY_LOCAL_MACHINE\HARDWARE\DESCRIPTION\System\BIOS
@@ -133,7 +133,7 @@ Add an additional requirement rule to check the system is Lenovo.
 
 Set the detection rule to check the presence of a **File**
 
-![Detection](\img/2021/thinkshield_secure_wipe/image11.jpg)
+![Detection](img/2021/thinkshield_secure_wipe/image11.jpg)
 
 This file will be created automatically when the script is run.
 
@@ -143,8 +143,8 @@ This file will be created automatically when the script is run.
 
 Deploy the app to a group. In my testing, I deployed as available and installed through the Company Portal.  After a successful install, a toast notification is presented instructing for the reboot.
 
-![Toast notification](\img/2021/thinkshield_secure_wipe/image12.jpg)
+![Toast notification](img/2021/thinkshield_secure_wipe/image12.jpg)
 
 Once the system has restarted, secure wipe will trigger.
 
-![Secure wipe at POST](\img/2021/thinkshield_secure_wipe/image13.jpg)
+![Secure wipe at POST](img/2021/thinkshield_secure_wipe/image13.jpg)

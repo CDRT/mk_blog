@@ -7,7 +7,7 @@ categories:
     - "2020"
 title: Introducing Lenovo Odometer
 ---
-![Odometer](\img/2020/odometer_image.png)
+![Odometer](img/2020/odometer_image.png)
 
 In some previous articles we have highlighted how you can collect Lenovo Updates History from a new WMI class in the root\Lenovo namespace. See <https://thinkdeploy.blogspot.com/2018/10/tracking-thininstaller-update-history.html>
 
@@ -24,18 +24,18 @@ These counters are maintained by the Embedded Controller and the current values 
 
 Once you have run the PowerShell script on a system that supports Odometer you will be able to find the data in WMI as shown below:
 
-![Odometer data class](\img/2020/odometerdata.png)
+![Odometer data class](img/2020/odometerdata.png)
 
 As previously mentioned, you could also run the "odometer.ps1" using the very useful Run Scripts feature in the Config Manager console.  With that you will be able to get direct feedback from the device in the console as shown below:
 
-![Run script](\img/2020/runscript2.png)
+![Run script](img/2020/runscript2.png)
 
 The Config Manager hardware inventory can be extended to include the Lenovo_Odometer custom class using the "odometer.mof" file provide in the zip file linked below. In Config Manager you can import the file as a new Hardware Inventory Class in your Client Settings. For more information on extending hardware inventory, refer to the docs here:
 <https://docs.microsoft.com/en-us/sccm/core/clients/manage/inventory/extend-hardware-inventory>
 
 Once clients have reported inventory, you can create an SSRS report on the data that would like like the following:
 
-![Report](\img/2020/report2.png)
+![Report](img/2020/report2.png)
 
 ### Supported Systems
 

@@ -1,0 +1,59 @@
+site_name: ThinkDeploy Blog
+site_description: "Ideas for managing Lenovo devices in the corporate environment."
+site_url: https://blog.lenovocdrt.com
+
+theme:
+  name: material
+  logo: img/CDRT-REV-Red_s.png
+  features:
+    - navigation.tracking
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.expand
+    - navigation.path
+    - navigation.sections
+    - toc.integrate
+    - search.suggest
+    - search.highlight
+    - content.tabs.link
+    - content.code.annotation
+    - content.code.copy
+    - content.code.select
+  language: en
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/toggle-switch-off-outline 
+        name: Switch to dark mode
+      primary: blue
+      accent: light blue 
+    - scheme: slate 
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode    
+      primary: black
+      accent: blue grey
+nav:
+  - About: about.md
+
+plugins:
+  - search
+  - blog:
+      blog_dir: .
+      post_url_format: "/{slug}"
+      archive_date_format: yyyy
+      categories: false
+      authors: true
+
+markdown_extensions:
+  - admonition
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+
+copyright: |
+  &copy; 2024 <a href="https://github.com/CDRT"  target="_blank" rel="noopener">Lenovo Commercial Deployment Readiness Team</a>

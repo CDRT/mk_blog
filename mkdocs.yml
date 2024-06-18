@@ -5,6 +5,7 @@ site_url: https://cdrt.github.io/mk_blog
 theme:
   name: material
   logo: img/CDRT-REV-Red_s.png
+  favicon: img/fav/favicon.ico
   features:
     - navigation.tracking
     - navigation.instant

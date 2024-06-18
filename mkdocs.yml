@@ -35,7 +35,7 @@ theme:
       accent: blue grey
 nav:
   - About: about.md
-  - Feed: feed.xml
+  - RSS: feed.xml
 
 plugins:
   - search

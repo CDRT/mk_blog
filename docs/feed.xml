@@ -1,0 +1,263 @@
+<?xml version="1.0"?>
+<rss version="2.0">
+	<channel>
+		<title>Think Deploy Blog</title>
+		<link>https://blog.lenovocdrt.com/</link>
+		<description>Tips, tricks, and other solutions for managing Lenovo PCs</description>
+		<language>en-us</language>
+		<copyright>Copyright 2015-2022 Lenovo</copyright>
+		<image>
+			<url>https://blog.lenovocdrt.com/img/CDRT-POS-Blue-xsmall.png</url>
+			<title>Think Deploy Blog</title>
+			<link>https://blog.lenovocdrt.com</link>
+			</image>
+		<!-- 
+		<item>
+			<title></title>
+			<description></description>
+			<pubDate>Sat, 01 Jan 2022 19:59:01 EST</pubDate>
+			<link></link>
+			</item>
+		-->
+		<item>
+			<title>ARM-based Operating System Deployment</title>
+			<description>Deploying Windows to ARM-based devices using Configuration Manager</description>
+			<pubDate>Thur, 25 April 2024 10:00:00 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2024/arm_osd</link>
+			</item>
+		<item>
+			<title>Introducing: Lenovo Device Management Module</title>
+			<description>The Lenovo Device Management Module (PowerShell) simplifies automation of tasks for Lenovo PCs.</description>
+			<pubDate>Mon, 15 January 2024 10:30:00 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2024/intro_ldmm</link>
+			</item>
+		<item>
+			<title>Configuration Manager - Driver Import Error: "Some packages cannot be updated"</title>
+			<description>How to address this error when importing driver packs.</description>
+			<pubDate>Mon, 17 January 2024 10:30:00 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2024/cm_drivers_import</link>
+			</item>
+		<item>
+			<title>The Windows 365 Experience on Lenovo ThinkPhone</title>
+			<description>Enrolling ThinkPhone in Intune to connect to your Windows 365 Cloud PC</description>
+			<pubDate>Wed, 25 October 2023 10:30:00 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2023/thinkphone_w365</link>
+			</item>
+		<item>
+			<title>Autopilot + Thin Installer = Current Drivers/BIOS/Firmware</title>
+			<description>Update drivers/BIOS/Firmware during Autopilot</description>
+			<pubDate>Tue, 10 October 2023 13:00:00 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2023/ap_ti</link>
+			</item>
+		<item>
+			<title>Enable Logging for Commercial Vantage</title>
+			<description>Example solutions on how to enable logging for Commercial Vantage</description>
+			<pubDate>Thur, 10 August 2023 13:00:00 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2023/cv_su_logging</link>
+			</item>
+		<item>
+			<title>Updating Intel ME Firmware with Intune</title>
+			<description>Deploying Intel ME firmware updates as Win32 apps with Intune</description>
+			<pubDate>Wed, 26 July 2023 13:00:00 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2023/update_intel_mefw</link>
+			</item>
+		<item>
+			<title>Certifice-based BIOS Authentication</title>
+			<description>How to leverage certificates instead of passwords with Lenovo WMI BIOS interface.</description>
+			<pubDate>Mon, 24 July 2023 16:13:00 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2023/cert_based_bios_authentication</link>
+			</item>
+		<item>
+			<title>Updating Thin Installer With Proactive Remediations</title>
+			<description>Updating Thin Installer with Intune Proactive Remediations</description>
+			<pubDate>Wed, 12 April 2023 14:30:00 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2023/ti_winget_pr</link>
+			</item>
+		<item>
+			<title>Creating Local Repository Using PowerShell</title>
+			<description>Create local repositories of updates using PowerShell that can be used by Thin Installer</description>
+			<pubDate>Mon, 13 Mar 2023 11:37:00 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2023/scripted_repo_creation</link>
+			</item>
+		<item>
+			<title>Graph API and Intune Device Notes</title>
+			<description>Adding Model Friendly Name to an Intune Device Note using Graph API</description>
+			<pubDate>Tue, 7 Feb 2023 16:00:00 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2023/intune_device_notes</link>
+			</item>
+		<item>
+			<title>Lenovo Device Health and Log Analytics</title>
+			<description>Reporting on Lenovo Updates, Warranty, and Battery Health in Intune</description>
+			<pubDate>Tue, 27 Sept 2022 10:00:00 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2022/log_analytics_device_health</link>
+			</item>
+		<item>
+			<title>Remediation Scripts to the Rescue</title>
+			<description>Fixing Qualcomm X55 WWAN Excessive Logging with a ConfigMgr Baseline</description>
+			<pubDate>Fri, 12 Aug 2022 12:30:00 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2022/qualcomm_remediation.md</link>
+			</item>
+		<item>
+			<title>Using Proactive Remediations to Set Asset Tags on ThinkPad</title>
+			<description>An example scenario on how to deploy a Proactive Remediation script package to set Asset Tags on ThinkPad</description>
+			<pubDate>Wed, 15 Jun 2022 16:00:00 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2022/intune_asset_tag</link>
+			</item>
+		<item>
+			<title>Winget and ConfigMgr Configuration Baselines</title>
+			<description>Using Winget to Install Applications as Part of a Configuration Manager Configuration Baseline</description>
+			<pubDate>Wed, 16 Mar 2022 10:30:00 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2022/configmgr_ci_cb_winget</link>
+			</item>
+		<item>
+			<title>ConfigMgr OSD: Installing Lenovo Updates</title>
+			<description>Installing Updates from the Lenovo 3rd Party Catalog in a ConfigMgr Operating System Deployment</description>
+			<pubDate>Tue, 15 Mar 2022 10:00:00 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2022/configmgr_osd_updates</link>
+			</item>
+		<item>
+			<title>Update Retriever and Azure Blob Storage Redux</title>
+			<description>Revisiting Update Retriever and Azure Blob Storage. This will focus on altering XML package descriptors to allow a completely silent installation of Bios updates.</description>
+			<pubDate>Wed, 05 Jan 2022 17:48:02 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2022/ur_az_blob_redux</link>
+			</item>
+		<item>
+			<title>Automatically Create Device Collections for Lenovo Products</title>
+			<description>This is a PowerShell based solution that will query the ConfigMgr database for Lenovo branded products and create a Device Collection based off the friendly name, i.e. ThinkPad T14 Gen 2.</description>
+			<pubDate>Wed, 05 Jan 2022 17:48:02 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2022/configmgr_device_collections</link>
+			</item>
+		<item>
+			<title>Collecting and Storing Lenovo Warranty Information to Azure Monitor</title>
+			<description>In this post, we're going to walk through how Lenovo Warranty data can be collected from Intune managed devices and ingested into a Log Analytics Workspace in Azure Monitor.</description>
+			<pubDate>Wed, 08 Dec 2021 15:37:01 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2021/az_monitor_warranty</link>
+			</item>
+		<item>
+			<title>Configure BIOS Settings Through Intune using the Think BIOS Config Tool</title>
+			<description>This post will provide an alternate method for configuring BIOS settings using our official Think BIOS Config Tool</description>
+			<pubDate>Wed, 08 Dec 2021 14:12:01 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2021/intune_bios_settings</link>
+			</item>
+		<item>
+			<title>Deploying Commercial Vantage with ConfigMgr</title>
+			<description>Step by step on how to deploy Commercial Vantage with ConfigMgr</description>
+			<pubDate>Wed, 08 Dec 2021 16:12:01 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2021/cv_configmgr_deploy</link>
+			</item>
+		<item>
+			<title>ThinkShield secure wipe using Microsoft Endpoint Manager</title>
+			<description>How to envoke ThinkShield secure wipe using Configuration Manager</description>
+			<pubDate>Wed, 08 Dec 2021 14:12:01 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2021/thinkshield_secure_wipe</link>
+			</item>
+		<item>
+			<title>Introducing Lenovo Deployment Assistant</title>
+			<description>Lenovo Deployment Assistant is a new offering aimed at Configuration Managers admins to help automate tasks required to implement other Lenovo utilities.</description>
+			<pubDate>Fri, 12 Nov 2021 15:46:01 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2021/intro_lda</link>
+			</item>
+		<item>
+			<title>Introducing Lenovo Odometer</title>
+			<description>This article show how to collect the Odometer metrics using Configuration Manager and a PowerShell script.</description>
+			<pubDate>Thu, 10 Dec 2020 13:33:01 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2020/odometer</link>
+			</item>
+		<item>
+			<title>Autopilot + System Update = Latest Drivers</title>
+			<description>Leveraging System Update during Windows Autopilot to update drivers on a Think product</description>
+			<pubDate>Wed, 14 Oct 2020 09:15:00 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2020/ap_su</link>
+			</item>
+		<item>
+			<title>Hardware Support Apps without Microsoft Store</title>
+			<description>Introduces Hardware Support Apps and how to deploy them without using the Microsoft Store.</description>
+			<pubDate>Fri, 19 Jun 2020 13:34:01 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2020/hsa-1</link>
+			</item>
+		<item>
+			<title>Dynamically Install Hardware Support Apps with ConfigMgr</title>
+			<description>This article is intended to provide another solution to install the recently released HSA packs for your ThinkPad in a ConfigMgr Task Sequence.</description>
+			<pubDate>Wed, 29 Jul 2020 13:27:01 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2020/dynamic_hsa</link>
+			</item>
+		<item>
+			<title>Hosting a repository in an Azure file share</title>
+			<description>Describes how to combine a Lenovo cloud repository from Update Retriever with Azure File Shares</description>
+			<pubDate>Mon, 04 May 2020 14:56:01 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2020/ur_az_fs</link>
+			</item>
+		<item>
+			<title>Deploying Commercial Vantage with Intune</title>
+			<description>Step by step on how to deploy Commercial Vantage with Intune</description>
+			<pubDate>Tue, 10 Nov 2020 10:30:00 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2020/cv_intune_deploy</link>
+			</item>
+		<item>
+			<title>Lenovo Updates Catalog v3 for SCCM</title>
+			<description>Describes the changes in the latest format of the Lenovo Updates Catalog and how to use with Configuration Manager</description>
+			<pubDate>Tue, 16 Jun 2020 14:58:01 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2020/lucv3</link>
+			</item>
+		<item>
+			<title>Managing System Update with Intune</title>
+			<description>Creating a Custom Configuration Profile to manage Lenovo System Update</description>
+			<pubDate>Thur, 12 Mar 2020 12:07:00 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2020/manage_su_intune</link>
+			</item>
+		<item>
+			<title>Hosting a repository in an Azure blob</title>
+			<description>How to host an Update Retriever repository in an Azure Blob.</description>
+			<pubDate>Fri, 08 Nov 2019 13:27:01 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2019/ur_az_blob</link>
+			</item>
+		<item>
+			<title>Tracking Thin Installer Update History with ConfigMgr Current Branch</title>
+			<description>Extending Hardware Inventory to collect Update History</description>
+			<pubDate>Mon, 22 Oct 2018 10:16:00 EST</pubDate>
+			<link></link>
+			</item>
+		<item>
+			<title>Reporting BIOS Password States on Think Products with ConfigMgr</title>
+			<description>This article shows how to collect the Password state from Lenovo Think Products and report on it Configuration Manager.</description>
+			<pubDate>Thu, 19 Sep 2019 14:59:01 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2018/bios_reporting</link>
+			</item>
+		<item>
+			<title>Deploying ThinkPad BIOS Updates With Intune</title>
+			<description>Step-by-step deploying ThinkPad BIOS updates as a Win32 app.</description>
+			<pubDate>Mon, 11 Mar 2019 16:58:01 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2019/ur_az_blob</link>
+			</item>
+		<item>
+			<title>ThinkCentre TPM Firmware Switch Tool</title>
+			<description>Demonstrating how to update TPM firmware with ConfigMgr</description>
+			<pubDate>Mon, 26 March 2018 09:59:00 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2018/tc_tpm_fwswitch_tool</link>
+			</item>
+		<item>
+			<title>Upgrading ThinkPad TPM Spec Using ConfigMgr</title>
+			<description>Demonstrating how to upgrade TPM 1.2 to 2.0 on ThinkPad using ConfigMgr</description>
+			<pubDate>Tue, 07 May 2019 12:52:01 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2019/tpm_upgrade</link>
+			</item>
+		<item>
+			<title>Converting BIOS to UEFI on Think Products with ConfigMgr</title>
+			<description>This blog post will demonstrate how to accomplish this scenario using the Think BIOS Config Tool.</description>
+			<pubDate>Fri, 06 Jan 2017 13:59:01 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2017/bios_to_uefi</link>
+			</item>
+		<item>
+			<title>Preparing the TPM for BitLocker Pre-provisioning using ConfigMgr</title>
+			<description>Demonstrates how to ensure the TPM is ready for Bitlocker pre-provisioning.</description>
+			<pubDate>Fri, 31 Mar 2017 12:59:01 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2017/tpm_pre_provision</link>
+			</item>
+		<item>
+			<title>Dynamically Updating Think Product BIOS with ConfigMgr</title>
+			<description>Applying the 'Holy Grail' method to BIOS updates.</description>
+			<pubDate>Fri, 08 Sep 2017 15:59:01 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2017/dynamic_bios_update</link>
+			</item>
+		</channel>
+	</rss>

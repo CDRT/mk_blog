@@ -45,8 +45,7 @@ In the ConfigMgr console, create a Package (No Program) and enter the following 
 
 - **MIF File Name** - HSA
 - **MIF Name** - OS version. **win10** or **win11**
-- **MIF Version** - Windows Build. For example **22H2** or **22H2_23H2** (if deploying to Windows 10/11 23H2)
-  - The HSA pack will show which build of Windows it's intended for in the ReadMe.
+- **MIF Version** - Windows Build. For example **22H2** or **22H2_23H2** (if deploying to Windows 10/11 23H2). **Note:** This is not to be used as a parameter value in the task sequence.
 
 !!! info ""
     If there are no 23H2 HSA packs available, use the 22H2 packs.

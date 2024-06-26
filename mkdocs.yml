@@ -49,6 +49,8 @@ plugins:
 
 markdown_extensions:
   - admonition
+  - attr_list
+  - md_in_html
   - pymdownx.highlight:
       anchor_linenums: true
       line_spans: __span
@@ -58,4 +60,7 @@ markdown_extensions:
   - pymdownx.superfences
 
 copyright: |
-  &copy; 2024 <a href="https://github.com/CDRT"  target="_blank" rel="noopener">Lenovo Commercial Deployment Readiness Team</a>
+  &copy; 2024 <a href="https://blog.lenovocdrt.com"  target="_blank" rel="noopener">Lenovo Commercial Deployment Readiness Team</a>
+
+extra_css :
+  - stylesheets/extra.css

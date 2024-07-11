@@ -9,9 +9,9 @@ categories:
 title: Autopilot + Thin Installer = Current Drivers/BIOS/Firmware
 ---
 
-Revisiting a solution from [2020](https://blog.lenovocdrt.com/#/2020/ap_su) that leverages Lenovo System Update to update drivers during Autopilot which provided a way to ensure devices were up-to-date before handing off to end users.
+Revisiting a solution from [2020](https://blog.lenovocdrt.com/autopilot--system-update--latest-drivers) that leverages Lenovo System Update to update drivers during Autopilot which provided a way to ensure devices were up-to-date before handing off to end users.
 
-Fast forward to this 2023 Configuration Manager [OSD solution](https://blog.lenovocdrt.com/#/2023/scripted_repo_creation) that will update drivers, BIOS, and firmware got me thinking: How awesome would it be to migrate this to Autopilot world and **really** provide users with completely up-to-date devices right out of the gate?
+Fast forward to this 2023 Configuration Manager [OSD solution](https://blog.lenovocdrt.com/creating-local-repository-using-powershell) that will update drivers, BIOS, and firmware got me thinking: How awesome would it be to migrate this to Autopilot world and **really** provide users with completely up-to-date devices right out of the gate?
 <!-- more -->
 ## Scenario
 
@@ -33,7 +33,7 @@ You'll need the following pieces to get started:
 
 ### Solution
 
-Typically, [Update Retriever](https://docs.lenovocdrt.com/#/su/su_top) is used to download updates from the Lenovo Support site to a repository folder on a local drive or network share in which Thin Installer can be configured to search for and install updates from. This solution eliminates the need for Update Retriever and instead will build out the repository locally on the device followed by invoking Thin Installer to handle the installation of applicable updates.
+Typically, [Update Retriever](https://docs.lenovocdrt.com/guides/sus/index) is used to download updates from the Lenovo Support site to a repository folder on a local drive or network share in which Thin Installer can be configured to search for and install updates from. This solution eliminates the need for Update Retriever and instead will build out the repository locally on the device followed by invoking Thin Installer to handle the installation of applicable updates.
 
 #### Building the Win32 Applications
 

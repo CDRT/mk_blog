@@ -8,7 +8,7 @@ categories:
 title: Enabling Logging for Commercial Vantage
 ---
 
-As noted in our [docs](https://docs.lenovocdrt.com/#/cv/commercial_vantage), logging is not enabled by default any longer for Commercial Vantage. This is in regards to the System Update add-in. Historically, a log file is generated when a device checks for or installs updates.
+As noted in our [docs](https://docs.lenovocdrt.com/guides/cv/commercial_vantage), logging is not enabled by default any longer for Commercial Vantage. This is in regards to the System Update add-in. Historically, a log file is generated when a device checks for or installs updates.
 
 Lenovo’s Product Security team wanted to ensure that enabling logs was a customer choice, and not something that was enabled by default without customer knowledge. This blog will provide example solutions for enabling logging for devices managed by Intune and ConfigMgr.
 <!-- more -->

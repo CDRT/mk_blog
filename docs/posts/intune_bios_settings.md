@@ -10,7 +10,7 @@ title: Configure BIOS Settings Through Intune using the Think BIOS Config Tool
 
 There are numerous articles out in the community that walk through how to configure BIOS settings through Intune.  The majority of them being PowerShell solutions.  
 
-This post will provide an alternate method for configuring BIOS settings using our official [Think BIOS Config HTA](https://docs.lenovocdrt.com/#/tbct/tbct_top) that was introduced back in 2016.  This solution can also be leveraged as part of an Autopilot deployment.
+This post will provide an alternate method for configuring BIOS settings using our official [Think BIOS Config HTA](https://docs.lenovocdrt.com/guides/tbct/tbct_top) that was introduced back in 2016.  This solution can also be leveraged as part of an Autopilot deployment.
 <!-- more -->
 Before proceeding, make sure you have an exported .ini file that contains the desired BIOS settings you want applied to your target systems.   Refer to the documentation provided in the TBCT zip on how to obtain this file.  For this demonstration, I've exported the following .ini from a T14s (Intel)
 

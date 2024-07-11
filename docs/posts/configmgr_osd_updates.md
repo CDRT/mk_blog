@@ -14,7 +14,7 @@ In some scenarios, there may be the desire to leverage the Lenovo Updates Catalo
 
 - Enable third-party updates on your Software Update Point - **<https://docs.microsoft.com/mem/configmgr/sum/deploy-use/third-party-software-updates>**
 
-- Subscribe to the [Lenovo Third-Party Update Catalog](https://blog.lenovocdrt.com/#/2020/lucv3) in ConfigMgr - **<https://docs.microsoft.com/en-us/mem/configmgr/sum/deploy-use/third-party-software-updates#subscribe-to-a-third-party-catalog-and-sync-updates>**
+- Subscribe to the [Lenovo Third-Party Update Catalog](https://blog.lenovocdrt.com/lenovo-updates-catalog-v3-for-sccm) in ConfigMgr - **<https://docs.microsoft.com/en-us/mem/configmgr/sum/deploy-use/third-party-software-updates#subscribe-to-a-third-party-catalog-and-sync-updates>**
 
 ---
 

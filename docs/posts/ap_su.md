@@ -21,7 +21,7 @@ Ideally, you'll want the most current drivers installed on the device prior to t
   - Installs PowerShell 7
   - Installs Microsoft.Winget.Client PowerShell module, which allows us to install System Update via Winget
   - Sets the AdminCommandLine registry value that will:
-    - Download/install type 3 packages (drivers only). More info on package types can be found in the updated Deployment [Guide](https://docs.lenovocdrt.com/#/su/su_dg).
+    - Download/install type 3 packages (drivers only). More info on package types can be found in the updated Deployment [Guide](https://docs.lenovocdrt.com/guides/sus/su_dg).
     - Writes the installation status of each update to WMI.
     - Configures the System Update GUI
     - Disables the default scheduled tasks created by System Update.

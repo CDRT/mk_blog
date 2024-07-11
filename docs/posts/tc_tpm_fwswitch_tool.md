@@ -100,7 +100,7 @@ Add a condition to check if Task Sequence Variable **OSDBitLockerStatus** status
 Add a condition to check if Task Sequence Variable **SecurityChipStatus** does not equal **Ready**.
 
 - Download Think BIOS Config Tool - Download Package Content Step
-    - I'm using the [Think BIOS Config Tool](https://docs.lenovocdrt.com/#/tbct/tbct_top) to enable the security chip.
+    - I'm using the [Think BIOS Config Tool](https://docs.lenovocdrt.com/guides/tbct/tbct_top) to enable the security chip.
 
 ![](https://cdrt.github.io/mk_blog/img/2018/tc_tpm_fwswitch_tool/image11.jpg)
 

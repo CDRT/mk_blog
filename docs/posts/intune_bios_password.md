@@ -10,6 +10,8 @@ title: Changing the BIOS Supervisor Password with Intune <br> and the Think Bios
 
 For security purposes, there may be a requirement to change the supervisor password for BIOS access. There are a few ways to accomplish this, either programmatically using a couple lines of code or with the Think Bios Config Tool. The former would be easiest but does pose quite the risk by exposing your supervisor password in plain text, which is a big no-no. So instead, we're going to use the Think Bios Config Tool and an encrypted password file to tackle this scenario, which has become quite common these days it seems.
 
+<!-- more -->
+
 ## Solution Overview
 
 This solution uses a PowerShell script to change the BIOS supervisor password by invoking the Think Bios Config Tool, which passes a password file containing the encrypted supervisor password for authentication and password update.

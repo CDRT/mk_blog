@@ -18,7 +18,12 @@ This solution uses a PowerShell script to change the BIOS supervisor password by
 
 ## Preparing the Password File
 
-First, download and extract the Think Bios Config Tool, which can be found [here](https://docs.lenovocdrt.com/guides/tbct/tbct_top). Launch the tool as Admin and tick the box beside **Supervisor password set on the target machine**. This will unlock additional options.
+First, download and extract the Think Bios Config Tool, which can be found [here](https://docs.lenovocdrt.com/guides/tbct/tbct_top).
+
+!!! note
+    Ensure version 1.41 or higher of the tool is used
+
+Launch the tool as Admin and tick the box beside **Supervisor password set on the target machine**. This will unlock additional options.
 
 ![TBCT](https://cdrt.github.io/mk_blog/img/2024/intune_bios_password/image1.jpg)
 
@@ -37,13 +42,13 @@ Finally, click the **Create password change file** button. This will generate an
 
 ![TBCT](https://cdrt.github.io/mk_blog/img/2024/intune_bios_password/image4.jpg)
 
-If you open the .ini file, you'll see a long string on a single line. This is the encrypting key that will be used for BIOS authentication so you're not passing the "real" one in plain text.
+If you open the .ini file, you'll see a long string on a single line. This is the encrypted password that will be used for BIOS authentication so you're not passing the "real" one in plain text.
 
 ## Preparing the Win32 App
 
 Copy the password file (.ini) and the Think Bios Config Tool (.hta) to a new directory.
 
-Download the **Update-SVP.ps1** file from my [GitHub](https://github.com/philjorgensen/Intune) and save it to the directory containing the .hta and .ini.
+Download the **Update-SVP.ps1** file from my [GitHub](https://github.com/philjorgensen/Intune/tree/main/Win32%20Apps/ThinkBiosConfigTool) and save it to the directory containing the .hta and .ini.
 
 !!! warning
     Before proceeding, you'll need to populate the $secretKey variable with the encrypting key you used to generate the password file

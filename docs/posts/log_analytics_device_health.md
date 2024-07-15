@@ -60,7 +60,7 @@ We can then create an [Azure Monitor Workbook](https://learn.microsoft.com/azure
 The data gathered relies on [Lenovo Commercial Vantage](https://support.lenovo.com/solutions/hf003321-lenovo-vantage-for-enterprise) being installed on your endpoints.
 
 !!! info ""
-    For a step by step guide on how to deploy Commercial Vantage through Intune, refer to this blog [article](https://blog.lenovocdrt.com/#/2020/cv_intune_deploy).
+    For a step by step guide on how to deploy Commercial Vantage through Intune, refer to this blog [article](https://blog.lenovocdrt.com/deploying-commercial-vantage-with-intune).
 
 The following policies need to be enabled in order to create the WMI namespaces that will be inventoried, along with their respective classes
 
@@ -86,7 +86,7 @@ Assuming a Log Analytics Workspace has been created, you'll need the **Workspace
 
 ## Deploying the Remediation
 
-Once you have Commercial Vantage installed and the necessary policies enabled on your endpoints, it's time to deploy the Remediation script to collect inventory. The script will install the [Lenovo Device Management Module](https://blog.lenovocdrt.com/#/2024/intro_ldmm) on the endpoint to help gather certain data, such as Available BIOS versions and CVEs.
+Once you have Commercial Vantage installed and the necessary policies enabled on your endpoints, it's time to deploy the Remediation script to collect inventory. The script will install the [Lenovo Device Management Module](https://blog.lenovocdrt.com/introducing-lenovo-device-management-module) on the endpoint to help gather certain data, such as Available BIOS versions and CVEs.
 
 !!! info ""
     Replace the **$customerID** and **$sharedKey** variables in the **Get-LenovoDeviceStatus.ps1** script

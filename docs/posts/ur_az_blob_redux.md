@@ -8,7 +8,7 @@ categories:
 title: Revisiting Update Retriever and Azure Blob Storage
 ---
 
-This is a follow up to a previous [article](https://blog.lenovocdrt.com/#/2019/ur_az_blob) that walked through hosting an on-prem Update Retriever repository in an Azure Blob Storage.
+This is a follow up to a previous [article](https://blog.lenovocdrt.com/hosting-a-repository-in-an-azure-blob) that walked through hosting an on-prem Update Retriever repository in an Azure Blob Storage.
 
 If you've started leveraging cloud storage for your driver repository, this solution may be of interest to you if you're at a roadblock with how to deploy Bios updates to your endpoints.
 
@@ -175,4 +175,4 @@ As an example, the following Thin Installer command line will pull these package
 ```
 
 !!! info ""
-    Refer to the System Update Deployment Guide for Thin Installer usage: <https://docs.lenovocdrt.com/#/su/su_dg/su_dg>
+    Refer to the System Update Deployment Guide for Thin Installer usage: <https://docs.lenovocdrt.com/guides/sus/su_dg/su_dg>

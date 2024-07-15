@@ -75,7 +75,7 @@ Set the Script settings to:
 
 Assign to a group.
 
-Verify the System Update scheduled task has been configured.  Refer to the [System Update Deployment Guide](https://docs.lenovocdrt.com/#/su/su_dg/su_dg).
+Verify the System Update scheduled task has been configured.  Refer to the [System Update Deployment Guide](https://docs.lenovocdrt.com/guides/sus/su_dg/su_dg).
 
 To confirm everything works, manually start the scheduled task and monitor the **tvsu_timestamp.log** which can be found under **%ProgramData%\Lenovo\SystemUpdate\logs**
 

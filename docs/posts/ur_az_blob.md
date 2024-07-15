@@ -100,4 +100,4 @@ Simply update the **AdminCommandLine** registry value to point to your Blob URL.
 /CM -search A -action LIST -includerebootpackages 1,3,5 -packagetypes 1,2,3,4 -nolicense -repository https://yourblob.blob.core.windows.net/repository -exporttowmi 
 ```
 
-Refer to the System Update Suite Deployment [Guide](https://docs.lenovocdrt.com/#/su/su_dg/su_dg) for available command line options.
+Refer to the System Update Suite Deployment [Guide](https://docs.lenovocdrt.com/guides/sus/su_dg/su_dg) for available command line options.

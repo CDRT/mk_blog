@@ -15,7 +15,7 @@ A detailed walk-through by the Microsoft team on how to configure your Task Sequ
 !!! info ""
     Add a step to start the OEM tool that will convert the firmware from BIOS to UEFI. This will typically be a Run Command Line task sequence step with a command line to start the OEM tool.
 
-This blog post will demonstrate how to accomplish this scenario using the [Think BIOS Config Tool](https://docs.lenovocdrt.com/#/tbct/tbct_top).
+This blog post will demonstrate how to accomplish this scenario using the [Think BIOS Config Tool](https://docs.lenovocdrt.com/guides/tbct/tbct_top).
 
 On your test ThinkPad or ThinkCentre, use the Think BIOS Config tool to configure the BIOS settings you want applied to the rest of your ThinkPads/ThinkCentres and export to an .ini.
 

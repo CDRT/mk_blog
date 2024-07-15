@@ -14,7 +14,7 @@ The Lenovo Device Management Module is a PowerShell module that provides several
 <!-- more -->
 You can learn all about PowerShell modules here: [About Modules](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_modules?view=powershell-7.3)
 
-You can also find a complete reference for each of the available cmdlets in the module here:  [LDMM](https://docs.lenovocdrt.com/#/ldmm/ldmm_top)
+You can also find a complete reference for each of the available cmdlets in the module here:  [LDMM](https://docs.lenovocdrt.com/guides/ldmm/ldmm_top)
 
 ## Installing Lenovo Device Management Module
 
@@ -48,7 +48,7 @@ Script     1.0.0      LnvDeviceManagement                 {Add-LnvSUCommandLine,
 Let's see what a few of the cmdlets can do for us.
 
 !!! info ""
-    You can also find a complete reference for each of the available cmdlets in the module here:  [LDMM](https://docs.lenovocdrt.com/#/ldmm/ldmm_top)
+    You can also find a complete reference for each of the available cmdlets in the module here:  [LDMM](https://docs.lenovocdrt.com/guides/ldmm/ldmm_top)
 
 !!! info ""
     Many of the cmdlets require Internet access to provide data. Some may require running as Administrator.
@@ -151,7 +151,7 @@ PS C:\>
 
 ### Get-LnvUpdatesRepo
 
-For instances where Update Retriever cannot be used to create the local repository or where full automation of the repository creation is desired, this cmdlet can be used instead. It can be customized and executed on a regular basis to get the latest update packages. This cmdlet is based on the PowerShell script that was documented in this blog article: [Create Local Repository Using PowerShell](https://blog.lenovocdrt.com/#/2023/scripted_repo_creation)
+For instances where Update Retriever cannot be used to create the local repository or where full automation of the repository creation is desired, this cmdlet can be used instead. It can be customized and executed on a regular basis to get the latest update packages. This cmdlet is based on the PowerShell script that was documented in this blog article: [Create Local Repository Using PowerShell](https://blog.lenovocdrt.com/creating-local-repository-using-powershell)
 
 !!! info ""
     One of the parameters of this cmdlet, -RT5toRT3, will generate a repository where the Reboot Type 5 updates are changed to Reboot Type 3 which modifies the XML Package Descriptor. A repository created this way with modified XML package descriptors will require you to use Thin Installer to process the updates in the repository. Commercial Vantage and Lenovo System Update will not recognize the modified updates.
@@ -164,4 +164,4 @@ PS C:\>
 
 ## See Them All
 
-There are currently 23 cmdlets included in the module and more will be added over time. To see the complete list and all the details for running each one of them, visit the reference guide [here](https://docs.lenovocdrt.com/#/ldmm/ldmm_top).
+There are currently 23 cmdlets included in the module and more will be added over time. To see the complete list and all the details for running each one of them, visit the reference guide [here](https://docs.lenovocdrt.com/guides/ldmm/ldmm_top).

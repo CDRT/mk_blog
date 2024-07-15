@@ -21,7 +21,7 @@ This can be accomplished with the ThinkPad Setup Settings Capture/Playback Utili
 There are caveats when using this tool.  A **Supervisor Password** must be present on the system and the TPM must be cleared prior to converting, which will require physical presence.  That means a tech will have to touch each box.  If you're ok with these requirements and wish to proceed, keep on reading.
 
 !!! tip
-    Supervisor passwords cannot be set initially in an automated way, unless the system supports [System Deployment Boot Mode](https://docs.lenovocdrt.com/#/bios/sdbm).
+    Supervisor passwords cannot be set initially in an automated way, unless the system supports [System Deployment Boot Mode](https://docs.lenovocdrt.com/ref/bios/sdbm).
 
 First, create a Package in your console after you've downloaded and extracted the appropriate utility and distribute the content to your Distribution Points.
 

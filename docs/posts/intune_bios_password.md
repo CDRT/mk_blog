@@ -5,20 +5,20 @@ authors:
     - Phil
 categories:
     - "2024"
-title: Changing the BIOS Supervisor Password with Intune <br> and the Think Bios Config Tool
+title: Changing the BIOS Supervisor Password with Intune and the Think BIOS Config Tool
 ---
 
-For security purposes, there may be a requirement to change the supervisor password for BIOS access. There are a few ways to accomplish this, either programmatically using a couple lines of code or with the Think Bios Config Tool. The former would be easiest but does pose quite the risk by exposing your supervisor password in plain text, which is a big no-no. So instead, we're going to use the Think Bios Config Tool and an encrypted password file to tackle this scenario, which has become quite common these days it seems.
+For security purposes, there may be a requirement to change the supervisor password for BIOS access. There are a few ways to accomplish this, either programmatically using a couple lines of code or with the Think BIOS Config Tool. The former would be easiest but does pose quite the risk by exposing your supervisor password in plain text, which is a big no-no. So instead, we're going to use the Think BIOS Config Tool and an encrypted password file to tackle this scenario, which has become quite common these days it seems.
 
 <!-- more -->
 
 ## Solution Overview
 
-This solution uses a PowerShell script to change the BIOS supervisor password by invoking the Think Bios Config Tool, which passes a password file containing the encrypted supervisor password for authentication and password update.
+This solution uses a PowerShell script to change the BIOS supervisor password by invoking the Think BIOS Config Tool, which passes a password file containing the encrypted supervisor password for authentication and password update.
 
 ## Preparing the Password File
 
-First, download and extract the Think Bios Config Tool, which can be found [here](https://docs.lenovocdrt.com/guides/tbct/tbct_top).
+First, download and extract the Think BIOS Config Tool, which can be found [here](https://docs.lenovocdrt.com/guides/tbct/tbct_top).
 
 !!! note
     Ensure version 1.41 or higher of the tool is used
@@ -46,7 +46,7 @@ If you open the .ini file, you'll see a long string on a single line. This is th
 
 ## Preparing the Win32 App
 
-Copy the password file (.ini) and the Think Bios Config Tool (.hta) to a new directory.
+Copy the password file (.ini) and the Think BIOS Config Tool (.hta) to a new directory.
 
 Download the **Update-SVP.ps1** file from my [GitHub](https://github.com/philjorgensen/Intune/tree/main/Win32%20Apps/ThinkBiosConfigTool) and save it to the directory containing the .hta and .ini.
 
@@ -129,7 +129,7 @@ On a machine that's received the app assignment, a toast notification should be 
 
 ![Win32](https://cdrt.github.io/mk_blog/img/2024/intune_bios_password/image10.jpg)
 
-To verify this, look under **C:\ProgramData\Lenovo\ThinkBiosConfig** for a **svp.status** file. If you open the log file, you will see the tool found the password .ini file and successfully changed the password.
+To verify this, look under **C:\ProgramData\Lenovo\ThinkBIOSConfig** for a **svp.status** file. If you open the log file, you will see the tool found the password .ini file and successfully changed the password.
 
 !!! note
     The log file name will change by machine. It's prefixed with the Machine Type Model followed by Serial.

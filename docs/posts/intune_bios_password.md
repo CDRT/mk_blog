@@ -130,7 +130,8 @@ To verify this, look under **C:\ProgramData\Lenovo\ThinkBiosConfig** for a **svp
 ![Win32](https://cdrt.github.io/mk_blog/img/2024/intune_bios_password/image11.jpg)
 
 If the app installation failed, there can be a few scenarios that would cause this.
-    - No supervisor password is set on the target machine
-    - The encrypting key is incorrect
+
+  - No supervisor password is set on the target machine
+  - The encrypting key is incorrect
 
 On a failed machine, the log will show **Access Denied** for password change if either of the above scenarios are true.

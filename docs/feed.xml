@@ -20,6 +20,12 @@
 			</item>
 		-->
 		<item>
+			<title>Introducing: SU Helper Utility</title>
+			<description>The SU Helper Utility provides a command-line interface for triggering the System Update process of Commercial Vantage.</description>
+			<pubDate>Mon, 19 August 2024 10:00:00 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/#/2024/intro_suhelper</link>
+			</item>
+		<item>
 			<title>ARM-based Operating System Deployment</title>
 			<description>Deploying Windows to ARM-based devices using Configuration Manager</description>
 			<pubDate>Thur, 25 April 2024 10:00:00 EST</pubDate>

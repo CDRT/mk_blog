@@ -217,6 +217,13 @@
 			<pubDate>Tue, 29 Oct 2019 16:12:01 EST</pubDate>
 			<link>https://blog.lenovocdrt.com/deploying-commercial-vantage-with-intune</link>
 			</item>
+        <item>
+			<title>Introducing the Manage Driver Packs Feature</title>
+			<description>Step-by-step guide to creating driver packs with Update revisiting-update-retriever-and-azure-blob-storage.</description>
+			<pubDate>Wed, 15 May 2019 12:18:11 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/introducing-the manage-driver-packs-feature</link>
+			</item>
+		<item>
 		<item>
 			<title>Deploying ThinkPad BIOS Updates With Intune</title>
 			<description>Step-by-step deploying ThinkPad BIOS updates as a Win32 app.</description>

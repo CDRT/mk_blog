@@ -49,6 +49,8 @@ There may be a case where a particular update needs to be installed immediately,
 
 When the Autoupdate session is triggered, the catalog of available updates is searched for the specified Package ID. If that package is not in the catalog, or if the package has already been installed, the Autoupdate session will simply end. Only if the update is applicable and listed in the catalog will it be installed.
 
+You can easily find the package IDs for updates by either using Update Retriever or the [Driver & Software Matrix for IT Admins](https://download.lenovo.com/cdrt/tools/drivermatrix/dm_2.html). The latter has been updated to provide checkboxes in the list of search results so that one or more updates can be selected, then clicking the **Copy Package ID(s)** button will copy a string to the clipboard consisting of the selected Package IDs separated by a comma. This string can be used after the -include parameter in the command line.
+
 ### Exclude a Specific Update From Being Installed
 
 In some cases, you may encounter an update that is not compatible with something else in your environment and you may want your devices running Commercial Vantage to ignore this particular update. This can be accomplished by running:

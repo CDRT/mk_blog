@@ -1,7 +1,7 @@
 ---
 date:
     created: 2021-12-08
-    updated: 2023-08-03
+    updated: 2024-10-02
 authors:
     - Phil
 categories:
@@ -14,6 +14,9 @@ title: ThinkShield Secure Wipe
 ## Overview
 
 ThinkShield secure wipe is the successor to the ThinkPad Drive Erase Utility and is designed to provide the wipe out function of the SSD.
+
+!!! note
+    For more detailed information about ThinkShield Secure Wipe, please see the [ThinkShield Secure Wipe Technical Whitepaper](https://docs.lenovocdrt.com/static/Secure%20Wipe%20280324.pdf)
 
 Although the Drive Erase Utility is still supported and provided as an external tool, ThinkShield secure wipe is fully integrated in the BIOS image and does not require any external tools.
 

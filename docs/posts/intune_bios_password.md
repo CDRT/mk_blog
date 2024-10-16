@@ -1,6 +1,7 @@
 ---
 date:
     created: 2024-07-16
+    updated: 2024-07-17
 authors:
     - Phil
 categories:
@@ -142,3 +143,6 @@ If the app installation failed, there can be a few scenarios that would cause th
   - The encrypting key is incorrect
 
 On a failed machine, the log will show **Access Denied** for password change if either of the above scenarios are true.
+
+!!! warning
+    If a device has failed consecutive installs with an incorrect encrypting key, a prompt stating "Security password retry count exceeded" will be presented on the next reboot.

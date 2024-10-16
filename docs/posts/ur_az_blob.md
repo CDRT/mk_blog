@@ -20,15 +20,15 @@ This post may be helpful for anyone piloting a "modern" way of updating their Th
 * [Thin Installer](https://support.lenovo.com/solutions/ht037099#ti) or [System Update](https://support.lenovo.com/solutions/ht037099#tvsu) on the client
 * [Azure Blob](https://docs.microsoft.com/azure/storage/blobs/storage-quickstart-blobs-portal) Container (a free trial account with an included 5gb limit is what I used here)
 
-I won't cover creating the Storage account or Blob, just the process of uploading the Update Retriever content to the Blob container and how to configure the ThinInstaller Configuration XML on the client.  Note though, the Container access level should be set to **Blob (anonymous read access for blobs only)**.
+I won't cover creating the Storage account or Blob, just the process of uploading the Update Retriever content to the Blob container and how to configure the ThinInstaller Configuration XML on the client. Note though, the Container access level should be set to **Blob (anonymous read access for blobs only)**.
 
 ## Populating the Update Retriever repository
 
-First, you'll need to download any new updates to your local machine or network share.  Currently, you can only set a repository location to a local drive or UNC path.
+First, you'll need to download any new updates to your local machine or network share. Currently, you can only set a repository location to a local drive or UNC path.
 
 ![](https://cdrt.github.io/mk_blog/img/2019/az_blob/image1.jpg)
 
-You can take advantage of configuring your Update Retriever repository as a "Lenovo cloud repository" so that only the package XML's will be downloaded rather than the full updates.  This process is covered [here](https://thinkdeploy.blogspot.com/2020/05/deep-dive-setting-up-lenovo-cloud.html).  Once all updates are downloaded successfully, you'll need to upload them to the Blob.  There's a few different ways to accomplish this. 
+You can take advantage of configuring your Update Retriever repository as a "Lenovo cloud repository" so that only the package XML's will be downloaded rather than the full updates.  This process is covered [here](https://blog.lenovocdrt.com/hosting-a-repository-in-an-azure-file-share). Once all updates are downloaded successfully, you'll need to upload them to the Blob.  There's a few different ways to accomplish this. 
 
 * Install [Azure Storage Explorer](https://azure.microsoft.com/features/storage-explorer/) and upload the folder containing the updates, database.xml, and database.xsd.
 * Upload the content using [AzCopy](https://docs.microsoft.com/azure/storage/common/storage-use-azcopy) (latest version can be downloaded [here](http://aka.ms/downloadazcopy))
@@ -100,4 +100,4 @@ Simply update the **AdminCommandLine** registry value to point to your Blob URL.
 /CM -search A -action LIST -includerebootpackages 1,3,5 -packagetypes 1,2,3,4 -nolicense -repository https://yourblob.blob.core.windows.net/repository -exporttowmi 
 ```
 
-Refer to the System Update Suite Deployment [Guide](https://docs.lenovocdrt.com/guides/sus/su_dg/su_dg) for available command line options.
+Refer to the System Update Suite Deployment [Guide](https://docs.lenovocdrt.com/guides/sus) for available command line options.

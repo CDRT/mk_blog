@@ -14,4 +14,4 @@ The Commercial Deployment Readiness Team maintains working Configuration Manager
 
 ### Lenovo CDRT Docs Site
 
-We now have a consolidated site for documentation of items within the CDRT scope:  [**docs.lenovocdrt.com**](https://docs.lenovocdrt.com/#/) This site will contain the latest content from the team and cover items such as product guides for our Lenovo tools for administrators (Lenovo System Update Suite, Commercial Vantage, Think BIOS Config Tool, etc.), deployment guides for docking stations and BIOS updates, and any future topics we develop.
+We now have a consolidated site for documentation of items within the CDRT scope:  [**docs.lenovocdrt.com**](https://docs.lenovocdrt.com) This site will contain the latest content from the team and cover items such as product guides for our Lenovo tools for administrators (Lenovo System Update Suite, Commercial Vantage, Think BIOS Config Tool, etc.), deployment guides for docking stations and BIOS updates, and any future topics we develop.

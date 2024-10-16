@@ -11,9 +11,9 @@ title: Dynamically Install Hardware Support Apps with ConfigMgr
 
 This article is intended to provide another solution to install HSA packs for your Think product in a ConfigMgr Task Sequence.
 
-For an in-depth overview of these HSA packs and installation script, refer to this [**article**](https://blog.lenovocdrt.com/2020/hsa-1.md).  
+For an in-depth overview of these HSA packs and installation script, refer to this [**article**](https://blog.lenovocdrt.com/hardware-support-apps-without-microsoft-store/).  
 
-To make this process a bit easier and to reduce the number of steps in your Task Sequence, this solution goes hand in hand with an older post: [**Dynamically Updating BIOS**](https://blog.lenovocdrt.com/2017/dynamic_bios_update.md).
+To make this process a bit easier and to reduce the number of steps in your Task Sequence, this solution goes hand in hand with an older post: [**Dynamically Updating BIOS**](https://blog.lenovocdrt.com/dynamically-updating-think-product-bios-with-configmgr/).
 <!-- more -->
 ## Workflow
 
@@ -21,7 +21,7 @@ We can achieve this in essentially 3 steps in a Task Sequence.
 
 - Set the correct Package to download for the applicable model (PowerShell script)
 - Download Package to a custom path on the client
-- Installation using the Install-HSA.ps1 script found [**here**](https://blog.lenovocdrt.com/2020/hsa-1.md)
+- Installation using the Install-HSA.ps1 script found [**here**](https://blog.lenovocdrt.com/hardware-support-apps-without-microsoft-store/#scripted-install-of-hardware-support-apps-during-a-task-sequence)
 
 ---
 

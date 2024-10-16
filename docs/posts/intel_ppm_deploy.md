@@ -17,7 +17,9 @@ The Intel Processor Power Management (PPM) package is now available on the Lenov
 
 ## Creating the Win32 App
 
-Download the already-made .intunewin file and detection script from my GitHub[needlink]
+Download the already-made .intunewin file and detection script from my GitHub
+
+[https://github.com/philjorgensen/Intune/tree/main/Win32%20Apps/Intel_PPM](https://github.com/philjorgensen/Intune/tree/main/Win32%20Apps/Intel_PPM)
 
 Login to the [Intune admin center](https://intune.microsoft.com/#view/Microsoft_Intune_DeviceSettings/AppsWindowsMenu/~/windowsApps) to create a new Win32 app.
 

@@ -8,7 +8,9 @@ categories:
 title: Deploying the Intel Processor Power Management Package
 ---
 
-The Intel Processor Power Management (PPM) package is now available on the Lenovo support site. This will install a provisioning package on a supported system to tune power mode settings across AC/DC (Best Power Efficiency, Balanced, Best Performance). This article covers how to deploy the package using Microsoft Intune.
+The Intel Processor Power Management (PPM) package is now available on the Lenovo support site. This will install a provisioning package on a supported system to tune power mode settings across AC/DC (Best Power Efficiency, Balanced, Best Performance). These power settings can help avoid running the system at higher temperatures which could throttle the CPU.
+
+This article covers how to deploy the package using Microsoft Intune.
 
 <!-- more -->
 
@@ -62,3 +64,9 @@ While the logic in the install script determines if the system is applicable for
 Since we configured additional return codes, the system should receive a toast notification informing of a restart to complete the installation.
 
 ![Toast](https://cdrt.github.io/mk_blog/img/2024/intel_ppm_deploy/image2.jpg)
+
+You can run the following PowerShell command to check the installed PPM provisioning package
+
+```powershell
+Get-ProvisioningPackage -AllInstalledPackages | Where-Object {$_.PackagePath.indexof("PPM")}
+```

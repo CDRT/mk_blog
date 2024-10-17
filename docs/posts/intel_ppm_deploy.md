@@ -68,5 +68,5 @@ Since we configured additional return codes, the system should receive a toast n
 You can run the following PowerShell command to check the installed PPM provisioning package
 
 ```powershell
-Get-ProvisioningPackage -AllInstalledPackages | Where-Object {$_.PackagePath.indexof("PPM")}
+Get-ProvisioningPackage -AllInstalledPackages | Where-Object {$_.PackagePath.IndexOf("PPM")}
 ```

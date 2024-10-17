@@ -19,6 +19,12 @@
 			<link></link>
 			</item>
 		-->
+		<item>
+            <title>Deploying Intel Processor Power Management Package</title>
+            <description>Deploying the Intel PPM package using Intune</description>
+			<pubDate>Thur, 17 October 2024 10:00:00 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/deploying-the-intel-processor-power-management-package/</link>
+            </item>
         <item>
             <title>Introducing: SU Helper</title>
             <description>The SU Helper Utility provides a command-line interface for triggering the System Update process of Commercial Vantage.</description>

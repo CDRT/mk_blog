@@ -5,7 +5,7 @@ authors:
     - Joe
 categories:
     - "2024"
-title: "Introducing: Lenovo Client Sripting Module 2.0.0"
+title: "Introducing: Lenovo Client Scripting Module 2.0.0"
 ---
 
 ![Lenovo Client Scripting Toolbox](https://cdrt.github.io/mk_blog/img\2024\intro_lcsm\toolbox.png)

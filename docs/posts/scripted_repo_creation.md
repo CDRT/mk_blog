@@ -15,7 +15,7 @@ There are various scenarios where one might want to quickly generate a local rep
 <!-- more -->
 The script, **Get-LnvUpdatesRepo.ps1**, can be found in the CDRT Library repository on GitHub [here](https://github.com/CDRT/Library). The parameters and switches used by the script are documented at the beginning of the script.
 
-The child task sequence described in the first scenario can be downloaded [here](https://download.lenovo.com/cdrt/eval/GetLenovoUpdates.zip).
+The child task sequence described in the first scenario can be downloaded [here](https://download.lenovo.com/cdrt/eval/ChildTS-GetLenovoUpdatesv2.zip).
 
 ## Scenario 1
 
@@ -160,9 +160,9 @@ Only drivers and apps are filtered for installation.
 
 A preview of what the task sequence looks like during these passes
 
-![TI-Install](https://cdrt.github.io/mk_blog/img/2023/scripted_repo_creation/image6.jpg)
+![TI-Install](https://cdrt.github.io/mk_blog/img/2023/scripted_repo_creation/image5.jpg)
 
-![TI-Install](https://cdrt.github.io/mk_blog/img/2023/scripted_repo_creation/image7.jpg)
+![TI-Install](https://cdrt.github.io/mk_blog/img/2023/scripted_repo_creation/image6.jpg)
 
 **3rd Pass**
 

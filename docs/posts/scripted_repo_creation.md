@@ -1,6 +1,7 @@
 ---
 date: 
     created: 2023-03-13
+    updated: 2024-11-19
 authors:
     - Phil
     - Joe
@@ -24,79 +25,151 @@ In the first scenario, Thin Installer will be leveraged in a Microsoft Configura
 
 The child task sequence will be added after the **Setup Windows and Configuration Manager** step in your parent Operating System Deployment task sequence
 
-The top level group **Prepare Thin Installer** queries the device to determine if it is a ThinkPad, ThinkCentre or ThinkStation commercial PC product.
-![Prepare Thin Installer](https://cdrt.github.io/mk_blog/img/2023/scripted_repo_creation/image1.png)
+#### Preparing Thin Installer
 
-A WQL query is used to check if the Operating System build is 22H1 or earlier. If it is, then Thin Installer is installed using a legacy Package in the 'Package' group:
-![Package: Thin Installer](https://cdrt.github.io/mk_blog/img/2023/scripted_repo_creation/image2.png)
-![Package: Thin Installer](https://cdrt.github.io/mk_blog/img/2023/scripted_repo_creation/image3.png)
+The top level group **Prepare Thin Installer** queries the device to determine if it is a ThinkPad, ThinkCentre or ThinkStation commercial PC product.
+![Prepare Thin Installer](https://cdrt.github.io/mk_blog/img/2023/scripted_repo_creation/image1.jpg)
+
+A WQL query is used to check if the Operating System build is 22H1 or earlier. If it is, then Thin Installer is installed as an Application in the 'Application' group:
+![App: Thin Installer](https://cdrt.github.io/mk_blog/img/2023/scripted_repo_creation/image2.jpg)
+![App: Thin Installer](https://cdrt.github.io/mk_blog/img/2023/scripted_repo_creation/image3.jpg)
 
 Another WQL query is used to check if the Operating System build is 22H2 or later in the 'Winget' group. This group contains a step to install Thin Installer from the Winget repository. Windows 11 22H2 contains Winget automatically while earlier versions of Windows must install Winget from the Microsoft.DesktopAppInstaller package. If Winget is available in your environment on earlier OS builds, you can change the conditions on these groups and leverage the Winget install task instead.
-![Winget: Thin Installer](https://cdrt.github.io/mk_blog/img/2023/scripted_repo_creation/image4.png)
+![Winget: Thin Installer](https://cdrt.github.io/mk_blog/img/2023/scripted_repo_creation/image4.jpg)
 
 PowerShell script to install Thin Installer using Winget:
 
 ```powershell
-$Winget = Get-ChildItem -Path (Join-Path -Path (Join-Path -Path $env:ProgramFiles -ChildPath "WindowsApps") -ChildPath "Microsoft.DesktopAppInstaller*_x64*\winget.exe")
+# Function to install Thin Installer
+function Install-ThinInstaller
+{
+    $ErrorActionPreference = 'SilentlyContinue'
+    
+    # Create folder for logging
+    $WinGet = "$($env:ProgramData)\WinGet"
+    if (-not (Test-Path -Path $WinGet))
+    {
+        New-Item -ItemType Directory -Path $WinGet
+    }
 
-try {
-     & $Winget install --id Lenovo.ThinInstaller -h --accept-source-agreements --accept-package-agreements --log C:\ProgramData\Winget-InstallThinInstaller.log
+    # Select newest winget.exe file based on folder order and set it as winget variable
+    $wingetExe = Get-ChildItem -Path "$($env:ProgramFiles)\WindowsApps" -Filter winget.exe -Recurse | Sort-Object -Property 'FullName' -Descending | Select-Object -First 1 -ExpandProperty FullName | Tee-Object -FilePath "$WinGet\Winget-file-found-from.log"
+
+    Write-Output "Thin Installer not present. Installing the latest version from the Winget repository."
+    Start-Process -FilePath $wingetExe -NoNewWindow -Wait -ArgumentList 'install Lenovo.ThinInstaller --silent --accept-package-agreements --accept-source-agreements'
+    Start-Sleep -Seconds 15
 }
-catch {
-    return $_.Exception.Message; Exit 1
+
+# Function to check and update Thin Installer
+function Update-ThinInstaller
+{
+    $ThinInstallerPath = Join-Path -Path (Join-Path -Path ${env:ProgramFiles(x86)} -ChildPath Lenovo) -ChildPath "ThinInstaller"
+    
+    if (-not (Test-Path -Path $ThinInstallerPath))
+    {
+        Install-ThinInstaller
+    }
+    else
+    {
+        Write-Output "Checking the Winget repository for an updated version..."
+
+        # Get the local version of Thin Installer
+        [version]$LocalVersion = $(try { ((Get-ChildItem -Path $ThinInstallerPath -Filter "thininstaller.exe" -Recurse).VersionInfo.FileVersion) } catch { $null })
+
+        # Prepare for capturing the versions output
+        $versionsOutputFile = "$($env:TEMP)\winget_versions_output.txt"
+
+        # Select newest winget.exe file based on folder order and set it as winget variable
+        $wingetExe = Get-ChildItem -Path "$($env:ProgramFiles)\WindowsApps" -Filter winget.exe -Recurse | Sort-Object -Property 'FullName' -Descending | Select-Object -First 1 -ExpandProperty FullName | Tee-Object -FilePath "$WinGet\Winget-file-found-from.log"
+    
+        # Start the process to get versions and redirect output to a file
+        Start-Process -FilePath $wingetExe -ArgumentList 'show lenovo.thininstaller --versions' -NoNewWindow -Wait -RedirectStandardOutput $versionsOutputFile
+
+        # Read the output from the file
+        $versionsOutput = Get-Content -Path $versionsOutputFile
+
+        # Extract versions from the output and find the latest version
+        $versions = $versionsOutput | Select-String -Pattern '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$'
+        $latestVersion = [version]($versions -replace 'Version', '' -replace '-', '' | ForEach-Object { $_.Trim() } | Sort-Object -Descending | Select-Object -First 1)
+
+        Write-Output "Local version: $LocalVersion"
+        Write-Output "Latest version: $latestVersion"
+
+        # Compare the local version with the latest version
+        if ($LocalVersion -lt $latestVersion)
+        {
+            Write-Output "An update is available."
+            Install-ThinInstaller
+        }
+        else
+        {
+            Write-Output "The installed version is up-to-date."
+        }
+    }
 }
+
+# Call the function to check and update Thin Installer
+Update-ThinInstaller
 ```
 
-PowerShell script **Get-LnvUpdatesRepo.ps1** will download current updates from Lenovo's servers and store on the device. Parameters are available to specify the repository path and filter updates to download by package types and reboot types. The command line used in this scenario is as follows:
+#### Building the Repository
+
+The PowerShell script **Get-LnvUpdatesRepo.ps1** will download current updates from Lenovo's servers and store on the device. Parameters are accepted to specify the repository path and to filter updates by package type and reboot type. The [SCCM Task Sequence module](https://github.com/sombrerosheep/TaskSequenceModule/tree/master) has also been integrated to provide more details as updates are downloaded and installed during each pass of Thin Installer.
 
 ```cmd
--RepositoryPath 'C:\ProgramData\Lenovo\ThinInstaller\Repository' -PackageTypes '1,2,3,4' -RebootTypes '0,3,5' -RT5toRT3
+-RepositoryPath 'C:\Program Files (x86)\Lenovo\ThinInstaller\Repository' -PackageTypes '1,2,3,4' -RebootTypes '0,3,5' -RT5toRT3
 ```
 
-This filters the updates to include 1/Applications, 2/Drivers, 3/BIOS, and 4/Firmware packages; and updates with Reboot Type 0 (No reboot required), 3 (Reboot required but not forced), and 5 (Delayed forced reboot). The -RT5toRT3 parameter is a special case to be used in task sequences which will control the rebooting of the system after Thin Installer runs. It will cause the script to change Reboot Type 5 updates to Reboot Type 3 which will cause Thin Installer to not perform the reboot. **After these types of updates are applied, the system needs to be rebooted immediately to avoid possible damage to the system. This is taken care of by the task sequence.**
+Based on the above, this filters update package types to include:
 
-![Get Lenovo Updates](https://cdrt.github.io/mk_blog/img/2023/scripted_repo_creation/image5.png)
+  - 1 - Applications
+  - 2 - Drivers
+  - 3 - BIOS
+  - 4 - Firmware
 
-!!! info ""
-    The **All Updates** group contains the necessary parameters and Thin Installer command line to include Reboot Type 5 packages (BIOS/Firmware). The **Drivers** group will only download Reboot Type 0 and 3 packages (Drivers), and is disabled by default.
+and reboot packages that are:
+
+  - 0 (No reboot required)
+  - 3 (Reboot required but not forced)
+  - 5 (Delayed forced reboot).
+
+The **-RT5toRT3** parameter is a special case to be used in task sequences which will control the rebooting of the system after Thin Installer runs. It will change Reboot Type 5 updates to Reboot Type 3, which instructs Thin Installer to not perform the reboot.
+
+!!! note
+    After these types of updates are applied, the system needs to be rebooted immediately to avoid possible damage to the system. This is taken care of by the task sequence.
+
+!!! info
+    The **All Updates** group contains the necessary parameters and Thin Installer command lines to include Reboot Type 5 packages (BIOS/Firmware). The **Drivers** group will only download Reboot Type 0 and 3 packages (Drivers), and is disabled by default.
 
 Once all content is downloaded to the device, 3 passes of Thin Installer (with a reboot in between) installs all updates to ensure the device is current.
 
-### First Pass
+#### Install Passes
 
-![Run Thin Installer](https://cdrt.github.io/mk_blog/img/2023/scripted_repo_creation/image6.png)
+A PowerShell script invoking Thin Installer with the necessary parameters is executed in each pass.
 
-If a BIOS update is applicable, this package gets installed first using this Thin Installer command line
+**1st Pass**
 
-```cmd
-ThinInstaller.exe /CM -repository "C:\ProgramData\Lenovo\ThinInstaller\Repository" -search A -action INSTALL -includerebootpackages 0,3 -packagetypes 3 -debug -noicon -noreboot -exporttowmi
-```
+If a BIOS update is applicable, this package gets installed first
 
-### Second Pass
+**2nd Pass**
 
-![Run Thin Installer](https://cdrt.github.io/mk_blog/img/2023/scripted_repo_creation/image7.png)
+Only drivers and apps are filtered for installation.
 
-Only drivers and apps are filtered for installation using this command line
+!!! note
+    In some cases, typically with Thunderbolt, there may be a requirement that the latest driver needs to be installed *before* the firmware can be updated. This pass will ensure those drivers are installed before the firmware is installed in the next pass.
 
-```cmd
-ThinInstaller.exe /CM -repository "C:\ProgramData\Lenovo\ThinInstaller\Repository" -search A -action INSTALL -includerebootpackages 0,3 -packagetypes 1,2 -debug -noicon -noreboot -exporttowmi
-```
+A preview of what the task sequence looks like during these passes
 
-!!! info ""
-   In some cases, typically with Thunderbolt, there may be a requirement that the latest driver needs to be installed *BEFORE* the firmware can be updated. This pass will ensure those drivers are installed before the firmware is installed in the next pass.
+![TI-Install](https://cdrt.github.io/mk_blog/img/2023/scripted_repo_creation/image6.jpg)
 
-### Final Pass
+![TI-Install](https://cdrt.github.io/mk_blog/img/2023/scripted_repo_creation/image7.jpg)
 
-![Run Thin Installer](https://cdrt.github.io/mk_blog/img/2023/scripted_repo_creation/image8.png)
+**3rd Pass**
 
-Firmware packages, such as Intel ME Firmware, are installed in the final pass using this command line
+The final pass installs firmware packages, such as Intel ME Firmware.
 
-```cmd
-ThinInstaller.exe /CM -repository "C:\ProgramData\Lenovo\ThinInstaller\Repository" -search A -action INSTALL -includerebootpackages 0,3 -packagetypes 2,4 -debug -noicon -noreboot -exporttowmi
-```
-
-!!! info ""
-   In some cases there are drivers that do not become applicable until another driver has been installed. This final pass includes drivers to ensure those are covered for a complete installation.
+!!! note
+    In some cases there are drivers that do not become applicable until another driver has been installed. This final pass includes drivers to ensure those are covered for a complete installation.
 
 ### Summary
 

@@ -19,6 +19,12 @@
 			<link></link>
 			</item>
 		-->
+		<item>
+			<title>Remediate Fibocom FwSwitchService on Devices Without WWAN Card</title>
+			<description>Remediating Fibocom FwSwitchService on Devices Without WWAN Card using a Configuration Manager Configuration Baseline</description>
+			<pubDate>Fri, 17 Jan 2025 13:44:00 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/remediate-fibocom-fwswitchservice-on-devices-without-wwan-card/</link>
+			</item>
         <item>
 			<title>Introducing: Lenovo Client Sripting Module 2.0.0</title>
 			<description></description>

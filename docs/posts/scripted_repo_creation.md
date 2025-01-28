@@ -1,11 +1,11 @@
 ---
-date: 
+date:
     created: 2023-03-13
     updated: 2024-11-19
 authors:
     - Phil
     - Joe
-categories: 
+categories:
     - "2023"
 title: Creating Local Repository Using PowerShell
 cover_image: ../img/2023/scripted_repo_creation/ps_icon.png
@@ -15,7 +15,7 @@ There are various scenarios where one might want to quickly generate a local rep
 <!-- more -->
 The script, **Get-LnvUpdatesRepo.ps1**, can be found in the CDRT Library repository on GitHub [here](https://github.com/CDRT/Library). The parameters and switches used by the script are documented at the beginning of the script.
 
-The child task sequence described in the first scenario can be downloaded [here](https://download.lenovo.com/cdrt/eval/ChildTS-GetLnvUpdatesv2.zip).
+The child task sequence described in the first scenario can be downloaded [here](https://download.lenovo.com/cdrt/eval/ChildTS-GetLnvUpdatesv3.zip).
 
 ## Scenario 1
 
@@ -44,7 +44,7 @@ PowerShell script to install Thin Installer using Winget:
 function Install-ThinInstaller
 {
     $ErrorActionPreference = 'SilentlyContinue'
-    
+
     # Create folder for logging
     $WinGet = "$($env:ProgramData)\WinGet"
     if (-not (Test-Path -Path $WinGet))
@@ -64,7 +64,7 @@ function Install-ThinInstaller
 function Update-ThinInstaller
 {
     $ThinInstallerPath = Join-Path -Path (Join-Path -Path ${env:ProgramFiles(x86)} -ChildPath Lenovo) -ChildPath "ThinInstaller"
-    
+
     if (-not (Test-Path -Path $ThinInstallerPath))
     {
         Install-ThinInstaller
@@ -81,7 +81,7 @@ function Update-ThinInstaller
 
         # Select newest winget.exe file based on folder order and set it as winget variable
         $wingetExe = Get-ChildItem -Path "$($env:ProgramFiles)\WindowsApps" -Filter winget.exe -Recurse | Sort-Object -Property 'FullName' -Descending | Select-Object -First 1 -ExpandProperty FullName | Tee-Object -FilePath "$WinGet\Winget-file-found-from.log"
-    
+
         # Start the process to get versions and redirect output to a file
         Start-Process -FilePath $wingetExe -ArgumentList 'show lenovo.thininstaller --versions' -NoNewWindow -Wait -RedirectStandardOutput $versionsOutputFile
 

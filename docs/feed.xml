@@ -218,6 +218,12 @@
 			<link>https://blog.lenovocdrt.com/hosting-a-repository-in-an-azure-file-share</link>
 			</item>
 		<item>
+			<title>Lenovo Model Information in MDT</title>
+			<description>Update MDT Scripting to Use Lenovo Friendly Model Names</description>
+			<pubDate>Mon, 30 Mar 2020 13:37:00 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/lenovo-model-information-in-mdt/</link>
+			</item>
+		<item>
 			<title>Managing System Update with Intune</title>
 			<description>Creating a Custom Configuration Profile to manage Lenovo System Update</description>
 			<pubDate>Thur, 12 Mar 2020 12:07:00 EST</pubDate>
@@ -246,6 +252,12 @@
 			<description>Step-by-step deploying ThinkPad BIOS updates as a Win32 app.</description>
 			<pubDate>Mon, 11 Mar 2019 16:58:01 EST</pubDate>
 			<link>https://blog.lenovocdrt.com/deploying-thinkpad-bios-updates-with-intune</link>
+			</item>
+		<item>
+			<title>MDT No Longer Detects Enclosure Correctly</title>
+			<description>Updating MDT Detection Information</description>
+			<pubDate>Mon, 26 Noc 2018 16:03:00 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/mdt-no-longer-detects-enclosure-correctly/</link>
 			</item>
 		<item>
 			<title>Tracking Thin Installer Update History with ConfigMgr Current Branch</title>

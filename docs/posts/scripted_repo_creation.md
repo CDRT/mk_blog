@@ -1,7 +1,7 @@
 ---
 date:
     created: 2023-03-13
-    updated: 2024-11-19
+    updated: 2025-02-03
 authors:
     - Phil
     - Joe
@@ -13,9 +13,9 @@ cover_image: ../img/2023/scripted_repo_creation/ps_icon.png
 
 There are various scenarios where one might want to quickly generate a local repository of Lenovo updates that can be consumed by Thin Installer or System Update in a scripted manner. This article will describe a PowerShell script that can be leveraged to create a repository for a specified machine type and OS. A scenario where this script might be used will also be described.
 <!-- more -->
-The script, **Get-LnvUpdatesRepo.ps1**, can be found in the CDRT Library repository on GitHub [here](https://github.com/CDRT/Library). The parameters and switches used by the script are documented at the beginning of the script.
+The script, **Get-LnvUpdatesRepo.ps1**, can be found in the CDRT Library repository on GitHub [here](https://github.com/CDRT/Library/tree/master/get-lnvupdatesrepo). The parameters and switches used by the script are documented at the beginning of the script.
 
-The child task sequence described in the first scenario can be downloaded [here](https://download.lenovo.com/cdrt/eval/ChildTS-GetLnvUpdatesv3.zip).
+The child task sequence described in the first scenario can be downloaded [here](https://download.lenovo.com/cdrt/eval/ChildTS-GetLnvUpdatesv4.zip).
 
 ## Scenario 1
 
@@ -117,7 +117,7 @@ Update-ThinInstaller
 The PowerShell script **Get-LnvUpdatesRepo.ps1** will download current updates from Lenovo's servers and store on the device. Parameters are accepted to specify the repository path and to filter updates by package type and reboot type. The [SCCM Task Sequence module](https://github.com/sombrerosheep/TaskSequenceModule/tree/master) has also been integrated to provide more details as updates are downloaded and installed during each pass of Thin Installer.
 
 ```cmd
--RepositoryPath 'C:\Program Files (x86)\Lenovo\ThinInstaller\Repository' -PackageTypes '1,2,3,4' -RebootTypes '0,3,5' -RT5toRT3
+-RepositoryPath 'C:\ProgramData\Lenovo\ThinInstaller\Repository' -PackageTypes '1,2,3,4' -RebootTypes '0,3,5' -RT5toRT3
 ```
 
 Based on the above, this filters update package types to include:
@@ -153,7 +153,7 @@ If a BIOS update is applicable, this package gets installed first
 
 **2nd Pass**
 
-Only drivers and apps are filtered for installation.
+Only drivers and apps are filtered for installation. Depending on the model, a second step of this pass will pick up any dependent drivers that weren't visible until its parent driver was installed during the 1st pass.
 
 !!! note
     In some cases, typically with Thunderbolt, there may be a requirement that the latest driver needs to be installed *before* the firmware can be updated. This pass will ensure those drivers are installed before the firmware is installed in the next pass.

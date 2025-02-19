@@ -21,7 +21,7 @@ This will be an ongoing article as new examples will continue to be introduced.
 
 ### Run Scripts functionality
 
-This example will demonstrate how to utilize ConfigMgr's ability to run PowerShell scripts.
+This example will demonstrate how to utilize Configuration Manager's ability to run PowerShell scripts.
 
 !!! note
     Reference the MS docs [here](https://learn.microsoft.com/mem/configmgr/apps/deploy-use/create-deploy-scripts)

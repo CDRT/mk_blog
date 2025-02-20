@@ -28,7 +28,7 @@ This example will demonstrate how to utilize Configuration Manager's ability to 
 
 #### Scenario: On-Demand BIOS Update
 
-In this scenario, we're going to demonstrate how to deploy a PowerShell script to a [co-managed](https://learn.microsoft.com/mem/configmgr/comanage/overview-managed) Windows endpoint that will trigger the System Update AddIn of Commercial Vantage to filter and install only applicable BIOS updates, followed by presenting a toast notification to the end user prompting to install and reboot. Keep in mind, this example is more or less a "quick and dirty" solution but is intended to show expected behavior, where to trace the System Update log for installation status, and querying the Lenovo_Updates WMI class.
+In this scenario, we're going to demonstrate how to deploy a PowerShell script to a [co-managed](https://learn.microsoft.com/mem/configmgr/comanage/overview) Windows endpoint that will trigger the System Update AddIn of Commercial Vantage to filter and install only applicable BIOS updates, followed by presenting a toast notification to the end user prompting to install and reboot. Keep in mind, this example is more or less a "quick and dirty" solution but is intended to show expected behavior, where to trace the System Update log for installation status, and querying the Lenovo_Updates WMI class.
 
 Follow the steps to [create a script](https://learn.microsoft.com/mem/configmgr/apps/deploy-use/create-deploy-scripts#create-a-script) and insert the below sample PowerShell code. Once created, approve it.
 

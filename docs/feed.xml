@@ -11,7 +11,7 @@
 			<title>Think Deploy Blog</title>
 			<link>https://blog.lenovocdrt.com</link>
 			</image>
-		<!-- 
+		<!--
 		<item>
 			<title></title>
 			<description></description>
@@ -19,6 +19,12 @@
 			<link></link>
 			</item>
 		-->
+		<item>
+			<title>Use Cases for SU Helper</title>
+			<description>Demonstrating different use cases for SU Helper across Microsoft's Endpoint Management solutions</description>
+			<pubDate>Thur, 19 Feb 2025 09:00:00 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/remediate-fibocom-fwswitchservice-on-devices-without-wwan-card/</link>
+			</item>
 		<item>
 			<title>Remediate Fibocom FwSwitchService on Devices Without WWAN Card</title>
 			<description>Remediating Fibocom FwSwitchService on Devices Without WWAN Card using a Configuration Manager Configuration Baseline</description>

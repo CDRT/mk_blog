@@ -1,8 +1,8 @@
 ---
-date: 
+date:
   created: 2023-10-10
-  updated: 2023-11-09
-authors: 
+  updated: 2025-02-28
+authors:
   - Phil
 categories:
   - "2023"
@@ -134,6 +134,9 @@ Under the **Block device use until required apps are installed if they are assig
 ![ESP](https://cdrt.github.io/mk_blog/img/2023/ap_ti/image1.jpg)
 
 #### Checking the Results
+
+!!! note
+    If you've installed Windows from media and are only using inbox drivers, you may need to increase the ESP timeout.
 
 Prior to resealing the device and handing off to the user, you can review the results of the installation log found under **C:\Program Files(x86)\Lenovo\ThinInstaller\logs**
 

@@ -1,6 +1,7 @@
 ---
 date:
     created: 2024-11-07
+    updated: 2025-02-28
 authors:
     - Joe
 categories:
@@ -10,7 +11,7 @@ title: "Introducing: Lenovo Client Scripting Module 2.0.0"
 
 ![Lenovo Client Scripting Toolbox](https://cdrt.github.io/mk_blog/img\2024\intro_lcsm\toolbox.png)
 
-**Update December 16, 2024: Version 2.1.0 is now available in the PowerShell Gallery!**
+**Update February 26, 2025: Version 2.2.0 is now available in the PowerShell Gallery!**
 
 Back in January of 2024 we introduced the Lenovo Device Management Module. Today we are replacing it with the new Lenovo.Client.Scripting Module which is a PowerShell module that provides several useful cmdlets for making it easier to manage Lenovo commercial PCs. The module supports Lenovo's commercial portfolio of ThinkPad, ThinkCentre and ThinkStation products.
 <!-- more -->

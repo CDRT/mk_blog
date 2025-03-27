@@ -16,7 +16,7 @@ Starting with the X1 Carbon Gen 13, and eventually common for all ThinkPad 2025 
 
 - System Firmware
 - UEFI BIOS
-- ECP
+- Embedded Controller Firmware (ECP)
 - Intel Management Engine Firmware
 - Power Delivery Firmware
 
@@ -35,6 +35,10 @@ Inspecting the package XML descriptor, we can see these updates are a RebootType
 The end-user experience shows a counter and which firmware is being updated now, which is helpful.
 
 ![UI](https://cdrt.github.io/mk_blog/img/2025/system_fw_utility/image4.jpg)
+
+The System Firmware Version can be found in the BIOS Setup Main page. It is a version number representing the collection of **UEFI + EC + ME + PD** firmware.
+
+![BIOS](https://cdrt.github.io/mk_blog/img/2025/system_fw_utility/image5.jpg)
 
 While this is a great improvement in update delivery and reduces the amount of separate updates for a given device, with it comes implications. There will be the challenge of having multiple versions of different updates within the package that also has its own version number. If a future update is released that keeps the same version of BIOS but includes a newer version of the Intel MEFW, what would this look like if you're using the **Get-LnvAvailableBiosVersion** cmdlet from our [Lenovo Client Scripting module](https://docs.lenovocdrt.com/guides/lcsm/lcsm_top/)?
 

@@ -32,6 +32,10 @@ Inspecting the package XML descriptor, we can see these updates are a RebootType
 
 ![XML](https://cdrt.github.io/mk_blog/img/2025/system_fw_utility/image3.jpg)
 
+The BIOS update utility has been revamped to now show a comparison between the currently installed firmware versions and the newer versions.
+
+![WINUPTP](https://cdrt.github.io/mk_blog/img/2025/system_fw_utility/image6.jpg)
+
 The end-user experience shows a counter and which firmware is being updated now, which is helpful.
 
 ![UI](https://cdrt.github.io/mk_blog/img/2025/system_fw_utility/image4.jpg)

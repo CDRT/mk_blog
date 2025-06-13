@@ -11,7 +11,7 @@ title: "Introducing: Lenovo Client Scripting Module 2.0.0"
 
 ![Lenovo Client Scripting Toolbox](https://cdrt.github.io/mk_blog/img\2024\intro_lcsm\toolbox.png)
 
-**Update February 26, 2025: Version 2.2.0 is now available in the PowerShell Gallery!**
+**Update June 12, 2025: Version 2.3.0 is now available in the PowerShell Gallery!**
 
 Back in January of 2024 we introduced the Lenovo Device Management Module. Today we are replacing it with the new Lenovo.Client.Scripting Module which is a PowerShell module that provides several useful cmdlets for making it easier to manage Lenovo commercial PCs. The module supports Lenovo's commercial portfolio of ThinkPad, ThinkCentre and ThinkStation products.
 <!-- more -->
@@ -28,9 +28,9 @@ You can also find a complete reference for each of the available cmdlets in the 
 
 ## Installing Lenovo.Client.Scripting Module
 
-The module itself is currently available for download here: [Lenovo.Client.Scripting.zip](https://download.lenovo.com/cdrt/tools/lenovo.client.scripting.zip)
+The module itself is currently available for download here: [Lenovo.Client.Scripting.zip](https://download.lenovo.com/cdrt/tools/Lenovo.Client.Scripting_2.3.0.zip)
 
-As of December 16, 2024, version 2.1.0 of the module is published in the PowerShell Gallery so it can easily be installed with the Install-Module command. To install from the PowerShell Gallery, simply run
+The module is also published in the PowerShell Gallery so it can easily be installed with the Install-Module command. To install from the PowerShell Gallery, simply run
 
 ``` PowerShell
 Install-Module -Name Lenovo.Client.Scripting -Force

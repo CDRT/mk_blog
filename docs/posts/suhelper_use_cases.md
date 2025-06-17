@@ -142,7 +142,7 @@ C:\ProgramData\Lenovo\Vantage\AddinData\LenovoSystemUpdateAddin\session
 
 2. Click **Create** and enter a name and optionally a description.
 
-3. Save and upload the Detection and Remediation script files from my GitHub and assign to a group, preferably one containing Lenovo devices.
+3. Save and upload the Detection and Remediation script files from my [GitHub](https://github.com/philjorgensen/Intune/tree/main/Remediations/Apps/Commercial%20Vantage/SU%20Helper) and assign to a group, preferably one containing Lenovo devices.
 
 At the time of this writing (June 11), I grabbed a system that hasn't been powered on in over 3 months so the threshold variable set in the detection script (30 days) should certainly trigger SU Helper.
 

@@ -1,6 +1,7 @@
 ---
 date:
     created: 2025-02-19
+    updated: 2025-06-17
 authors:
     - Phil
 categories:
@@ -117,3 +118,40 @@ After the reboot completes, I can launch Commercial Vantage and see the update h
 If I query WMI, I can see the the property values have been updated as well
 
 ![WMI-BIOSSuccess](https://cdrt.github.io/mk_blog/img/2025/suhelper_use_cases/image10.jpg)
+
+## Intune
+
+### Remediations
+
+This scenario describes using Intune [Remediations](https://learn.microsoft.com/intune/intune-service/fundamentals/remediations) to trigger SU Helper.
+
+#### Scenario: Silently Updating Drivers
+
+In this scenario, we're going to deploy a PowerShell remediation script package to filter for drivers and install only reboot type 0 and 3 updates. These updates will install silently (requiring a reboot) and won't present any prompts to the user.
+
+!!! info
+    SU Helper [documentation](https://docs.lenovocdrt.com/guides/cv/suhelper/#-packagetype-string) for details regarding -packagetype and -reboottype parameters
+
+The detection will check a few items, such as SU Helper presence and the last time the **updates_history.txt** file was last modified. This file gets updated every time Commercial Vantage scans for updates and can be found at this location:
+
+```dos
+C:\ProgramData\Lenovo\Vantage\AddinData\LenovoSystemUpdateAddin\session
+```
+
+1. In the Intune admin center, go to **Devices** > **Manage devices** > **Scripts and remediations**.
+
+2. Click **Create** and enter a name and optionally a description.
+
+3. Save and upload the Detection and Remediation script files from my GitHub and assign to a group, preferably one containing Lenovo devices.
+
+At the time of this writing (June 11), I grabbed a system that hasn't been powered on in over 3 months so the threshold variable set in the detection script (30 days) should certainly trigger SU Helper.
+
+![UpdatesRequired](https://cdrt.github.io/mk_blog/img/2025/suhelper_use_cases/image11.png)
+
+After triggering the remediation to run on the device and waiting several minutes, I see the timestamp for the updates_history text file has been modified and the SU Helper log output returned a 0 - Success [return code](https://docs.lenovocdrt.com/guides/cv/suhelper/#possible-return-codes). When I launched Commercial Vantage and checked the updates history, I see a handful of drivers that updated successfully.
+
+![UpdatesRequired](https://cdrt.github.io/mk_blog/img/2025/suhelper_use_cases/image12.png)
+
+Back in the Intune admin center, adding the Pre/Post-remediation detection output columns, remediation did its job and the device is now up-to-date.
+
+![UpdatesRequired](https://cdrt.github.io/mk_blog/img/2025/suhelper_use_cases/image13.png)

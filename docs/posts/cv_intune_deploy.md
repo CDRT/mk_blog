@@ -1,7 +1,7 @@
 ---
 date:
     created: 2020-11-20
-    updated: 2024-12-10
+    updated: 2025-07-23
 authors:
     - Phil
 categories:
@@ -12,17 +12,19 @@ For those who are migrating from Configuration Manager to Intune, you may find t
 <!-- more -->
 ## Preparing the Win32 App
 
-Once the zip has been downloaded and extracted, use the Content Prep [Tool](https://github.com/Microsoft/Microsoft-Win32-Content-Prep-Tool) to convert to an .intunewin format. There is already a provided batch file that handles the installation of all dependencies, certs, and .msix bundle so this will be used as the setup file. A sample command would be:
+Once the zip has been downloaded and extracted, use the Content Prep [Tool](https://github.com/Microsoft/Microsoft-Win32-Content-Prep-Tool) to convert to an .intunewin format. In previous versions, there was a batch file that handled the installation of all dependencies, certs, and .msix bundle. Starting in version **20.2506.39.0**, installation of the Commercial Vantage suite is now controller by the **VantageInstaller.exe**.
+
+A sample command would be:
 
 ```cmd
-IntuneWinAppUtil.exe -c "C:\IntuneWin\LenovoCommercialVantage_10.2010.11.0_v1" -s "setup-commercial-vantage.bat" -o "C:\IntuneWin\output" -q
+IntuneWinAppUtil.exe -c "C:\Sources\IntuneWin\LenovoCommercialVantage_20.2506.39.0_v17" -s "VantageInstaller.exe" -o "C:\Sources\IntuneWin\output" -q
 ```
 
 ![Create package](https://cdrt.github.io/mk_blog/img/2020/cv_intune_deploy/image1.jpg)
 
 ## Creating the Win32 App
 
-Login to the [MEM admin center](https://endpoint.microsoft.com/#blade/Microsoft_Intune_DeviceSettings/AppsWindowsMenu/windowsApps) and add a new Windows app (Win32). Select the new App package file created above, which should be named **setup-commercial-vantage.intunewin** and click OK.
+Login to the [MEM admin center](https://endpoint.microsoft.com/#blade/Microsoft_Intune_DeviceSettings/AppsWindowsMenu/windowsApps) and add a new Windows app (Win32). Select the new App package file created above, which should be named **VantageInstaller.intunewin** and click OK.
 
 Fill out the necessary fields in the App information section and click Review + save
 
@@ -32,21 +34,28 @@ In the Edit application section, this is where the install/uninstall commands wi
 
 - Install command
 
+!!!note
+    The -SuHelper parameter will also install SUHelper
+
 ```cmd
-setup-commercial-vantage.bat
+VantageInstaller.exe Install -Vantage -SuHelper
 ```
 
 - Uninstall command
 
+!!!note
+    - Specifying **-Vantage** will uninstall the Commercial Vantage suite (CV, Vantage Service, Add-ins)
+    - Specifying **-App** will only uninstall CV
+
 ```cmd
-C:\Windows\Sysnative\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -File .\uninstall_vantage_v8\uninstall_all.ps1
+VantageInstaller.exe Uninstall -Vantage
 ```
 
 Set Device restart behavior to **Determine behavior based on return codes**.
 
 ![Program details](https://cdrt.github.io/mk_blog/img/2020/cv_intune_deploy/image3.jpg)
 
-In the Requirements section, set the Operating system architecture to **64-bit** and Minimum operating system to **1809**
+In the Requirements section, tick the Operating system architecture to **x64** and set the Minimum operating system to **1809**
 
 Add an additional Registry type requirement rule that will only apply to Lenovo branded systems.
 
@@ -88,7 +97,7 @@ This sample PowerShell script can be used for detection
 
 ```powershell
 # Version of Lenovo Vantage that is being deployed
-$DeployedVantageVersion = [version]"10.2501.15.0"
+$DeployedVantageVersion = [version]"20.2506.39.0"
 
 try
 {

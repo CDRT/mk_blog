@@ -1,7 +1,7 @@
 ---
 date:
     created: 2019-10-29
-    updated: 2024-02-24
+    updated: 2025-07-24
 authors:
     - Phil
 categories:
@@ -14,6 +14,9 @@ Previously, Lenovo provided two separate apps (Lenovo Settings and Lenovo Compan
 This post will walk through deploying Commercial Vantage as a ConfigMgr [application](https://docs.microsoft.com/mem/configmgr/apps/deploy-use/create-applications).
 <!-- more -->
 All required components, as well as the Group Policy Admin Template, and sample registry files are included in the zip available for download on the Vantage landing page.
+
+!!!info
+    In previous versions of Commercial Vantage, the installation was orchestrated using a batch file. Starting in version 20.2506.39.0, installation of the Commercial Vantage suite and add-ins are controlled by **VantageInstaller.exe**
 
 ## Create the App
 
@@ -33,9 +36,9 @@ In the console, navigate to **Software Library > Application Management > Applic
 
     - **Content**: Point the content location to the directory where the Vantage source files reside.
 
-        - Installation Program: **setup-commercial-vantage.bat**
+        - Installation Program: **VantageInstaller.exe Install -Vantage -SuHelper**
 
-        - Uninstall Program: **powershell.exe -ExecutionPolicy Bypass -File .\uninstall_vantage_v8\uninstall_all.ps1**
+        - Uninstall Program: **VantageInstaller.exe Uninstall -Vantage**
 
 !!! note
     Depending on your requirements, there can be two detection methods that can be used. If the Store is blocked in your environment and/or Store apps are not automatically updated, detection method 1 should be used. Otherwise, detection method 2 can be used as future versions will be auto updated.
@@ -50,9 +53,6 @@ In the console, navigate to **Software Library > Application Management > Applic
 
     - File or folder name: **VantageService**
 
-    !!! info ""
-        This directory is what's created once the System Interface Foundation driver has been installed
-
     - Tick the box **This file or folder is associated with a 32-bit application on 64-bit systems**.
 
     - Ensure the radio button **The file system setting must exist on the target system to indicate presence of this application** is selected.
@@ -63,7 +63,7 @@ In the console, navigate to **Software Library > Application Management > Applic
 
     - Path: **ProgramFiles\WindowsApps**
 
-    - File or folder name: **E046963F.LenovoSettingsforEnterprise_10.2110.11.0_x64__k1h2ywk1493x8**
+    - File or folder name: **E046963F.LenovoSettingsforEnterprise_20.2506.39.0_x64__k1h2ywk1493x8**
 
     - Tick the box **This file or folder is associated with a 32-bit application on 64-bit systems**.
 
@@ -76,7 +76,7 @@ The script can also be downloaded from my [GitHub](https://github.com/philjorgen
 
 ```powershell title="Detect-CommercialVantage.ps1"
 # Version of Lenovo Vantage that is being deployed
-$DeployedVantageVersion = [version]"10.2501.15.0"
+$DeployedVantageVersion = [version]"20.2506.39.0"
 
 try
 {

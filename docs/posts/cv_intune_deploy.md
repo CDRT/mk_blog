@@ -12,7 +12,7 @@ For those who are migrating from Configuration Manager to Intune, you may find t
 <!-- more -->
 ## Preparing the Win32 App
 
-Once the zip has been downloaded and extracted, use the Content Prep [Tool](https://github.com/Microsoft/Microsoft-Win32-Content-Prep-Tool) to convert to an .intunewin format. In previous versions, there was a batch file that handled the installation of all dependencies, certs, and .msix bundle. Starting in version **20.2506.39.0**, installation of the Commercial Vantage suite is now controlled by the **VantageInstaller.exe**.
+Once the zip has been downloaded and extracted, use the Content Prep [Tool](https://github.com/Microsoft/Microsoft-Win32-Content-Prep-Tool) to convert to an .intunewin format. In previous versions, there was a batch file that handled the installation of all dependencies, certs, and .msix bundle. Starting in version **20.2506.39.0**, installation of the Commercial Vantage suite is now controlled by the [**VantageInstaller.exe**](https://docs.lenovocdrt.com/guides/cv/commercial_vantage/#using-vantageinstallerexe).
 
 A sample command would be:
 

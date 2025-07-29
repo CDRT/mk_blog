@@ -16,7 +16,7 @@ This post will walk through deploying Commercial Vantage as a ConfigMgr [applica
 All required components, as well as the Group Policy Admin Template, and sample registry files are included in the zip available for download on the Vantage landing page.
 
 !!!info
-    In previous versions of Commercial Vantage, the installation was orchestrated using a batch file. Starting in version 20.2506.39.0, installation of the Commercial Vantage suite and add-ins are controlled by **VantageInstaller.exe**
+    In previous versions of Commercial Vantage, the installation was orchestrated using a batch file. Starting in version 20.2506.39.0, installation of the Commercial Vantage suite and add-ins are controlled by [**VantageInstaller.exe**](https://docs.lenovocdrt.com/guides/cv/commercial_vantage/#using-vantageinstallerexe)
 
 ## Create the App
 

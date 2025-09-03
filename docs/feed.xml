@@ -20,6 +20,12 @@
 			</item>
 		-->
 		<item>
+			<title>Deploying Certificate-based BIOS Authentication</title>
+			<description>Using a Microsoft Configuration Manager task sequence to deploy certificate-based BIOS authentication</description>
+			<pubDate>Thur, 04 Sept 2025 09:00:00 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/deploying-certificate-based-bios-authentication-with-microsoft-configuration-manager</link>
+			</item>
+		<item>
 			<title>What Is The System Firmware Update Utility?</title>
 			<description>Understanding capsule-based updates</description>
 			<pubDate>Thur, 27 Mar 2025 09:00:00 EST</pubDate>

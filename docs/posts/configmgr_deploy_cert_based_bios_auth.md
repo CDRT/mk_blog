@@ -34,7 +34,7 @@ In the console, navigate to **Software Library** > **Application Management** > 
 
 - **Lenovo BIOS Certificate** - Package source path contains your **.pem** certificate file
 
-- **PSModule - LnvBiosCerts** - Package source path contains the extracted contents of the [LnvBiosCerts module](https://download.lenovo.com/cdrt/tools/LnvBiosCertTool_1.0.2.zip)
+- **PSModule - LnvBiosCerts** - Package source path contains the extracted contents of the [LnvBiosCerts module](https://docs.lenovocdrt.com/guides/lbct/)
   - Example source path directory structure should look like:
       - \\\share\ConfigMgr\Content\Software\Lenovo\Modules\LnvBiosCertTool_1.0.2
           - LnvBiosCerts

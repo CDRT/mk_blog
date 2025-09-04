@@ -1,11 +1,11 @@
 ---
 date:
-    created: 2025-09-05
+    created: 2025-09-15
 authors:
     - Thad
 categories:
     - "2025"
-title: "Windows 11 ISO - Automate Partition Sizes for OEM Tooling"
+title: "Automate Partition Sizes When Using Windows 11 ISO"
 ---
 
 # Automating Partition Sizes When Installing Windows From An ISO

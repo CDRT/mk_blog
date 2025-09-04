@@ -10,7 +10,7 @@ title: "Windows 11 ISO - Automate Partition Sizes for OEM Tooling"
 
 # Automating Partition Sizes When Installing Windows From An ISO
 
-As more corporate customers are moving to Intune and other cloud based tools for device management, there has been and probably will continue to be a decrease in the use of imaging technologies to deploy operating systems to devices.  Most of the time, customers are using the OEM provided preload on the device as the initial operating system installation.  Customers then leverage tools to continue with device configuration until the desired state is met.  
+As more corporate customers are moving to Intune and other cloud based tools for device management, there has been and probably will continue to be a decrease in the use of imaging technologies to deploy operating systems to devices.  Most of the time, customers are using the OEM provided preload on the device as the initial operating system installation.  Customers then leverage tools to continue with device configuration until the desired state is met.
 
 Using the OEM provided preload is an excellent choice for the initial operating system installation, but what happens when there is a need to reload Windows and there is no MDT or Configuration Manager to rely on?  The answer is to use the Windows ISO to load Windows on the device.  Customers have noted that when using the Windows 11 ISO to install Windows, they cannot update BIOS/UEFI and or Firmware on the device.  The following questions arise when we discuss utilizing the Windows 11 ISO to install Windows.
 
@@ -50,9 +50,9 @@ For the Windows Primary Partition, we essentially allow diskpart to partition th
 5. Copy the entire folder structure and files from the mounted ISO to the C:\W11 directory.
 6. [Download](https://learn.microsoft.com/windows-hardware/get-started/adk-install) and install the latest Windows ADK.  This installation is required for access to the OSCDIMG.exe to create the updated ISO file.
 
-## Building the ISO 
+## Building the ISO
 
-1. Open Start > Windows Kits > Deployment and Imaging Tools Environment.  Be sure to run this using the Run As Administrator option.  To do this, right click on the Deployment and Imaging Tools Environement and choose "More >" and then Run As Administrator. 
+1. Open Start > Windows Kits > Deployment and Imaging Tools Environment.  Be sure to run this using the Run As Administrator option.  To do this, right click on the Deployment and Imaging Tools Environement and choose "More >" and then Run As Administrator.
 2. Mount boot.wim index:2
     a. dism /Mount-Wim /WimFile:C:\w11\sources\boot.wim /index:2 /MountDir:C:\Mount
 3. Copy the start-configuration.bat and configure-partitions.txt files from C:\ExtraFiles to C:\Mount\Windows\System32
@@ -62,7 +62,7 @@ For the Windows Primary Partition, we essentially allow diskpart to partition th
 6. Create new ISO
     a. oscdimg -lW11 -m -u2 -bC:\W11\efi\microsoft\boot\efisys.bin C:\W11\ C:\W11_Prompt.iso
 
-!!! info ""
+!!! info "Tip"
     To remove the "Press any key to boot from CD/DVD..." prompt, change the oscdimg commmand to the following:
     oscdimg -lW11 -m -u2 -bC:\W11\efi\microsoft\boot\efisys_noprompt.bin C:\W11\ C:\W11_NoPrompt.iso
 
@@ -110,7 +110,7 @@ For the Windows Primary Partition, we essentially allow diskpart to partition th
 
 ### Start-Configuration.bat
 
-```CMD
+```bat
 @echo off
 setlocal
 :PROMPT

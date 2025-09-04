@@ -8,7 +8,7 @@ categories:
 title: "Automate Partition Sizes When Using Windows 11 ISO"
 ---
 
-# Automating Partition Sizes When Installing Windows From An ISO
+## Automating Partition Sizes When Installing Windows From An ISO
 
 As more corporate customers are moving to Intune and other cloud based tools for device management, there has been and probably will continue to be a decrease in the use of imaging technologies to deploy operating systems to devices.  Most of the time, customers are using the OEM provided preload on the device as the initial operating system installation.  Customers then leverage tools to continue with device configuration until the desired state is met.
 
@@ -22,9 +22,10 @@ Using the OEM provided preload is an excellent choice for the initial operating 
 
 The solution to all of these questions is fairly simple and does not require specialized tools to implement with exception of the Windows ADK being installed to a system.
 
-# The Solution
+## The Solution
 
 To solve the above scenario, we can leverage the Windows 11 ISO and include an AutoUnattend.xml file, a start-configuration.bat file to call a diskpart script, and the configure-partitions.txt diskpart script file to configure drive.  The AutoUnattend.xml will define the disk and partition to install the operating sytem as well as directing setup to execute the batch file prior to running the Setup Wizard.  The executed batch file will first ask for a confirmation to erase the disk and, upon receiving the acknowledgement, will call the diskpart script to format and partition disk 0.  The diskpart script information will configure the disk as follows:
+
 - Partition 1 set as an EFI System Partition (ESP) formatted as FAT32 with a size of 500 MB and has a label of System.
 - Partition 2 set as a Microsoft System Reserved (MSR) Partition with a size of 16 MB
 - Partition 3 set as a Primary Partition formatted as NTFS with a size set dynamically and has a label of Windows
@@ -34,7 +35,7 @@ The goal is to meet OEM space needs, meet Windows requirements by exceeding the 
 
 ### Additional Partitioning Information
 
-After researching, we have found the EFI System Partition size should be more than the 200 MB defined by the Microsoft default configuration information found [here](https://learn.microsoft.com/windows-hardware/manufacture/desktop/configure-uefigpt-based-hard-drive-partitions?view=windows-11).  Beyond Microsoft using the EFI System Partition to boot the device, OEMs leverage this partition, hosting files used to update the BIOS/UEFI as well as system and component firmware.  Due to the size of BIOS/UEFI and Firmware updates, the default 100 MB EFI System Partition size can be quickly be exceeded, which is why we recommend the size increase.
+After researching, we have found the EFI System Partition size should be more than the 200 MB defined by the Microsoft default configuration information found in the [technical documentation](https://learn.microsoft.com/windows-hardware/manufacture/desktop/configure-uefigpt-based-hard-drive-partitions?view=windows-11).  Beyond Microsoft using the EFI System Partition to boot the device, OEMs leverage this partition, hosting files used to update the BIOS/UEFI as well as system and component firmware.  Due to the size of BIOS/UEFI and Firmware updates, the default 100 MB EFI System Partition size can be quickly be exceeded, which is why we recommend the size increase.
 
 For the Windows Primary Partition, we essentially allow diskpart to partition the remaining free space on the drive.  Once the partition is created, we shrink that partition down by the amount of space we want to allocate to the Recovery Partition, which in this case configured to occupy the last 990 MB on the disk.
 

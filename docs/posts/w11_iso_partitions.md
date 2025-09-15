@@ -8,9 +8,9 @@ categories:
 title: "Automate Partition Sizes When Using Windows 11 ISO"
 ---
 
-## Automating Partition Sizes When Installing Windows From An ISO
-
 As more corporate customers are moving to Intune and other cloud based tools for device management, there has been and probably will continue to be a decrease in the use of imaging technologies to deploy operating systems to devices.  Most of the time, customers are using the OEM provided preload on the device as the initial operating system installation.  Customers then leverage tools to continue with device configuration until the desired state is met.
+<!-- more -->
+## Automating Partition Sizes When Installing Windows From An ISO
 
 Using the OEM provided preload is an excellent choice for the initial operating system installation, but what happens when there is a need to reload Windows and there is no MDT or Configuration Manager to rely on?  The answer is to use the Windows ISO to load Windows on the device.  Customers have noted that when using the Windows 11 ISO to install Windows, they cannot update BIOS/UEFI and or Firmware on the device.  The following questions arise when we discuss utilizing the Windows 11 ISO to install Windows.
 

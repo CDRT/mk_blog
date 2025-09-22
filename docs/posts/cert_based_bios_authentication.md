@@ -1,7 +1,7 @@
 ---
-date: 
+date:
     created: 2023-07-24
-authors: 
+authors:
     - Joe
     - Devin
 categories:
@@ -129,7 +129,7 @@ Get-LnvSignedWmiCommand -Method SetBiosSetting -SettingName WakeOnLANDock -Setti
 
 This will generate a text file for you containing the signed command.
 
-<!-- 
+<!--
 ![Generate signed command](https://cdrt.github.io/mk_blog/img\2023\cert_based_bios_authentication\generatesignedcommand.png)
 -->
 
@@ -150,7 +150,53 @@ Repeat this step for all the signed commands and make sure the last one applied 
 
 ## Going Further
 
-The Lenovo BIOS Cert Tool provides an easy to use graphical interface to work with the certificate-based BIOS configuration methods. There are several additional functions provided by the Lenovo BIOS Cert Tool that are described below.
+The Lenovo BIOS Cert Tool provides an easy to use graphical interface to work with the certificate-based BIOS configuration methods. It provides functions that can be used to configure a device directly as well as a couple of additional functions to convert a settings INI file to a signed settings INI file or to create an unlock code to allow access to BIOS Setup on a device where the certificate is provisioned.
+
+### Installing a certificate
+
+To install a certificate using the Lenovo BIOS Cert Tool, click **Install Certificate** in the left navigation area. Enter the password configured on the device. Systems that launched in 2025 added support for dual certificates since these devices can have a Supervisor Password and a System Management Password. A certificate can be installed to replace each specific password type. Therefore, it is necessary to select the appropriate Password type.
+
+- **Supervisor for single certificate devices**: Use for any device that only implements a Supervisor Password.
+- **Supervisor for dual certificate devices**: Use for any device that implements both a Supervisor Password and a System Management Password when installing the certificate to replace the Supervisor Password.
+- **System Management for dual certificate devcies**: Use for any device that implements both a Supervisor Password and a System Management Password when installing the certificate to replace the System Management Password.
+
+Next, specify the certificate file to be installed on the device and then click **Install Certificate**. Reboot the device to complete the installation.
+
+![Install Certificate](https://cdrt.github.io/mk_blog/img/2023/cert_based_bios_authentication/installcertificatewindow.png)
+
+### Generate Signed Command
+
+There are several different methods that can be called using the WMI BIOS interface and the commands can be signed so they will be accepted on devices which have the appropriate certificate provisioned.
+
+To create the properly formatted command string, click **Generate Signed Command** in the left navigation area and enter the details needed. Specify the signing key to use and select a method to be called. By selecting the method to use, the necessary **Aditional Parameters** can be highlighted.
+
+If you select the SetBiosSetting method, then you will need to select a Setting Name and a Setting Value. Click the **Load WMI** to load the available settings and their possible values from the device. The other controls will be disabled and are not needed in this scenario. The controls will be enabled based on the method selected.
+
+Clicking **Generate Command** will populate the text box next to it with the signed command text. Double-clicking the text will copy the command to the clipboard and allows you to paste it on the **Apply Signed Command** panel so it can be applied on the device the tool is running on.
+
+The possible methods are:
+
+- **SetBiosSetting** : set a specific setting to a selected value
+- **SaveBiosSetting** : save a changed setting - this needs to called after one or more settings have been changed
+- **ClearBiosCertificate** : removes the provisioned BIOS certificate and leaves the device in state that does not require any authentication - this requires specifying the serial number of the device to ensure the command is only applied to the correct device since it reduces the security of the device
+- **ChangeBiosCertificateToPassword** : removes the provisioned BIOS certificate and replaces it with the specified Password - make sure the Certificate Type and Password used correspond to the desired certificate to be replaced
+- **UpdateBiosCertificate** : replaces a provisioned certificate with a new certificate
+- **LoadDefaultSettings** : method to return the device settings back to the original default values - excluding Security settings
+- **SetFunctionRequest** : method to perform a selected action - possible actions are:
+    - **ClearSecurityChip** : clears the TPM
+    - **ResetFingerprintData** : clears any stored fingerprint data
+    - **ResettoSetupMode** : resets the Secure Boot mode back to the Setup Mode
+    - **RestoreFactoryKeys** : reloads the factory Secure Boot keys
+    - **ClearAllSecureBootKeys** : removes all Secure Boot keys
+    - **RestoreSystemToFactoryDefaults** : restores the Factory default values, including Security settings
+
+![Generate Signed Command](https://cdrt.github.io/mk_blog/img/2023/cert_based_bios_authentication/signcommandwindow.png)
+
+### Apply Signed Command
+
+Clicking **Apply Signed Command** opens the panel that allows you to paste in the signed command from the **Generate Signed Command** panel. You may also enter multiple commands to be applied at once (eg. a SetBiosSetting command and a SaveBiosSetting command) or specify an INI file generated from the Think BIOS Config Tool. These commands will be applied to the device the tool is currently running on.
+
+![Apply Signed Command](https://cdrt.github.io/mk_blog/img/2023/cert_based_bios_authentication/applysignedcommandwindow.png)
 
 ### Working with Think BIOS Config Tool
 

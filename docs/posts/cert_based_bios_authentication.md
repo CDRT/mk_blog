@@ -1,14 +1,16 @@
 ---
 date:
-    created: 2023-07-24
+    created: 2025-10-31
 authors:
     - Joe
     - Devin
 categories:
-    - "2023"
+    - "2025"
 title: Certificate-based BIOS Authentication
 cover_image: \img\2023\cert_based_bios_authentication\signed_settings.png
 ---
+
+_updated October 31, 2025_
 
 Beginning with 2022 ThinkPad models, it is now possible to configure systems to use a digital signing certificate instead of a supervisor password. Although this feature does not eliminate the challenge of initially securing the device, it does eliminate the need to exchange passwords in plain text when scripting BIOS settings changes.
 <!-- more -->
@@ -129,10 +131,6 @@ Get-LnvSignedWmiCommand -Method SetBiosSetting -SettingName WakeOnLANDock -Setti
 
 This will generate a text file for you containing the signed command.
 
-<!--
-![Generate signed command](https://cdrt.github.io/mk_blog/img\2023\cert_based_bios_authentication\generatesignedcommand.png)
--->
-
 !!! info ""
     You can generate multiple signed commands to change multiple BIOS Settings. You must also create a signed command that uses the SaveBiosSettings method.  This must be the final command submitted after changing one or more settings to ensure the settings are saved prior to restarting the machine.
 
@@ -152,6 +150,13 @@ Repeat this step for all the signed commands and make sure the last one applied 
 
 The Lenovo BIOS Cert Tool provides an easy to use graphical interface to work with the certificate-based BIOS configuration methods. It provides functions that can be used to configure a device directly as well as a couple of additional functions to convert a settings INI file to a signed settings INI file or to create an unlock code to allow access to BIOS Setup on a device where the certificate is provisioned.
 
+When you first launch the Lenovo BIOS Certs Tool, go to Preferences and specify the private key that will be used for signging. You have the option of specifying a local private key file or selecting a private key from an Azure Key Vault.
+
+!!! alert "Connect to Azure first"
+    In order to use the Azure Key Vault feature, you must first connect to your Azure tenant using the Azure modules before launching the Lenovo BIOS Certs Tool. No tenant information or credentials are stored by the Lenovo BIOS Certs Tool.
+
+![Specify private key](https://cdrt.github.io/mk_blog/img/2023/cert_based_bios_authentication/preferenceswindow.png)
+
 ### Installing a certificate
 
 To install a certificate using the Lenovo BIOS Cert Tool, click **Install Certificate** in the left navigation area. Enter the password configured on the device. Systems that launched in 2025 added support for dual certificates since these devices can have a Supervisor Password and a System Management Password. A certificate can be installed to replace each specific password type. Therefore, it is necessary to select the appropriate Password type.
@@ -170,7 +175,7 @@ There are several different methods that can be called using the WMI BIOS interf
 
 To create the properly formatted command string, click **Generate Signed Command** in the left navigation area and enter the details needed. Specify the signing key to use and select a method to be called. By selecting the method to use, the necessary **Aditional Parameters** can be highlighted.
 
-If you select the SetBiosSetting method, then you will need to select a Setting Name and a Setting Value. Click the **Load WMI** to load the available settings and their possible values from the device. The other controls will be disabled and are not needed in this scenario. The controls will be enabled based on the method selected.
+If you select the **SetBiosSetting** method, then you will need to select a Setting Name and a Setting Value. Click the **Load WMI** button to load the available settings and their possible values from the device. The other controls will be disabled and are not needed in this scenario. The controls will be enabled based on the method selected.
 
 Clicking **Generate Command** will populate the text box next to it with the signed command text. Double-clicking the text will copy the command to the clipboard and allows you to paste it on the **Apply Signed Command** panel so it can be applied on the device the tool is running on.
 
@@ -196,7 +201,7 @@ The possible methods are:
 
 Clicking **Apply Signed Command** opens the panel that allows you to paste in the signed command from the **Generate Signed Command** panel. You may also enter multiple commands to be applied at once (eg. a SetBiosSetting command and a SaveBiosSetting command) or specify an INI file generated from the Think BIOS Config Tool. These commands will be applied to the device the tool is currently running on.
 
-![Apply Signed Command](https://cdrt.github.io/mk_blog/img/2023/cert_based_bios_authentication/applysignedcommandwindow.png)
+![Apply Signed Command](https://cdrt.github.io/mk_blog/img/2023/cert_based_bios_authentication/applycommandwindow.png)
 
 ### Working with Think BIOS Config Tool
 
@@ -204,9 +209,7 @@ The Think BIOS Config Tool is a separate tool that provides the ability to list 
 
 ![Convert Config File Window](https://cdrt.github.io/mk_blog/img\2023\cert_based_bios_authentication\convertconfigfilewindow.png)
 
-The generated file can be used on the ***Apply Signed Commands*** page of the Lenovo BIOS Certificate Tool or can easily be incorporated into your own PowerShell script.
-
-![Apply Signed Commands Window](https://cdrt.github.io/mk_blog/img\2023\cert_based_bios_authentication\applysignedcommandwindow.png)
+The generated file can be used on the [**Apply Signed Commands**](#apply-signed-command) page of the Lenovo BIOS Certificate Tool or can easily be incorporated into your own PowerShell script.
 
 ### Unlocking System Secured with Certificate
 
@@ -230,10 +233,10 @@ If you are clearing the certificate from multiple machines, it makes more sense 
 
 **ChangeBiosCertificateToPassword** would be a general command for all machines with that certificate which will replace the certificate with a password you specify. This will leave the devices in a secure, managable state also.
 
-### Installing Module to auto load
+### Installing the Module
 
-By placing the **LnvBiosCerts** folder in the **%Program Files%\WindowsPowershell\Modules** folder, the module will auto load when a PowerShell window is started.
+By placing the **Lenovo.BIOS.Certificates** folder in the **%Program Files%\WindowsPowershell\Modules** folder, the module will be available to import when a PowerShell session is started. Simply run `Import-Module 'Lenovo.Bios.Certificates' -Force` to ensure the module is available in the session.
 
 ### Limitations
 
-The **SetFunctionRequest** method has a limitation regarding the ***ResetSystemToFactoryDefaults*** BIOS function. The method will not be able to call this function with a certificate installed on the machine.
+The **SetFunctionRequest** method has a limitation regarding the _**ResetSystemToFactoryDefaults**_ BIOS function. The method will not be able to call this function when a certificate is installed on the machine.

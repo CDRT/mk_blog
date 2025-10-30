@@ -74,7 +74,7 @@ Next we need to generate the X509 Certificate that will be provisioned to the ma
 openssl req -new -x509 -days 7300 -key privateKey.pem -out biosCert.pem -sha256 [-config openssl.cnf]
 ```
 
-!!! info ""
+!!! note
     If you installed the Lite version of OpenSSL for Windows, the config file will not be there so you can ignore the -config openssl.cnf parameter.
 
 ![Create certificate](https://cdrt.github.io/mk_blog/img\2023\cert_based_bios_authentication\createbioscert.png)
@@ -107,7 +107,7 @@ Set-LnvBiosCertificate -Certfile .\biosCert.pem -Password pass1word
 
 ![PowerShell Modules Folder](https://cdrt.github.io/mk_blog/img\2023\cert_based_bios_authentication\installcert.png)
 
-!!! info ""
+!!! note
     The -Password parameter passes the current Supervisor Password that exists on the device and this password will be removed and replaced with the certificate. The target device must either have a Supervisor Password already set or must be in the System Deployment Boot Mode with the command being run from a script under WinPE of a PXE boot image.
 
 Reboot the system so that the changes can be finalized.  You may notice a message during reboot that confirms the configuration has changed.
@@ -131,7 +131,7 @@ Get-LnvSignedWmiCommand -Method SetBiosSetting -SettingName WakeOnLANDock -Setti
 
 This will generate a text file for you containing the signed command.
 
-!!! info ""
+!!! note
     You can generate multiple signed commands to change multiple BIOS Settings. You must also create a signed command that uses the SaveBiosSettings method.  This must be the final command submitted after changing one or more settings to ensure the settings are saved prior to restarting the machine.
 
 ## Apply the Signed Command
@@ -146,14 +146,14 @@ Submit-LnvBiosChange -Command “(text from text file)”
 
 Repeat this step for all the signed commands and make sure the last one applied is the one that references the SaveBiosSettings method. Restart the system for the settings changes to take effect.
 
-## Going Further
+## Using the Lenovo BIOS Cert Tool GUI
 
 The Lenovo BIOS Cert Tool provides an easy to use graphical interface to work with the certificate-based BIOS configuration methods. It provides functions that can be used to configure a device directly as well as a couple of additional functions to convert a settings INI file to a signed settings INI file or to create an unlock code to allow access to BIOS Setup on a device where the certificate is provisioned.
 
 When you first launch the Lenovo BIOS Certs Tool, go to Preferences and specify the private key that will be used for signging. You have the option of specifying a local private key file or selecting a private key from an Azure Key Vault.
 
-!!! alert "Connect to Azure first"
-    In order to use the Azure Key Vault feature, you must first connect to your Azure tenant using the Azure modules before launching the Lenovo BIOS Certs Tool. No tenant information or credentials are stored by the Lenovo BIOS Certs Tool.
+!!! warning "Connect to Azure first"
+    In order to use the Azure Key Vault feature, you must first connect to your Azure tenant using the `Microsoft.Graph.Authentication` and `Az.KeyVault` modules before launching the Lenovo BIOS Cert Tool. You can use various methods supported by Azure to connect such as an app registration and client secret. No tenant information or credentials are stored by the Lenovo BIOS Certs Tool. More information available here:<br>[Authentication module cmdlets in Microsoft Graph PowerShell | Microsoft Learn](https://learn.microsoft.com/en-us/powershell/microsoftgraph/authentication-commands?view=graph-powershell-1.0)<br>[Quickstart - Create an Azure Key Vault with the Azure portal | Microsoft Learn](https://learn.microsoft.com/en-us/azure/key-vault/general/quick-create-portal)<br>[Grant permission to applications to access an Azure key vault using Azure RBAC | Microsoft Learn](https://learn.microsoft.com/en-us/azure/key-vault/general/rbac-guide?tabs=azure-cli)
 
 ![Specify private key](https://cdrt.github.io/mk_blog/img/2023/cert_based_bios_authentication/preferenceswindow.png)
 

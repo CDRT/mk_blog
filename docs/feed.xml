@@ -19,6 +19,12 @@
 			<link></link>
 			</item>
 		-->
+        <item>
+			<title>Introducing Think BIOS Config Tool V2 and Lenovo BIOS Certificate Tool V2</title>
+			<description>Introducing the new PowerShell-based Think BIOS Config Tool V2 and Lenovo BIOS Certificate Tool V2</description>
+			<pubDate>Thur, 06 Nov 2025 19:37:00 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/introducing-think-bios-config-tool-v2-and-lenovo-bios-certificate-tool-v2/</link>
+			</item>
 		<item>
 			<title>Automate Partition Sizes When Using Windows 11 ISO</title>
 			<description>Updating the Windows 11 ISO file to automate partition sizes to accomodate OEM Tooling requirements.</description>

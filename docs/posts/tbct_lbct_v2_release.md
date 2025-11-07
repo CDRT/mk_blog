@@ -22,6 +22,12 @@ The Lenovo BIOS Certificate Tool has been updated with a new UI and the Lenovo.B
 
 This modernization brings significant improvements in functionality, usability, and deployment options.
 
+!!! note ""
+    Documentation for these solutions is available on the CDRT Docs site:
+
+    - [Think BIOS Config Tool V2](https://docs.lenovocdrt.com/guides/tbct_v2/tbct_v2_top/)
+    - [Lenovo BIOS Certificate Tool V2](https://docs.lenovocdrt.com/guides/lbct/)
+
 ### Think BIOS Config Tool V2
 
 The Think BIOS Config Tool V2 (`ThinkBIOSConfigUI.ps1`) is a comprehensive solution for managing BIOS settings on Lenovo Think devices. Built on the `Lenovo.BIOS.Config` PowerShell module, it provides both GUI and command-line interfaces for complete BIOS configuration management.
@@ -85,10 +91,8 @@ Install-Module Microsoft.Graph.Authentication -Scope CurrentUser -Force
 Launch the GUI with administrator privileges:
 
 ```PowerShell
-PowerShell -sta -File .\ThinkBIOSConfigUI.ps1
+ThinkBIOSConfigUI.ps1
 ```
-
-The `-STA` (Single-Threaded Apartment) flag is recommended for optimal WPF/XAML GUI performance.
 
 ### Lenovo BIOS Certificate Tool V2
 
@@ -247,8 +251,8 @@ Comprehensive documentation is available for both tools:
 
 - Windows with PowerShell 5.1+ or PowerShell Core
 - Administrative privileges
-- WPF support (use `-STA` flag for GUI)
 - For Intune features: Microsoft Graph modules and appropriate permissions
+- NOTE: ThinkCentre desktops are not currently supported due to incompatible WMI BIOS Interface implementation.
 
 **Lenovo BIOS Certificate Tool V2**
 

@@ -32,6 +32,12 @@ This modernization brings significant improvements in functionality, usability, 
 
 The Think BIOS Config Tool V2 (`ThinkBIOSConfigUI.ps1`) is a comprehensive solution for managing BIOS settings on Lenovo Think devices. Built on the `Lenovo.BIOS.Config` PowerShell module, it provides both GUI and command-line interfaces for complete BIOS configuration management.
 
+!!! note ""
+    **This solution replaces the older Think BIOS Config Tool which was implemented as an HTA.** Archived documentation for the HTA version is still available here: [Think BIOS Config Tool - HTA](https://docs.lenovocdrt.com/guides/tbct/tbct_top/)
+
+    Previously created INI files from the HTA version which contain an encrypted password are not compatible with the new Think BIOS Config Tool V2 due to changes in encryption methods. Please recreate the INI files using the new tool.
+
+
 ![Think BIOS Config Tool V2](https://cdrt.github.io/mk_docs/img/guides/tbct_v2/initial-settings.png)
 
 #### Key Features

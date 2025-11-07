@@ -134,6 +134,9 @@ This will generate a text file for you containing the signed command.
 !!! note
     You can generate multiple signed commands to change multiple BIOS Settings. You must also create a signed command that uses the SaveBiosSettings method.  This must be the final command submitted after changing one or more settings to ensure the settings are saved prior to restarting the machine.
 
+!!! note
+    When creating a signed settings command with the UI, you can only change settings where the value can be selected from the drop down. Free form values like AlarmDate or AlarmTime cannot be specified. The command line interface can be used for this instead.
+
 ## Apply the Signed Command
 
 On the test machine where the certificate has been applied and the LnvBiosCerts module has been installed, run the following command to apply the signed command which can be copied from the text file created in the previous step:

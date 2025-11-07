@@ -37,7 +37,6 @@ The Think BIOS Config Tool V2 (`ThinkBIOSConfigUI.ps1`) is a comprehensive solut
 
     Previously created INI files from the HTA version which contain an encrypted password are not compatible with the new Think BIOS Config Tool V2 due to changes in encryption methods. Please recreate the INI files using the new tool.
 
-
 ![Think BIOS Config Tool V2](https://cdrt.github.io/mk_docs/img/guides/tbct_v2/initial-settings.png)
 
 #### Key Features

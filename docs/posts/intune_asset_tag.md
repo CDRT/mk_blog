@@ -36,7 +36,7 @@ Valid licenses for enrolled devices to use Microsoft Endpoint Manager.
 ## Proactive Remediations
 
 !!! info ""
-    Detection/Remediation scripts can be downloaded on my [GitHub](https://github.com/philjorgensen/Intune/tree/main/Proactive%20Remediations/Asset%20Tag)
+    Detection/Remediation scripts can be downloaded on my [GitHub](https://github.com/philjorgensen/Intune/tree/main/Remediations/Asset%20Tag)
 
 Sign-in to the Microsoft Endpoint Manager [admin center](https://endpoint.microsoft.com/#home) and navigate to **Reports > Endpoint Analytics > Proactive Remediations**
 

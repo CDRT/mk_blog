@@ -1,15 +1,15 @@
 ---
-date: 2025-11-17
+date: 2025-11-24
 authors:
     - Phil
 categories:
     - "2025"
-title: Deep Dive - Certificate-based Authentication in an Autopilot Pre provisioning Deployment
+title: Deep Dive - Certificate-based Authentication in an Autopilot Pre-provisioning Deployment
 ---
 
 ![](https://cdrt.github.io/mk_blog/img/2025/configmgr_deploy_cert_based_bios_auth/image1.png)
 
-A deep dive on converting to certificate-based authentication in an Autopilot pre provisioned deployment using Think BIOS Config and Certificates V2 tools
+A deep dive on converting to certificate-based authentication in an Autopilot pre-provisioned deployment using Think BIOS Config and Certificates V2 tools
 <!-- more -->
 
 ## Overview
@@ -86,7 +86,7 @@ Before running the script, update the variables with your values:
 
     Add-AzKeyVaultCertificate -VaultName $keyVaultName -Name $Name -CertificatePolicy $certificatePolicy
 
-    Write-Host "Certificate creation triggered. Waiting 20 seconds for completion..."
+    Write-Host "Certificate creation triggered. Waiting 10 seconds for completion..."
     Start-Sleep -Seconds 10
 
     # Retrieve the certificate from Key Vault
@@ -248,7 +248,7 @@ Save the following script as a **Install-LnvBiosCertificate.ps1** here as well. 
     $CertFilePath = Join-Path $PSScriptRoot '.\*.pem'
 
     # --- Certificate Password ---
-    $CertPassword = 'pass1word'  # Replace with BIOS Supervisor password
+    $CertPassword = 'temppassword'  # Replace with temporary BIOS password set at factory
 
     # === Registry Tattoo Settings ===
     $RegPath = 'HKLM:\SOFTWARE\Lenovo\BIOSConfigDeployment'
@@ -828,8 +828,14 @@ Add the first Win32 app here and toggle the option to automatically install the 
 Assign to a device group containing Autopilot registered devices with an Autopilot deployment profile also assigned.
 
 ### What Happens on the Device
-1. Pre provisioning deployment starts
+1. Pre-provisioned deployment starts
 2. Dependency App #1 runs → installs public cert → converts BIOS to cert auth → reboots (1641)
 3. After reboot → ESP continues → App #2 runs → confirms certificate is installed via registry + WMI → submits signed `.ini` → settings applied → reboots
 4. All detection rules pass → ESP continues and reseals
 
+## Final Notes
+The new version of the Think BIOS Config tool is not capable of initially setting a Supervisor password. The tool only exposes settings and their values through WMI. It's still recommended to have a Supervisor password set at the factory.
+
+You can combine different settings across supported Think-branded products into a single configuration file for simplicity sake.
+
+In a future version of the tools, specifying the Supervisor password in plain text will be replaced with an encrypted string for security purposes.

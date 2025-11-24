@@ -19,6 +19,12 @@
 			<link></link>
 			</item>
 		-->
+		<item>
+			<title>Autopilot Certificate-based BIOS Authentication</title>
+			<description>A deep-dive on converting to certificate-based BIOS authentication in an Autopilot pre-provisioning deployment</description>
+			<pubDate>Mon, 24 Nov 2025 10:00:00 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/deep-dive---certificate-based-authentication-in-an-autopilot-pre-provisioning-deployment/</link>
+			</item>
         <item>
 			<title>Introducing Think BIOS Config Tool V2 and Lenovo BIOS Certificate Tool V2</title>
 			<description>Introducing the new PowerShell-based Think BIOS Config Tool V2 and Lenovo BIOS Certificate Tool V2</description>

@@ -1,0 +1,1216 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Ideas for managing Lenovo devices in the corporate environment.">
+      
+      
+      
+        <link rel="canonical" href="https://blog.lenovocdrt.com/certificate-based-bios-authentication/">
+      
+      
+        <link rel="prev" href="../automate-partition-sizes-when-using-windows-11-iso/">
+      
+      
+        <link rel="next" href="../introducing-think-bios-config-tool-v2-and-lenovo-bios-certificate-tool-v2/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../img/fav/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>Certificate-based BIOS Authentication - ThinkDeploy Blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-288025816"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-288025816",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-288025816",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>if("undefined"!=typeof __md_analytics){var consent=__md_get("__consent");consent&&consent.analytics&&__md_analytics()}</script>
+  
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="light-blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#getting-started" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="ThinkDeploy Blog" class="md-header__button md-logo" aria-label="ThinkDeploy Blog" data-md-component="logo">
+      
+  <img src="../img/CDRT-REV-Red_s.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ThinkDeploy Blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Certificate-based BIOS Authentication
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="light-blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="blue-grey"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="ThinkDeploy Blog" class="md-nav__button md-logo" aria-label="ThinkDeploy Blog" data-md-component="logo">
+      
+  <img src="../img/CDRT-REV-Red_s.png" alt="logo">
+
+    </a>
+    ThinkDeploy Blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../feed.xml" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RSS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Archive
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Archive
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2025/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2025
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2024/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2024
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2023/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2023
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2022/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2022
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2021/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2021
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2020/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2020
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2019/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2019
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2018/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2018
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2017/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2017
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href=".." class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="../img/fav/avatar.png" alt="Joe Parker">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          Joe Parker
+                        
+                      </strong>
+                      <br>
+                      Team Leader
+                    </span>
+                  </div>
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="../img/fav/avatar.png" alt="Devin McDermott">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          Devin McDermott
+                        
+                      </strong>
+                      <br>
+                      Software Developer
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
+                        <time datetime="2025-10-31 00:00:00+00:00" class="md-ellipsis">October 31, 2025</time>
+                      </div>
+                    </li>
+                    
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              10 min read
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+            
+          </nav>
+          
+            
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#getting-started" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Getting Started
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploy-the-lnvbioscerts-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deploy the LnvBiosCerts Module
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generate-a-signed-command" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Generate a Signed Command
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apply-the-signed-command" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apply the Signed Command
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-the-lenovo-bios-cert-tool-gui" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using the Lenovo BIOS Cert Tool GUI
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using the Lenovo BIOS Cert Tool GUI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installing-a-certificate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installing a certificate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generate-signed-command" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Generate Signed Command
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apply-signed-command" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apply Signed Command
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#working-with-think-bios-config-tool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Working with Think BIOS Config Tool
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unlocking-system-secured-with-certificate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unlocking System Secured with Certificate
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#final-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Final Notes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Final Notes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#clearing-certificate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clearing certificate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#installing-the-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installing the Module
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+
+
+
+
+  <h1>Certificate-based BIOS Authentication</h1>
+
+<p><em>updated October 31, 2025</em></p>
+<p>Beginning with 2022 ThinkPad models, it is now possible to configure systems to use a digital signing certificate instead of a supervisor password. Although this feature does not eliminate the challenge of initially securing the device, it does eliminate the need to exchange passwords in plain text when scripting BIOS settings changes.</p>
+<!-- more -->
+<p>To leverage this capability, a new set of WMI methods were introduced as part of the Lenovo WMI BIOS Interface. The usage concept follows these steps:</p>
+<ol>
+<li>Create a code signing certificate with public key/private key files</li>
+<li>Provision devices with the certificate</li>
+<li>Generate a "signed settings string"</li>
+<li>Call the new method to set the setting on the target device</li>
+<li>Repeat steps 3 &amp; 4 as needed</li>
+</ol>
+<p>To make the process easier, we have created a LnvBiosCerts PowerShell module and the Lenovo BIOS Cert Tool (LnvBiosCertsInterface.ps1) which provides a GUI interface for working with these functions. The current version of this package can be downloaded from <a href="https://download.lenovo.com/cdrt/tools/LnvBiosCertTool_1.0.2.zip">here (LnvBiosCertTool_1.0.2.zip)</a>.</p>
+<p>A reference guide to the PowerShell module is available at <a href="https://docs.lenovocdrt.com/guides/lbct/index">https://docs.lenovocdrt.com/guides/lbct/index</a></p>
+<h2 id="getting-started">Getting Started<a class="headerlink" href="#getting-started" title="Permanent link">#</a></h2>
+<p>The first step in trying this out will be to generate a compatible code signing certificate. In this article we will use OpenSSL to create the certificate. In this guide we will be using OpenSSL Light for this. This can be installed on an administrator’s system using Winget:</p>
+<p><img alt="Install OpenSSL Light" src="https://cdrt.github.io/mk_blog/img\2023\cert_based_bios_authentication\installopenssl.png" /></p>
+<p>Once it is installed, add the path to the CLI tool to the Path environment variable.</p>
+<div class="language-PowerShell highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nv">$env:Path</span> <span class="p">+=</span> <span class="s2">&quot;;C:\Program Files\OpenSSL-Win64\bin&quot;</span>
+</span></code></pre></div>
+<p>Then run the following command to generate a private key as a .PEM file:</p>
+<div class="language-PowerShell highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">openssl</span> <span class="n">genrsa</span> <span class="n">-out</span> <span class="n">privateKey</span><span class="p">.</span><span class="n">pem</span> <span class="n">2048</span>
+</span></code></pre></div>
+<p><img alt="Create certificate" src="https://cdrt.github.io/mk_blog/img\2023\cert_based_bios_authentication\createkey.png" /></p>
+<p>This file should be kept secure with access only given to an administrator. Having access to this file would be analogous to knowing a Supervisor Password.</p>
+<p>Depending on your company's requirements you may need to use .DER file format instead.  These are also supported and can be generated from the .PEM file. This solution does not currently support encrypted keys.</p>
+<p>The optional command to convert the .PEM file to a .DER file:</p>
+<div class="language-PowerShell highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">openssl</span> <span class="n">rsa</span> <span class="n">-in</span> <span class="n">privateKey</span><span class="p">.</span><span class="n">pem</span> <span class="n">-inform</span> <span class="n">PEM</span> <span class="n">-out</span> <span class="n">privateKey</span><span class="p">.</span><span class="n">der</span> <span class="n">-outform</span> <span class="n">DER</span>
+</span></code></pre></div>
+<p>A public key can be generated from the private key with the following command:</p>
+<div class="language-PowerShell highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">openssl</span> <span class="n">rsa</span> <span class="n">-in</span> <span class="n">privateKey</span><span class="p">.</span><span class="n">pem</span> <span class="n">-pubout</span> <span class="n">-out</span> <span class="n">publicKey</span><span class="p">.</span><span class="n">pem</span>
+</span></code></pre></div>
+<p>Convert to .DER (optional):</p>
+<div class="language-PowerShell highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">openssl</span> <span class="n">rsa</span> <span class="n">-pubin</span> <span class="n">-in</span> <span class="n">publicKey</span><span class="p">.</span><span class="n">pem</span> <span class="n">-inform</span> <span class="n">PEM</span> <span class="n">-out</span> <span class="n">publicKey</span><span class="p">.</span><span class="n">der</span> <span class="n">-outform</span> <span class="n">DER</span>
+</span></code></pre></div>
+<p>Next we need to generate the X509 Certificate that will be provisioned to the managed devices.</p>
+<div class="language-PowerShell highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">openssl</span> <span class="n">req</span> <span class="n">-new</span> <span class="n">-x509</span> <span class="n">-days</span> <span class="n">7300</span> <span class="n">-key</span> <span class="n">privateKey</span><span class="p">.</span><span class="n">pem</span> <span class="n">-out</span> <span class="n">biosCert</span><span class="p">.</span><span class="n">pem</span> <span class="n">-sha256</span> <span class="p">[</span><span class="n">-config</span> <span class="n">openssl</span><span class="p">.</span><span class="n">cnf</span><span class="p">]</span>
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you installed the Lite version of OpenSSL for Windows, the config file will not be there so you can ignore the -config openssl.cnf parameter.</p>
+</div>
+<p><img alt="Create certificate" src="https://cdrt.github.io/mk_blog/img\2023\cert_based_bios_authentication\createbioscert.png" /></p>
+<h2 id="deploy-the-lnvbioscerts-module">Deploy the LnvBiosCerts Module<a class="headerlink" href="#deploy-the-lnvbioscerts-module" title="Permanent link">#</a></h2>
+<p>The zip file linked at the beginning of this article contains a subfolder named LnvBiosCerts which contains the PowerShell module. To install the module, you can simply copy that folder to one of the following locations:</p>
+<p><code>C:\Program Files\WindowsPowerShell\Modules</code></p>
+<p>or</p>
+<p><code>C:\Users\&lt;username&gt;\Documents\WindowsPowerShell\Modules</code></p>
+<p>The first location is preferable as it allows any user or admin process on the machine to access the module.  The second location only makes the module available for that particular user.</p>
+<p><img alt="PowerShell Modules Folder" src="https://cdrt.github.io/mk_blog/img\2023\cert_based_bios_authentication\screen1.png" /></p>
+<p>Open a new Administrator PowerShell terminal. This ensures the module just copied to this system will be loaded. If, however, the commands below are not recognized you may need to explicitly import the module with this command:</p>
+<div class="language-PowerShell highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nb">Import-Module</span> <span class="s1">&#39;LnvBiosCerts&#39;</span> <span class="n">-force</span>
+</span></code></pre></div>
+<p>Run the following command in the folder where the <strong>biosCert.pem</strong> file is located to provision the certificate to the system:</p>
+<div class="language-PowerShell highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nb">Set-LnvBiosCertificate</span> <span class="n">-Certfile</span> <span class="p">.\</span><span class="n">biosCert</span><span class="p">.</span><span class="n">pem</span> <span class="n">-Password</span> <span class="n">pass1word</span>
+</span></code></pre></div>
+<p><img alt="PowerShell Modules Folder" src="https://cdrt.github.io/mk_blog/img\2023\cert_based_bios_authentication\installcert.png" /></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The -Password parameter passes the current Supervisor Password that exists on the device and this password will be removed and replaced with the certificate. The target device must either have a Supervisor Password already set or must be in the System Deployment Boot Mode with the command being run from a script under WinPE of a PXE boot image.</p>
+</div>
+<p>Reboot the system so that the changes can be finalized.  You may notice a message during reboot that confirms the configuration has changed.</p>
+<h2 id="generate-a-signed-command">Generate a Signed Command<a class="headerlink" href="#generate-a-signed-command" title="Permanent link">#</a></h2>
+<p>On the administrator device which has the private key, generate a signed command.  This can be done using the Lenovo BIOS Certificate Tool user interface by doing the following:</p>
+<ol>
+<li>Click Generate Signed Command in the left navigation menu</li>
+<li>Select the method ‘SetBiosSetting’</li>
+<li>Specify the path to the private key</li>
+<li>Either enter or select the setting name and value (use the Load WMI Settings button if the current system has the setting needed, otherwise you can type the setting name and value in manually)</li>
+<li>Click Generate Command</li>
+<li>Copy the text generated to a text file you can copy to or access from the test device</li>
+</ol>
+<p>The signed command can also be generated from the PowerShell terminal by running the following command in the folder where the private key exists:</p>
+<div class="language-PowerShell highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nb">Get-LnvSignedWmiCommand</span> <span class="n">-Method</span> <span class="n">SetBiosSetting</span> <span class="n">-SettingName</span> <span class="n">WakeOnLANDock</span> <span class="n">-SettingValue</span> <span class="n">Disable</span> <span class="n">-KeyFile</span> <span class="p">.\</span><span class="n">privateKey</span><span class="p">.</span><span class="n">pem</span> <span class="p">|</span> <span class="nb">Out-File</span> <span class="p">.\</span><span class="n">setting</span><span class="p">.</span><span class="n">txt</span>
+</span></code></pre></div>
+<p>This will generate a text file for you containing the signed command.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can generate multiple signed commands to change multiple BIOS Settings. You must also create a signed command that uses the SaveBiosSettings method.  This must be the final command submitted after changing one or more settings to ensure the settings are saved prior to restarting the machine.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When creating a signed settings command with the UI, you can only change settings where the value can be selected from the drop down. Free form values like AlarmDate or AlarmTime cannot be specified. The command line interface can be used for this instead.</p>
+</div>
+<h2 id="apply-the-signed-command">Apply the Signed Command<a class="headerlink" href="#apply-the-signed-command" title="Permanent link">#</a></h2>
+<p>On the test machine where the certificate has been applied and the LnvBiosCerts module has been installed, run the following command to apply the signed command which can be copied from the text file created in the previous step:</p>
+<div class="language-PowerShell highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nb">Submit-LnvBiosChange</span> <span class="n">-Command</span> <span class="err">“</span><span class="p">(</span><span class="n">text</span> <span class="n">from</span> <span class="n">text</span> <span class="n">file</span><span class="p">)</span><span class="err">”</span>
+</span></code></pre></div>
+<p><img alt="Apply signed command" src="https://cdrt.github.io/mk_blog/img\2023\cert_based_bios_authentication\applycommand.png" /></p>
+<p>Repeat this step for all the signed commands and make sure the last one applied is the one that references the SaveBiosSettings method. Restart the system for the settings changes to take effect.</p>
+<h2 id="using-the-lenovo-bios-cert-tool-gui">Using the Lenovo BIOS Cert Tool GUI<a class="headerlink" href="#using-the-lenovo-bios-cert-tool-gui" title="Permanent link">#</a></h2>
+<p>The Lenovo BIOS Cert Tool provides an easy to use graphical interface to work with the certificate-based BIOS configuration methods. It provides functions that can be used to configure a device directly as well as a couple of additional functions to convert a settings INI file to a signed settings INI file or to create an unlock code to allow access to BIOS Setup on a device where the certificate is provisioned.</p>
+<p>When you first launch the Lenovo BIOS Certs Tool, go to Preferences and specify the private key that will be used for signging. You have the option of specifying a local private key file or selecting a private key from an Azure Key Vault.</p>
+<div class="admonition warning">
+<p class="admonition-title">Connect to Azure first</p>
+<p>In order to use the Azure Key Vault feature, you must first connect to your Azure tenant using the <code>Microsoft.Graph.Authentication</code> and <code>Az.KeyVault</code> modules before launching the Lenovo BIOS Cert Tool. You can use various methods supported by Azure to connect such as an app registration and client secret. No tenant information or credentials are stored by the Lenovo BIOS Certs Tool. More information available here:<br><a href="https://learn.microsoft.com/en-us/powershell/microsoftgraph/authentication-commands?view=graph-powershell-1.0">Authentication module cmdlets in Microsoft Graph PowerShell | Microsoft Learn</a><br><a href="https://learn.microsoft.com/en-us/azure/key-vault/general/quick-create-portal">Quickstart - Create an Azure Key Vault with the Azure portal | Microsoft Learn</a><br><a href="https://learn.microsoft.com/en-us/azure/key-vault/general/rbac-guide?tabs=azure-cli">Grant permission to applications to access an Azure key vault using Azure RBAC | Microsoft Learn</a></p>
+</div>
+<p><img alt="Specify private key" src="https://cdrt.github.io/mk_blog/img/2023/cert_based_bios_authentication/preferenceswindow.png" /></p>
+<h3 id="installing-a-certificate">Installing a certificate<a class="headerlink" href="#installing-a-certificate" title="Permanent link">#</a></h3>
+<p>To install a certificate using the Lenovo BIOS Cert Tool, click <strong>Install Certificate</strong> in the left navigation area. Enter the password configured on the device. Systems that launched in 2025 added support for dual certificates since these devices can have a Supervisor Password and a System Management Password. A certificate can be installed to replace each specific password type. Therefore, it is necessary to select the appropriate Password type.</p>
+<ul>
+<li><strong>Supervisor for single certificate devices</strong>: Use for any device that only implements a Supervisor Password.</li>
+<li><strong>Supervisor for dual certificate devices</strong>: Use for any device that implements both a Supervisor Password and a System Management Password when installing the certificate to replace the Supervisor Password.</li>
+<li><strong>System Management for dual certificate devcies</strong>: Use for any device that implements both a Supervisor Password and a System Management Password when installing the certificate to replace the System Management Password.</li>
+</ul>
+<p>Next, specify the certificate file to be installed on the device and then click <strong>Install Certificate</strong>. Reboot the device to complete the installation.</p>
+<p><img alt="Install Certificate" src="https://cdrt.github.io/mk_blog/img/2023/cert_based_bios_authentication/installcertificatewindow.png" /></p>
+<h3 id="generate-signed-command">Generate Signed Command<a class="headerlink" href="#generate-signed-command" title="Permanent link">#</a></h3>
+<p>There are several different methods that can be called using the WMI BIOS interface and the commands can be signed so they will be accepted on devices which have the appropriate certificate provisioned.</p>
+<p>To create the properly formatted command string, click <strong>Generate Signed Command</strong> in the left navigation area and enter the details needed. Specify the signing key to use and select a method to be called. By selecting the method to use, the necessary <strong>Aditional Parameters</strong> can be highlighted.</p>
+<p>If you select the <strong>SetBiosSetting</strong> method, then you will need to select a Setting Name and a Setting Value. Click the <strong>Load WMI</strong> button to load the available settings and their possible values from the device. The other controls will be disabled and are not needed in this scenario. The controls will be enabled based on the method selected.</p>
+<p>Clicking <strong>Generate Command</strong> will populate the text box next to it with the signed command text. Double-clicking the text will copy the command to the clipboard and allows you to paste it on the <strong>Apply Signed Command</strong> panel so it can be applied on the device the tool is running on.</p>
+<p>The possible methods are:</p>
+<ul>
+<li><strong>SetBiosSetting</strong> : set a specific setting to a selected value</li>
+<li><strong>SaveBiosSetting</strong> : save a changed setting - this needs to called after one or more settings have been changed</li>
+<li><strong>ClearBiosCertificate</strong> : removes the provisioned BIOS certificate and leaves the device in state that does not require any authentication - this requires specifying the serial number of the device to ensure the command is only applied to the correct device since it reduces the security of the device</li>
+<li><strong>ChangeBiosCertificateToPassword</strong> : removes the provisioned BIOS certificate and replaces it with the specified Password - make sure the Certificate Type and Password used correspond to the desired certificate to be replaced</li>
+<li><strong>UpdateBiosCertificate</strong> : replaces a provisioned certificate with a new certificate</li>
+<li><strong>LoadDefaultSettings</strong> : method to return the device settings back to the original default values - excluding Security settings</li>
+<li><strong>SetFunctionRequest</strong> : method to perform a selected action - possible actions are:<ul>
+<li><strong>ClearSecurityChip</strong> : clears the TPM</li>
+<li><strong>ResetFingerprintData</strong> : clears any stored fingerprint data</li>
+<li><strong>ResettoSetupMode</strong> : resets the Secure Boot mode back to the Setup Mode</li>
+<li><strong>RestoreFactoryKeys</strong> : reloads the factory Secure Boot keys</li>
+<li><strong>ClearAllSecureBootKeys</strong> : removes all Secure Boot keys</li>
+<li><strong>RestoreSystemToFactoryDefaults</strong> : restores the Factory default values, including Security settings</li>
+</ul>
+</li>
+</ul>
+<p><img alt="Generate Signed Command" src="https://cdrt.github.io/mk_blog/img/2023/cert_based_bios_authentication/signcommandwindow.png" /></p>
+<h3 id="apply-signed-command">Apply Signed Command<a class="headerlink" href="#apply-signed-command" title="Permanent link">#</a></h3>
+<p>Clicking <strong>Apply Signed Command</strong> opens the panel that allows you to paste in the signed command from the <strong>Generate Signed Command</strong> panel. You may also enter multiple commands to be applied at once (eg. a SetBiosSetting command and a SaveBiosSetting command) or specify an INI file generated from the Think BIOS Config Tool. These commands will be applied to the device the tool is currently running on.</p>
+<p><img alt="Apply Signed Command" src="https://cdrt.github.io/mk_blog/img/2023/cert_based_bios_authentication/applycommandwindow.png" /></p>
+<h3 id="working-with-think-bios-config-tool">Working with Think BIOS Config Tool<a class="headerlink" href="#working-with-think-bios-config-tool" title="Permanent link">#</a></h3>
+<p>The Think BIOS Config Tool is a separate tool that provides the ability to list all the available settings and values on a system. The settings can be configured as desired and an INI file can be generated with changed settings. The Lenovo BIOS Certificate Tool can convert one of these INI files into a text file containing the signed WMI commands to apply the settings.</p>
+<p><img alt="Convert Config File Window" src="https://cdrt.github.io/mk_blog/img\2023\cert_based_bios_authentication\convertconfigfilewindow.png" /></p>
+<p>The generated file can be used on the <a href="#apply-signed-command"><strong>Apply Signed Commands</strong></a> page of the Lenovo BIOS Certificate Tool or can easily be incorporated into your own PowerShell script.</p>
+<h3 id="unlocking-system-secured-with-certificate">Unlocking System Secured with Certificate<a class="headerlink" href="#unlocking-system-secured-with-certificate" title="Permanent link">#</a></h3>
+<p>When a system is secured with a certificate, you cannot access BIOS Setup directly on the machine using a Supervisor Password. Therefore, there is a different process to unlock a machine to access BIOS Setup.</p>
+<ol>
+<li>Technician boots the system pressing F1 to enter BIOS Setup.</li>
+<li>Insert a USB key to save a BIOS Unlock File to</li>
+<li>Click "Generate Unlock Code"</li>
+<li>Send BIOS Unlock File to administrator</li>
+<li>Administrator uses Lenovo BIOS Cert Tool to generate Unlock Code by specifiying Private Key File and Unlock File.</li>
+<li>Administrator sends Unlock Code to Technician</li>
+<li>Technician enters Unlock Code and continues to BIOS Setup</li>
+</ol>
+<p><img alt="Unlock BIOS Window" src="https://cdrt.github.io/mk_blog/img\2023\cert_based_bios_authentication\unlockbioswindow.png" /></p>
+<h2 id="final-notes">Final Notes<a class="headerlink" href="#final-notes" title="Permanent link">#</a></h2>
+<h3 id="clearing-certificate">Clearing certificate<a class="headerlink" href="#clearing-certificate" title="Permanent link">#</a></h3>
+<p>If you are clearing the certificate from multiple machines, it makes more sense to change the certificate to a temporary password instead of just removing the certificate. Generating a <strong>ClearBiosCertificate</strong> command requires the machine serial number which means there is a unique command for each machine.</p>
+<p><strong>ChangeBiosCertificateToPassword</strong> would be a general command for all machines with that certificate which will replace the certificate with a password you specify. This will leave the devices in a secure, managable state also.</p>
+<h3 id="installing-the-module">Installing the Module<a class="headerlink" href="#installing-the-module" title="Permanent link">#</a></h3>
+<p>By placing the <strong>Lenovo.BIOS.Certificates</strong> folder in the <strong>%Program Files%\WindowsPowershell\Modules</strong> folder, the module will be available to import when a PowerShell session is started. Simply run <code>Import-Module 'Lenovo.Bios.Certificates' -Force</code> to ensure the module is available in the session.</p>
+<h3 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">#</a></h3>
+<p>The <strong>SetFunctionRequest</strong> method has a limitation regarding the <em><strong>ResetSystemToFactoryDefaults</strong></em> BIOS function. The method will not be able to call this function when a certificate is installed on the machine.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2025 <a href="https://blog.lenovocdrt.com"  target="_blank" rel="noopener">Lenovo Commercial Deployment Readiness Team</a><br><a href="#__consent" style="text-decoration:underline;">Change cookie settings</a>
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+      <div class="md-consent" data-md-component="consent" id="__consent" hidden>
+        <div class="md-consent__overlay"></div>
+        <aside class="md-consent__inner">
+          <form class="md-consent__form md-grid md-typeset" name="consent">
+            
+
+
+
+  
+
+<h4>Cookie consent</h4>
+<p>We use cookies to recognize your repeated visits and preferences such as light and dark mode, as well as to measure anonymous usage data to determine effectiveness of our documentation and whether users find what they're searching for. With your consent, you're helping us to make our documentation better.</p>
+<input class="md-toggle" type="checkbox" id="__settings" checked>
+<div class="md-consent__settings">
+  <ul class="task-list">
+    
+    
+      
+        
+  
+  
+    
+    
+  
+  <li class="task-list-item">
+    <label class="task-list-control">
+      <input type="checkbox" name="analytics" checked>
+      <span class="task-list-indicator"></span>
+      Google Analytics
+    </label>
+  </li>
+
+      
+    
+    
+      
+    
+    
+  </ul>
+</div>
+<div class="md-consent__controls">
+  
+    
+      <button class="md-button md-button--primary">Accept</button>
+    
+    
+    
+  
+    
+    
+      <button type="reset" class="md-button md-button--primary">Reject</button>
+    
+    
+  
+</div>
+          </form>
+        </aside>
+      </div>
+      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout((function(){document.querySelector("[data-md-component=consent]").hidden=!1}),250);var form=document.forms.consent;for(var action of["submit","reset"])form.addEventListener(action,(function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map((function(e){return[e,!0]})))),location.hash="",location.reload()}))</script>
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tracking", "navigation.instant", "navigation.instant.progress", "navigation.expand", "navigation.path", "navigation.sections", "toc.integrate", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy", "content.code.select"], "search": "../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+        <script src="../js/open_in_new_tab.js"></script>
+      
+    
+  </body>
+</html>

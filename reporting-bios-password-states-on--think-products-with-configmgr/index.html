@@ -1,0 +1,1027 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Ideas for managing Lenovo devices in the corporate environment.">
+      
+      
+      
+        <link rel="canonical" href="https://blog.lenovocdrt.com/reporting-bios-password-states-on--think-products-with-configmgr/">
+      
+      
+        <link rel="prev" href="../upgrading-tpm-spec-12-to-20-on-thinkpad-using-configmgr-current-branch/">
+      
+      
+        <link rel="next" href="../tracking-thin-installer-update-history-with-configmgr-current-branch/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../img/fav/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>Reporting BIOS Password States on <br> Think Products with ConfigMgr - ThinkDeploy Blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-288025816"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-288025816",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-288025816",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>if("undefined"!=typeof __md_analytics){var consent=__md_get("__consent");consent&&consent.analytics&&__md_analytics()}</script>
+  
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="light-blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#extending-hardware-inventory" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="ThinkDeploy Blog" class="md-header__button md-logo" aria-label="ThinkDeploy Blog" data-md-component="logo">
+      
+  <img src="../img/CDRT-REV-Red_s.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ThinkDeploy Blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Reporting BIOS Password States on <br> Think Products with ConfigMgr
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="light-blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="blue-grey"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="ThinkDeploy Blog" class="md-nav__button md-logo" aria-label="ThinkDeploy Blog" data-md-component="logo">
+      
+  <img src="../img/CDRT-REV-Red_s.png" alt="logo">
+
+    </a>
+    ThinkDeploy Blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../feed.xml" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RSS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Archive
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Archive
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2025/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2025
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2024/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2024
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2023/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2023
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2022/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2022
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2021/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2021
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2020/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2020
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2019/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2019
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2018/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2018
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2017/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2017
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href=".." class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="../img/fav/avatar.png" alt="Philip Jorgensen">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          Philip Jorgensen
+                        
+                      </strong>
+                      <br>
+                      Deployment Expert
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
+                        <time datetime="2018-10-11 00:00:00+00:00" class="md-ellipsis">October 11, 2018</time>
+                      </div>
+                    </li>
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15 13h1.5v2.82l2.44 1.41-.75 1.3L15 16.69zm4-5H5v11h4.67c-.43-.91-.67-1.93-.67-3a7 7 0 0 1 7-7c1.07 0 2.09.24 3 .67zM5 21a2 2 0 0 1-2-2V5c0-1.11.89-2 2-2h1V1h2v2h8V1h2v2h1a2 2 0 0 1 2 2v6.1c1.24 1.26 2 2.99 2 4.9a7 7 0 0 1-7 7c-1.91 0-3.64-.76-4.9-2zm11-9.85A4.85 4.85 0 0 0 11.15 16c0 2.68 2.17 4.85 4.85 4.85A4.85 4.85 0 0 0 20.85 16c0-2.68-2.17-4.85-4.85-4.85"/></svg>
+                          <time datetime="2019-09-20 00:00:00+00:00" class="md-ellipsis">September 20, 2019</time>
+                        </div>
+                      </li>
+                    
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              5 min read
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+            
+          </nav>
+          
+            
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#extending-hardware-inventory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Extending Hardware Inventory
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#downloads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Downloads
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+
+
+
+
+  <h1>Reporting BIOS Password States on <br> Think Products with ConfigMgr</h1>
+
+<p>There may be a need to run a report on your Think products to check which BIOS settings are enabled or disabled, or if there is even a BIOS supervisor password set.</p>
+<p>This post will walk through creating a simple custom report in ConfigMgr that will display the following:</p>
+<!-- more -->
+<ul>
+<li>All Lenovo Think products</li>
+<li>Model (Friendly Names)</li>
+<li>Computer Name</li>
+<li>BIOS Version</li>
+<li>Is TPM Enabled?</li>
+<li>Is TPM Activated?</li>
+<li>Secure Boot Status</li>
+<li>UEFI Enabled?</li>
+<li>Device Guard in BIOS Enabled?</li>
+<li>BIOS Password(s) Set</li>
+</ul>
+<h2 id="extending-hardware-inventory">Extending Hardware Inventory<a class="headerlink" href="#extending-hardware-inventory" title="Permanent link">#</a></h2>
+<p><a href="https://docs.microsoft.com/en-us/sccm/core/clients/manage/inventory/extend-hardware-inventory">More info</a></p>
+<p>First, you'll need to extend hardware inventory.  To make this a bit easier, there's a zip at the bottom of the page you can download that contains a MOF file you can import into your Default Client Settings that will add these classes</p>
+<ul>
+<li>Lenovo_BiosSetting</li>
+<li>Lenovo_Bios PasswordSettings</li>
+</ul>
+<p>Open the Default Client Settings, select Hardware Inventory, and click Set Classes</p>
+<p><img alt="" src="https://cdrt.github.io/mk_blog/img/2018/bios_reporting/image1.jpg" /></p>
+<p>On the Hardware Inventory Class window, click Import.  Select the MOF file containing the Lenovo WMI Classes.  Leave the default radio button selected to import both the inventory classes and settings and Click Import.  Click Ok to complete.</p>
+<p><img alt="" src="https://cdrt.github.io/mk_blog/img/2018/bios_reporting/image2.jpg" /></p>
+<p><img alt="" src="https://cdrt.github.io/mk_blog/img/2018/bios_reporting/image3.jpg" /></p>
+<p>Once the clients receive the updated Client Settings, the two Lenovo classes will be inventoried and can be reviewed in Resource Explorer.  If you have a mixed environment of different vendors, it may be a good idea to create Custom Client Settings and deploy only to a Collection containing Lenovo hardware.</p>
+<p><strong>Creating a <a href="https://docs.microsoft.com/en-us/sccm/core/servers/manage/creating-custom-report-models-in-sql-server-reporting-services">Custom Report</a></strong></p>
+<p>Also at the bottom of the page is a sample report you can import into your SSRS.  Assuming you have the Reporting Services Point role installed and configured, find the URL of your Report Manager.  This can be found in the Console under the <strong>Monitoring Workspace / Reporting Node</strong></p>
+<p><img alt="" src="https://cdrt.github.io/mk_blog/img/2018/bios_reporting/image4.jpg" /></p>
+<p>Open Internet Explorer, navigate to the Report Manager URL and choose a path to upload the report to.  Once uploaded, edit the report in Report Builder.  You'll need to replace the Data Source and make any other customizations to fit your environment.  Here's an example of what will be presented</p>
+<p><img alt="" src="https://cdrt.github.io/mk_blog/img/2018/bios_reporting/image5.jpg" /></p>
+<p>You'll notice in the example, different values under the BIOS Password(s) column.  These correspond to the integer that's displayed in the Password State property when querying the Lenovo_BiosPasswordSettings class.  There were 8 new values introduced in the Whisky Lake generation of ThinkPad.  Complete list below:</p>
+<p><strong>0</strong>   |   No BIOS Password Set</p>
+<p><strong>1</strong>   |   Only Power On Password</p>
+<p><strong>2</strong>   |   Only Supervisor Password</p>
+<p><strong>3</strong>   |   User HDD and/or User HDD and Master Password</p>
+<p><strong>5</strong>   |   Power On + User HDD and/or User HDD and Master Password</p>
+<p><strong>6</strong>   |   Supervisor + User HDD and/or User HDD and Master Password</p>
+<p><strong>7</strong>   |   Supervisor + Power On + User HDD and/or User HDD and Master Password</p>
+<p><strong>64</strong>  |   Only System Management Password</p>
+<p><strong>65</strong>  |   System Management + Power On Password</p>
+<p><strong>66</strong>  |   Supervisor + System Management Password</p>
+<p><strong>67</strong>  |   Supervisor + System Management + Power On Password</p>
+<p><strong>68</strong>  |   System Management + User HDD and/or User HDD Master Password</p>
+<p><strong>69</strong>  |   System Management + Power On + User HDD and/or User HDD Master Password</p>
+<p><strong>70</strong>  |   Supervisor + System Management + User HDD and/or User HDD Master Password</p>
+<p><strong>71</strong>  |   Supervisor + System Management + Power On + User HDD and/or User HDD Master Password</p>
+<p>I'm by no means an SQL expert but below is the query used to pull this data:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="n">SMS_G_System_COMPUTER_SYSTEM</span><span class="p">.</span><span class="n">Manufacturer00</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;Manufacturer&#39;</span><span class="p">,</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="n">__em_COMPUTER_SYSTEM_PRODUCT0</span><span class="p">.</span><span class="n">Version00</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;Model&#39;</span><span class="p">,</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="n">SMS_G_System_COMPUTER_SYSTEM</span><span class="p">.</span><span class="n">Name00</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;Computer Name&#39;</span><span class="p">,</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="n">SMS_G_System_PC_BIOS</span><span class="p">.</span><span class="n">SMBIOSBIOSVersion00</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;BIOS Version&#39;</span><span class="p">,</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="k">CASE</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="k">WHEN</span><span class="w"> </span><span class="n">SMS_G_System_TPM</span><span class="p">.</span><span class="n">IsEnabled_InitialValue00</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;Yes&#39;</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="k">ELSE</span><span class="w"> </span><span class="s1">&#39;No&#39;</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">  </span><span class="k">END</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;TPM Enabled&#39;</span><span class="p">,</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">  </span><span class="k">CASE</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="k">WHEN</span><span class="w"> </span><span class="n">SMS_G_System_TPM</span><span class="p">.</span><span class="n">IsActivated_InitialValue00</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;Yes&#39;</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">    </span><span class="k">ELSE</span><span class="w"> </span><span class="s1">&#39;No&#39;</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">  </span><span class="k">END</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;TPM Activated&#39;</span><span class="p">,</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">  </span><span class="k">CASE</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">    </span><span class="k">WHEN</span><span class="w"> </span><span class="n">SMS_G_System_FIRMWARE</span><span class="p">.</span><span class="n">SecureBoot00</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;Enabled&#39;</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">    </span><span class="k">ELSE</span><span class="w"> </span><span class="s1">&#39;Disabled&#39;</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">  </span><span class="k">END</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;Secure Boot&#39;</span><span class="p">,</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">  </span><span class="k">CASE</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">    </span><span class="k">WHEN</span><span class="w"> </span><span class="n">SMS_G_System_FIRMWARE</span><span class="p">.</span><span class="n">UEFI00</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;Enabled&#39;</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">    </span><span class="k">ELSE</span><span class="w"> </span><span class="s1">&#39;Disabled&#39;</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">  </span><span class="k">END</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;UEFI&#39;</span><span class="p">,</span>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">  </span><span class="k">CASE</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="w">    </span><span class="k">WHEN</span><span class="w"> </span><span class="n">___System_LENOVO_BIOSSETTING2</span><span class="p">.</span><span class="n">CurrentSetting00</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;Device Guard,Enabled%&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;Enabled&#39;</span>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">    </span><span class="k">WHEN</span><span class="w"> </span><span class="n">___System_LENOVO_BIOSSETTING2</span><span class="p">.</span><span class="n">CurrentSetting00</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;DeviceGuard,Enable%&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;Enabled&#39;</span>
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="w">    </span><span class="k">ELSE</span><span class="w"> </span><span class="s1">&#39;Disabled&#39;</span>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="w">  </span><span class="k">END</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;Device Guard&#39;</span><span class="p">,</span>
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="w">  </span><span class="k">CASE</span>
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="w">    </span><span class="k">WHEN</span><span class="w"> </span><span class="n">__ENOVO_BIOSPASSWORDSETTINGS1</span><span class="p">.</span><span class="n">PasswordState00</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;Only Power On Password&#39;</span>
+</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="w">    </span><span class="k">WHEN</span><span class="w"> </span><span class="n">__ENOVO_BIOSPASSWORDSETTINGS1</span><span class="p">.</span><span class="n">PasswordState00</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;Only Supervisor Password&#39;</span>
+</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="w">    </span><span class="k">WHEN</span><span class="w"> </span><span class="n">__ENOVO_BIOSPASSWORDSETTINGS1</span><span class="p">.</span><span class="n">PasswordState00</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;Supervisor + Power On Password&#39;</span>
+</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="w">    </span><span class="k">WHEN</span><span class="w"> </span><span class="n">__ENOVO_BIOSPASSWORDSETTINGS1</span><span class="p">.</span><span class="n">PasswordState00</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;User HDD and/or User HDD and Master Password&#39;</span>
+</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a><span class="w">    </span><span class="k">WHEN</span><span class="w"> </span><span class="n">__ENOVO_BIOSPASSWORDSETTINGS1</span><span class="p">.</span><span class="n">PasswordState00</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;Power On + User HDD and/or User HDD and Master Password&#39;</span>
+</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a><span class="w">    </span><span class="k">WHEN</span><span class="w"> </span><span class="n">__ENOVO_BIOSPASSWORDSETTINGS1</span><span class="p">.</span><span class="n">PasswordState00</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;Supervisor + User HDD and/or User HDD and Master Password&#39;</span>
+</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a><span class="w">    </span><span class="k">WHEN</span><span class="w"> </span><span class="n">__ENOVO_BIOSPASSWORDSETTINGS1</span><span class="p">.</span><span class="n">PasswordState00</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;Supervisor + Power On + User HDD and/or User HDD and Master Password&#39;</span>
+</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a><span class="w">    </span><span class="k">WHEN</span><span class="w"> </span><span class="n">__ENOVO_BIOSPASSWORDSETTINGS1</span><span class="p">.</span><span class="n">PasswordState00</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">64</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;Only System Management Password&#39;</span>
+</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a><span class="w"> </span><span class="k">WHEN</span><span class="w"> </span><span class="n">__ENOVO_BIOSPASSWORDSETTINGS1</span><span class="p">.</span><span class="n">PasswordState00</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">65</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;System Management + Power On Password&#39;</span>
+</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a><span class="w">    </span><span class="k">WHEN</span><span class="w"> </span><span class="n">__ENOVO_BIOSPASSWORDSETTINGS1</span><span class="p">.</span><span class="n">PasswordState00</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">66</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;Supervisor + System Management Password&#39;</span>
+</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a><span class="w"> </span><span class="k">WHEN</span><span class="w"> </span><span class="n">__ENOVO_BIOSPASSWORDSETTINGS1</span><span class="p">.</span><span class="n">PasswordState00</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">67</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;Supervisor + System Management + Power On Password&#39;</span>
+</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a><span class="w"> </span><span class="k">WHEN</span><span class="w"> </span><span class="n">__ENOVO_BIOSPASSWORDSETTINGS1</span><span class="p">.</span><span class="n">PasswordState00</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">68</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;System Management + User HDD and/or User HDD Master Password&#39;</span>
+</span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a><span class="w"> </span><span class="k">WHEN</span><span class="w"> </span><span class="n">__ENOVO_BIOSPASSWORDSETTINGS1</span><span class="p">.</span><span class="n">PasswordState00</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">69</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;System Management + Power On + User HDD and/or User HDD Master Password&#39;</span>
+</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a><span class="w"> </span><span class="k">WHEN</span><span class="w"> </span><span class="n">__ENOVO_BIOSPASSWORDSETTINGS1</span><span class="p">.</span><span class="n">PasswordState00</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">70</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;Supervisor + System Management + User HDD and/or User HDD Master Password&#39;</span>
+</span><span id="__span-0-42"><a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a><span class="w"> </span><span class="k">WHEN</span><span class="w"> </span><span class="n">__ENOVO_BIOSPASSWORDSETTINGS1</span><span class="p">.</span><span class="n">PasswordState00</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">71</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;Supervisor + System Management + Power On + User HDD and/or User HDD Master Password&#39;</span>
+</span><span id="__span-0-43"><a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a><span class="w">    </span><span class="k">ELSE</span><span class="w"> </span><span class="s1">&#39;No BIOS Passwords Set&#39;</span>
+</span><span id="__span-0-44"><a id="__codelineno-0-44" name="__codelineno-0-44" href="#__codelineno-0-44"></a><span class="w">  </span><span class="k">END</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;BIOS Password(s)&#39;</span>
+</span><span id="__span-0-45"><a id="__codelineno-0-45" name="__codelineno-0-45" href="#__codelineno-0-45"></a><span class="k">FROM</span><span class="w"> </span><span class="n">vSMS_R_System</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">SMS_R_System</span>
+</span><span id="__span-0-46"><a id="__codelineno-0-46" name="__codelineno-0-46" href="#__codelineno-0-46"></a><span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">COMPUTER_SYSTEM_PRODUCT_DATA</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">__em_COMPUTER_SYSTEM_PRODUCT0</span>
+</span><span id="__span-0-47"><a id="__codelineno-0-47" name="__codelineno-0-47" href="#__codelineno-0-47"></a><span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="n">__em_COMPUTER_SYSTEM_PRODUCT0</span><span class="p">.</span><span class="n">MachineID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SMS_R_System</span><span class="p">.</span><span class="n">ItemKey</span>
+</span><span id="__span-0-48"><a id="__codelineno-0-48" name="__codelineno-0-48" href="#__codelineno-0-48"></a><span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">Computer_System_DATA</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">SMS_G_System_COMPUTER_SYSTEM</span>
+</span><span id="__span-0-49"><a id="__codelineno-0-49" name="__codelineno-0-49" href="#__codelineno-0-49"></a><span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="n">SMS_G_System_COMPUTER_SYSTEM</span><span class="p">.</span><span class="n">MachineID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SMS_R_System</span><span class="p">.</span><span class="n">ItemKey</span>
+</span><span id="__span-0-50"><a id="__codelineno-0-50" name="__codelineno-0-50" href="#__codelineno-0-50"></a><span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">TPM_DATA</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">SMS_G_System_TPM</span>
+</span><span id="__span-0-51"><a id="__codelineno-0-51" name="__codelineno-0-51" href="#__codelineno-0-51"></a><span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="n">SMS_G_System_TPM</span><span class="p">.</span><span class="n">MachineID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SMS_R_System</span><span class="p">.</span><span class="n">ItemKey</span>
+</span><span id="__span-0-52"><a id="__codelineno-0-52" name="__codelineno-0-52" href="#__codelineno-0-52"></a><span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">Firmware_DATA</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">SMS_G_System_FIRMWARE</span>
+</span><span id="__span-0-53"><a id="__codelineno-0-53" name="__codelineno-0-53" href="#__codelineno-0-53"></a><span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="n">SMS_G_System_FIRMWARE</span><span class="p">.</span><span class="n">MachineID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SMS_R_System</span><span class="p">.</span><span class="n">ItemKey</span>
+</span><span id="__span-0-54"><a id="__codelineno-0-54" name="__codelineno-0-54" href="#__codelineno-0-54"></a><span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">LENOVO_BIOSPASSWORDSETTINGS_DATA</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">__ENOVO_BIOSPASSWORDSETTINGS1</span>
+</span><span id="__span-0-55"><a id="__codelineno-0-55" name="__codelineno-0-55" href="#__codelineno-0-55"></a><span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="n">__ENOVO_BIOSPASSWORDSETTINGS1</span><span class="p">.</span><span class="n">MachineID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SMS_R_System</span><span class="p">.</span><span class="n">ItemKey</span>
+</span><span id="__span-0-56"><a id="__codelineno-0-56" name="__codelineno-0-56" href="#__codelineno-0-56"></a><span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">PC_BIOS_DATA</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">SMS_G_System_PC_BIOS</span>
+</span><span id="__span-0-57"><a id="__codelineno-0-57" name="__codelineno-0-57" href="#__codelineno-0-57"></a><span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="n">SMS_G_System_PC_BIOS</span><span class="p">.</span><span class="n">MachineID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SMS_R_System</span><span class="p">.</span><span class="n">ItemKey</span>
+</span><span id="__span-0-58"><a id="__codelineno-0-58" name="__codelineno-0-58" href="#__codelineno-0-58"></a><span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">LENOVO_BIOSSETTING_DATA</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">___System_LENOVO_BIOSSETTING2</span>
+</span><span id="__span-0-59"><a id="__codelineno-0-59" name="__codelineno-0-59" href="#__codelineno-0-59"></a><span class="w">  </span><span class="k">ON</span><span class="w"> </span><span class="n">___System_LENOVO_BIOSSETTING2</span><span class="p">.</span><span class="n">MachineID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SMS_R_System</span><span class="p">.</span><span class="n">ItemKey</span>
+</span><span id="__span-0-60"><a id="__codelineno-0-60" name="__codelineno-0-60" href="#__codelineno-0-60"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">SMS_G_System_COMPUTER_SYSTEM</span><span class="p">.</span><span class="n">Manufacturer00</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">N</span><span class="s1">&#39;LENOVO&#39;</span>
+</span><span id="__span-0-61"><a id="__codelineno-0-61" name="__codelineno-0-61" href="#__codelineno-0-61"></a><span class="k">AND</span><span class="w"> </span><span class="n">__em_COMPUTER_SYSTEM_PRODUCT0</span><span class="p">.</span><span class="n">Version00</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="n">N</span><span class="s1">&#39;Think%&#39;</span>
+</span><span id="__span-0-62"><a id="__codelineno-0-62" name="__codelineno-0-62" href="#__codelineno-0-62"></a><span class="cm">/*AND ___System_LENOVO_BIOSSETTING2.CurrentSetting00 LIKE N&#39;Device Guard%&#39;</span>
+</span><span id="__span-0-63"><a id="__codelineno-0-63" name="__codelineno-0-63" href="#__codelineno-0-63"></a><span class="cm">OR ___System_LENOVO_BIOSSETTING2.CurrentSetting00 LIKE N&#39;DeviceGuard%&#39;*/</span>
+</span></code></pre></div>
+<div class="admonition info">
+<p>The <a href="https://docs.microsoft.com/en-us/sccm/protect/deploy-use/use-device-guard-with-configuration-manager">Device Guard</a> BIOS setting is what's being reported only.  You will still need to perform OS side Device Guard configurations.  If a system does not have the Device Guard BIOS setting present, it will be filtered from the report.  You can comment out the last 2 lines of the query if you're certain the systems you're reporting on do have the Device Guard BIOS setting.</p>
+</div>
+<h2 id="downloads">Downloads<a class="headerlink" href="#downloads" title="Permanent link">#</a></h2>
+<p>MOF File: <a href="https://download.lenovo.com/cdrt/blog/Lenovo-WMIClasses.zip">https://download.lenovo.com/cdrt/blog/Lenovo-WMIClasses.zip</a></p>
+<p>Sample Report (CDRT logo has been removed): <a href="https://download.lenovo.com/cdrt/blog/Lenovo-TPM_BiosPassword_SecureBoot_Status-Report.zip">https://download.lenovo.com/cdrt/blog/Lenovo-TPM_BiosPassword_SecureBoot_Status-Report.zip</a></p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2025 <a href="https://blog.lenovocdrt.com"  target="_blank" rel="noopener">Lenovo Commercial Deployment Readiness Team</a><br><a href="#__consent" style="text-decoration:underline;">Change cookie settings</a>
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+      <div class="md-consent" data-md-component="consent" id="__consent" hidden>
+        <div class="md-consent__overlay"></div>
+        <aside class="md-consent__inner">
+          <form class="md-consent__form md-grid md-typeset" name="consent">
+            
+
+
+
+  
+
+<h4>Cookie consent</h4>
+<p>We use cookies to recognize your repeated visits and preferences such as light and dark mode, as well as to measure anonymous usage data to determine effectiveness of our documentation and whether users find what they're searching for. With your consent, you're helping us to make our documentation better.</p>
+<input class="md-toggle" type="checkbox" id="__settings" checked>
+<div class="md-consent__settings">
+  <ul class="task-list">
+    
+    
+      
+        
+  
+  
+    
+    
+  
+  <li class="task-list-item">
+    <label class="task-list-control">
+      <input type="checkbox" name="analytics" checked>
+      <span class="task-list-indicator"></span>
+      Google Analytics
+    </label>
+  </li>
+
+      
+    
+    
+      
+    
+    
+  </ul>
+</div>
+<div class="md-consent__controls">
+  
+    
+      <button class="md-button md-button--primary">Accept</button>
+    
+    
+    
+  
+    
+    
+      <button type="reset" class="md-button md-button--primary">Reject</button>
+    
+    
+  
+</div>
+          </form>
+        </aside>
+      </div>
+      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout((function(){document.querySelector("[data-md-component=consent]").hidden=!1}),250);var form=document.forms.consent;for(var action of["submit","reset"])form.addEventListener(action,(function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map((function(e){return[e,!0]})))),location.hash="",location.reload()}))</script>
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tracking", "navigation.instant", "navigation.instant.progress", "navigation.expand", "navigation.path", "navigation.sections", "toc.integrate", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy", "content.code.select"], "search": "../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+        <script src="../js/open_in_new_tab.js"></script>
+      
+    
+  </body>
+</html>

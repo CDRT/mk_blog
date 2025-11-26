@@ -1,0 +1,2000 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Ideas for managing Lenovo devices in the corporate environment.">
+      
+      
+      
+        <link rel="canonical" href="https://blog.lenovocdrt.com/deep-dive---certificate-based-authentication-in-an-autopilot-pre-provisioning-deployment/">
+      
+      
+        <link rel="prev" href="../introducing-think-bios-config-tool-v2-and-lenovo-bios-certificate-tool-v2/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../img/fav/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>Deep Dive - Certificate-based Authentication in an Autopilot Pre-provisioning Deployment - ThinkDeploy Blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-288025816"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-288025816",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-288025816",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>if("undefined"!=typeof __md_analytics){var consent=__md_get("__consent");consent&&consent.analytics&&__md_analytics()}</script>
+  
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="light-blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#overview" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="ThinkDeploy Blog" class="md-header__button md-logo" aria-label="ThinkDeploy Blog" data-md-component="logo">
+      
+  <img src="../img/CDRT-REV-Red_s.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ThinkDeploy Blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Deep Dive - Certificate-based Authentication in an Autopilot Pre-provisioning Deployment
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="light-blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="blue-grey"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="ThinkDeploy Blog" class="md-nav__button md-logo" aria-label="ThinkDeploy Blog" data-md-component="logo">
+      
+  <img src="../img/CDRT-REV-Red_s.png" alt="logo">
+
+    </a>
+    ThinkDeploy Blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../feed.xml" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RSS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Archive
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Archive
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2025/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2025
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2024/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2024
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2023/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2023
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2022/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2022
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2021/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2021
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2020/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2020
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2019/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2019
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2018/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2018
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2017/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2017
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href=".." class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="../img/fav/avatar.png" alt="Philip Jorgensen">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          Philip Jorgensen
+                        
+                      </strong>
+                      <br>
+                      Deployment Expert
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
+                        <time datetime="2025-11-24 00:00:00+00:00" class="md-ellipsis">November 24, 2025</time>
+                      </div>
+                    </li>
+                    
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
+                          <span class="md-ellipsis">
+                            
+                              13 min read
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+            
+          </nav>
+          
+            
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Overview">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-generate-a-self-signed-certificate-in-azure-key-vault" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Generate a Self-Signed Certificate in Azure Key Vault
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-preparing-the-configuration-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Preparing the Configuration File
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-3-create-the-first-win32-app-in-intune-convert-to-certificate-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Create the First Win32 App in Intune – Convert to Certificate Authentication
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 3: Create the First Win32 App in Intune – Convert to Certificate Authentication">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#app-information" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        App information
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#program" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Program
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#detection-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detection rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assignments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assignments
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-happens-on-the-device" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Happens on the Device
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-4-create-the-second-win32-app-applying-the-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Create the Second Win32 App - Applying the Settings
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 4: Create the Second Win32 App - Applying the Settings">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#app-information_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        App information
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#program_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Program
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#requirements_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#detection-rules_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detection rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dependencies
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assignments_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assignments
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-happens-on-the-device_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Happens on the Device
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#final-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Final Notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+
+
+
+
+  <h1>Deep Dive - Certificate-based Authentication in an Autopilot Pre-provisioning Deployment</h1>
+
+<p><img alt="" src="https://cdrt.github.io/mk_blog/img/2025/configmgr_deploy_cert_based_bios_auth/image1.png" /></p>
+<p>A deep dive on converting to certificate-based authentication in an Autopilot pre-provisioned deployment using Think BIOS Config and Certificates V2 tools</p>
+<!-- more -->
+
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">#</a></h2>
+<p>This deep-dive guide walks you through <strong>completely replacing a legacy BIOS Supervisor Password (SVP) with certificate-based authentication</strong> on Lenovo Think devices—enabling secure, passwordless BIOS management at scale.</p>
+<p>This solution is especially powerful in <strong>Windows Autopilot pre-provisioned deployments</strong>, where devices ship directly from the factory with an SVP set.</p>
+<p>We'll cover:</p>
+<ul>
+<li>Generating an HSM-protected self-signed certificate in Azure Key Vault</li>
+<li>Installing the public certificate to devices in an Autopilot pre provisioning deployment</li>
+<li>Applying a configuration file to set desired BIOS settings using signed WMI commands</li>
+</ul>
+<h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">#</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Before You Begin</p>
+</div>
+<p>You must have:</p>
+<ul>
+<li>A commercial Lenovo Think device (ThinkPad/ThinkCentre/ThinkStation) with a <strong>Supervisor Password already set</strong> (ideally factory-set before drop-ship)</li>
+<li>Az.KeyVault and Az.Accounts PowerShell modules</li>
+<li><strong>Azure Key Vault – Premium tier</strong> (required for HSM-backed keys when generating certificates)</li>
+<li>
+<p>A service principal with the following <strong>Azure RBAC roles scoped to the Key Vault</strong>:</p>
+<ul>
+<li><strong>Key Vault Administrator</strong> – to create and manage certificates</li>
+<li><strong>Key Vault Crypto User</strong> – for signing commands with the private key</li>
+</ul>
+</li>
+<li>
+<p><a href="https://docs.lenovocdrt.com/guides/lbct/">Lenovo BIOS Certificates Tool (LBCT)</a></p>
+</li>
+<li><a href="https://docs.lenovocdrt.com/guides/tbct_v2/tbct_v2_top/">Think BIOS Config Tool V2</a></li>
+</ul>
+<h2 id="step-1-generate-a-self-signed-certificate-in-azure-key-vault">Step 1: Generate a Self-Signed Certificate in Azure Key Vault<a class="headerlink" href="#step-1-generate-a-self-signed-certificate-in-azure-key-vault" title="Permanent link">#</a></h2>
+<p>We’ll create a self-signed X.509 certificate <strong>directly inside Key Vault</strong>.</p>
+<blockquote>
+<p>Only the <strong>public certificate</strong> will ever leave Key Vault.</p>
+</blockquote>
+<p>Before running the script, update the variables with your values:</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>What to put</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$AppId</code></td>
+<td>Application (client) ID of your service principal</td>
+</tr>
+<tr>
+<td><code>$Secret</code></td>
+<td>Client secret</td>
+</tr>
+<tr>
+<td><code>$keyVaultName</code></td>
+<td>Key Vault Name</td>
+</tr>
+<tr>
+<td><code>$certificateName</code></td>
+<td>Desired certificate name (must be unique in the vault)</td>
+</tr>
+<tr>
+<td>Tenant ID in <code>Connect-AzAccount</code></td>
+<td>Your Entra ID tenant GUID (found in Entra ID → Overview)</td>
+</tr>
+</tbody>
+</table>
+<details class="example">
+<summary>Create Azure Key Vault Certificate</summary>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c"># Define variables</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nv">$AppId</span> <span class="p">=</span> <span class="s2">&quot;00000000-0000-0000-0000-000000000000&quot;</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nv">$Secret</span> <span class="p">=</span> <span class="nb">ConvertTo-SecureString</span> <span class="s2">&quot;your-client-secret-here&quot;</span> <span class="n">-AsPlainText</span> <span class="n">-Force</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="nv">$Credential</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">Management</span><span class="p">.</span><span class="n">Automation</span><span class="p">.</span><span class="n">PSCredential</span><span class="p">(</span><span class="nv">$AppId</span><span class="p">,</span> <span class="nv">$Secret</span><span class="p">)</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="nv">$keyVaultName</span> <span class="p">=</span> <span class="s2">&quot;keyvault-name&quot;</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="nv">$Name</span> <span class="p">=</span> <span class="s2">&quot;certificate-name&quot;</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c"># Replace with your actual tenant ID</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="nb">Connect-AzAccount</span> <span class="n">-ServicePrincipal</span> <span class="n">-Tenant</span> <span class="s2">&quot;tenant-guid&quot;</span> <span class="n">-Credential</span> <span class="nv">$Credential</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="c"># Certificate policy – customize as needed</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="nv">$policySplat</span> <span class="p">=</span> <span class="p">@{</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    <span class="n">SubjectName</span>       <span class="p">=</span> <span class="s2">&quot;CN=Contoso BIOS Root CA 2025, O=Contoso Corp, C=US&quot;</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    <span class="n">IssuerName</span>        <span class="p">=</span> <span class="s2">&quot;Self&quot;</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>    <span class="n">ValidityInMonths</span>  <span class="p">=</span> <span class="n">12</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>    <span class="n">SecretContentType</span> <span class="p">=</span> <span class="s2">&quot;application/x-pem-file&quot;</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>    <span class="n">KeyType</span>           <span class="p">=</span> <span class="s2">&quot;RSA&quot;</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>    <span class="n">KeySize</span>           <span class="p">=</span> <span class="n">2048</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>    <span class="n">ReuseKeyOnRenewal</span> <span class="p">=</span> <span class="nv">$true</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>    <span class="n">KeyUsage</span>          <span class="p">=</span> <span class="p">@(</span><span class="s1">&#39;digitalSignature&#39;</span><span class="p">,</span> <span class="s1">&#39;dataEncipherment&#39;</span><span class="p">)</span>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="p">}</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="nv">$certificatePolicy</span> <span class="p">=</span> <span class="nb">New-AzKeyVaultCertificatePolicy</span> <span class="nv">@policySplat</span>
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="nb">Add-AzKeyVaultCertificate</span> <span class="n">-VaultName</span> <span class="nv">$keyVaultName</span> <span class="n">-Name</span> <span class="nv">$Name</span> <span class="n">-CertificatePolicy</span> <span class="nv">$certificatePolicy</span>
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="nb">Write-Host</span> <span class="s2">&quot;Certificate creation triggered. Waiting 10 seconds for completion...&quot;</span>
+</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="nb">Start-Sleep</span> <span class="n">-Seconds</span> <span class="n">10</span>
+</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>
+</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="c"># Retrieve the certificate from Key Vault</span>
+</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a><span class="nv">$cert</span> <span class="p">=</span> <span class="nb">Get-AzKeyVaultCertificate</span> <span class="n">-VaultName</span> <span class="nv">$keyVaultName</span> <span class="n">-Name</span> <span class="nv">$Name</span>
+</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>
+</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a><span class="c"># Export only the public cert as PEM</span>
+</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a><span class="nv">$pemBytes</span> <span class="p">=</span> <span class="nv">$cert</span><span class="p">.</span><span class="n">Certificate</span><span class="p">.</span><span class="n">Export</span><span class="p">(</span><span class="no">[System.Security.Cryptography.X509Certificates.X509ContentType]</span><span class="p">::</span><span class="n">Cert</span><span class="p">)</span>
+</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a><span class="nv">$pemBase64</span> <span class="p">=</span> <span class="no">[Convert]</span><span class="p">::</span><span class="n">ToBase64String</span><span class="p">(</span><span class="nv">$pemBytes</span><span class="p">)</span>
+</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a>
+</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a><span class="nv">$pemFormatted</span> <span class="p">=</span> <span class="sh">@&quot;</span>
+</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a><span class="sh">-----BEGIN CERTIFICATE-----</span>
+</span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a><span class="sh">$pemBase64</span>
+</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a><span class="sh">-----END CERTIFICATE-----</span>
+</span><span id="__span-0-42"><a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a><span class="sh">&quot;@</span>
+</span><span id="__span-0-43"><a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a>
+</span><span id="__span-0-44"><a id="__codelineno-0-44" name="__codelineno-0-44" href="#__codelineno-0-44"></a><span class="c"># Save to temp (or copy this output manually)</span>
+</span><span id="__span-0-45"><a id="__codelineno-0-45" name="__codelineno-0-45" href="#__codelineno-0-45"></a><span class="nv">$pemPath</span> <span class="p">=</span> <span class="s2">&quot;$env:TEMP\$certificateName.pem&quot;</span>
+</span><span id="__span-0-46"><a id="__codelineno-0-46" name="__codelineno-0-46" href="#__codelineno-0-46"></a><span class="nv">$pemFormatted</span> <span class="p">|</span> <span class="nb">Set-Content</span> <span class="n">-Path</span> <span class="nv">$pemPath</span>
+</span><span id="__span-0-47"><a id="__codelineno-0-47" name="__codelineno-0-47" href="#__codelineno-0-47"></a><span class="nb">Write-Host</span> <span class="s2">&quot;Certificate saved to: $pemPath&quot;</span>
+</span></code></pre></div>
+</details>
+<p><screenshot of terminal showing certificate output></p>
+<h2 id="step-2-preparing-the-configuration-file">Step 2: Preparing the Configuration File<a class="headerlink" href="#step-2-preparing-the-configuration-file" title="Permanent link">#</a></h2>
+<p>Prepare a source directory to hold all of the required content.</p>
+<p><code>C:\Sources\IntuneWin\ThinkBiosConfig</code></p>
+<p>Use the <strong>Save-Module</strong> command to download the <strong>Lenovo.BIOS.Certificates</strong> module here.</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">Save-Module</span> <span class="n">-Name</span> <span class="n">Lenovo</span><span class="p">.</span><span class="n">BIOS</span><span class="p">.</span><span class="n">Certificates</span> <span class="n">-Path</span> <span class="n">C</span><span class="p">:\</span><span class="n">Sources</span><span class="p">\</span><span class="n">IntuneWin</span><span class="p">\</span><span class="n">ThinkBiosConfig</span>
+</span></code></pre></div>
+<p>For this guide, I'll pick a few simple BIOS settings that will be configured on the devices.</p>
+<div class="admonition info">
+<p class="admonition-title">Module Reference</p>
+<p><a href="">https://docs.lenovocdrt.com/guides/tbct_v2/tbc_module_reference/</a></p>
+</div>
+<p>On an admin machine where the <strong>Lenovo.BIOS.Config</strong> module is installed/imported, open an elevated terminal and run the command:</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">Initialize-LnvThinkBiosConfig</span>
+</span></code></pre></div>
+<p>This will gather the WMI data needed for the module to work. No output is shown.</p>
+<p>Then run the command:</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">Show-LnvBiosSettings</span>
+</span></code></pre></div>
+<p>You'll be presented with all of the available BIOS settings exposed through WMI</p>
+<p><screenshot of Show-LnvWmiSettings></p>
+<p>We're going to choose:</p>
+<table>
+<thead>
+<tr>
+<th>settingName</th>
+<th>defaultValue</th>
+<th>settingOptions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>WakeOnLANDock</td>
+<td><code>Enable</code></td>
+<td>{Disable, Enable}</td>
+</tr>
+<tr>
+<td>Allow3rdPartyUEFICA</td>
+<td><code>Disable</code></td>
+<td>{Disable, Enable}</td>
+</tr>
+</tbody>
+</table>
+<p>To retrieve the options for a single setting, you can run:</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">Get-LnvWmiSetting</span> <span class="n">-Name</span> <span class="n">Allow3rdPartyUEFICA</span>
+</span></code></pre></div>
+<p>Let's flip these values</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nb">Set-LnvWmiSetting</span> <span class="n">-Name</span> <span class="n">WakeOnLANDock</span> <span class="n">-Value</span> <span class="n">Disable</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="nb">Set-LnvWmiSetting</span> <span class="n">-Name</span> <span class="n">Allow3rdPartyUEFICA</span> <span class="n">-Value</span> <span class="n">Enable</span>
+</span></code></pre></div>
+<p>To confirm only the settings you've changed, run</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nb">Show-LnvWmiSettings</span> <span class="n">-OnlyChanged</span>
+</span></code></pre></div>
+<p>Export these settings to a configuration file</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nb">Export-LnvWmiSettings</span> <span class="p">`</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="n">-ConfigFile</span> <span class="s2">&quot;C:\Sources\IntuneWin\ThinkBiosConfig\thinkpadconfig.ini&quot;</span> <span class="p">`</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">-NoKey</span>
+</span></code></pre></div>
+<p>We need to convert the configuration file into signed WMI commands using the Azure Key Vault key.</p>
+<p>Assuming we’re still authenticated to Azure in the same session as when we created our certificate, set the following variables to pass to the -VaultName and -KeyName parameters.</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nv">$configFile</span> <span class="p">=</span> <span class="s2">&quot;C:\Sources\IntuneWin\ThinkBiosConfig\thinkpadconfig.ini&quot;</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="nv">$keyVault</span> <span class="p">=</span> <span class="nb">Get-AzKeyVault</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="nv">$keyVaultName</span> <span class="p">=</span> <span class="nv">$keyVault</span><span class="p">.</span><span class="n">Name</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="nv">$signingKey</span> <span class="p">=</span> <span class="nb">Get-AzKeyVaultKey</span> <span class="n">-VaultName</span> <span class="nv">$keyVaultName</span> <span class="n">-Name</span> <span class="nv">$Name</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="nb">Convert-LnvBiosConfigFile</span> <span class="p">`</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="n">-ConfigFile</span> <span class="nv">$configFile</span> <span class="p">`</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="n">-VaultName</span> <span class="nv">$keyVaultName</span> <span class="p">`</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="n">-KeyName</span> <span class="nv">$signingKey</span><span class="p">.</span><span class="n">Name</span> <span class="p">`</span>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="n">-OutFile</span> <span class="nv">$configFile</span>
+</span></code></pre></div>
+<p>Upon success, each BIOS setting in the configuration file is now converted into signed WMI commands to set and save the new settings.</p>
+<p>Your source directory should now look like this</p>
+<ul>
+<li>C:\Sources\IntuneWin\ThinkBiosConfig<ul>
+<li>Lenovo.BIOS.Certificates</li>
+<li>thinkpadconfig.ini</li>
+</ul>
+</li>
+</ul>
+<h2 id="step-3-create-the-first-win32-app-in-intune-convert-to-certificate-authentication">Step 3: Create the First Win32 App in Intune – Convert to Certificate Authentication<a class="headerlink" href="#step-3-create-the-first-win32-app-in-intune-convert-to-certificate-authentication" title="Permanent link">#</a></h2>
+<p>Now that we have the exported certificate, it's time to prepare the first Win32 app. This will replace the Supervisor Password with the newly created certificate.</p>
+<p>Copy your certificate PEM file from step 1 to the <strong>ThinkBiosConfig</strong> source directory.</p>
+<p>Save the following script as a <strong>Install-LnvBiosCertificate.ps1</strong> here as well. This will provision the device with the certificate.</p>
+<details class="example">
+<summary>Install-LnvBiosCertificate.ps1</summary>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c"># Install BIOS Certificate (Dependency App)</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="c"># Exit: 1 = failed (triggers main app retry), 1641 = success + reboot</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="nv">$ErrorActionPreference</span> <span class="p">=</span> <span class="s1">&#39;Stop&#39;</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="c"># === Log File ===</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="nv">$LogFile</span> <span class="p">=</span> <span class="s2">&quot;$env:ProgramData\Lenovo\BIOSCertificates\Logs\BIOSCertInstall.log&quot;</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="nv">$LogDir</span> <span class="p">=</span> <span class="nb">Split-Path</span> <span class="nv">$LogFile</span> <span class="n">-Parent</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="p">(</span><span class="nb">Test-Path</span> <span class="nv">$LogDir</span><span class="p">))</span> <span class="p">{</span> <span class="nb">New-Item</span> <span class="n">-ItemType</span> <span class="n">Directory</span> <span class="n">-Path</span> <span class="nv">$LogDir</span> <span class="n">-Force</span> <span class="p">|</span> <span class="nb">Out-Null</span> <span class="p">}</span>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="c"># === Write-Log Function ===</span>
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="k">function</span> <span class="nb">Write-Log</span>
+</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="p">{</span>
+</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>    <span class="k">param</span> <span class="p">(</span>
+</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+</span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a>        <span class="no">[string]</span><span class="nv">$Message</span><span class="p">,</span>
+</span><span id="__span-9-17"><a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a>        <span class="p">[</span><span class="k">ValidateSet</span><span class="p">(</span><span class="s1">&#39;INFO&#39;</span><span class="p">,</span> <span class="s1">&#39;WARN&#39;</span><span class="p">,</span> <span class="s1">&#39;ERROR&#39;</span><span class="p">,</span> <span class="s1">&#39;SUCCESS&#39;</span><span class="p">)]</span>
+</span><span id="__span-9-18"><a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a>        <span class="no">[string]</span><span class="nv">$Level</span> <span class="p">=</span> <span class="s1">&#39;INFO&#39;</span>
+</span><span id="__span-9-19"><a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a>    <span class="p">)</span>
+</span><span id="__span-9-20"><a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a>    <span class="nv">$timestamp</span> <span class="p">=</span> <span class="nb">Get-Date</span> <span class="n">-Format</span> <span class="s1">&#39;yyyy-MM-dd HH:mm:ss&#39;</span>
+</span><span id="__span-9-21"><a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a>    <span class="nv">$logEntry</span> <span class="p">=</span> <span class="s2">&quot;$timestamp [$Level]: $Message&quot;</span>
+</span><span id="__span-9-22"><a id="__codelineno-9-22" name="__codelineno-9-22" href="#__codelineno-9-22"></a>    <span class="nb">Add-Content</span> <span class="n">-Path</span> <span class="nv">$LogFile</span> <span class="n">-Value</span> <span class="nv">$logEntry</span> <span class="n">-Encoding</span> <span class="n">UTF8</span>
+</span><span id="__span-9-23"><a id="__codelineno-9-23" name="__codelineno-9-23" href="#__codelineno-9-23"></a><span class="p">}</span>
+</span><span id="__span-9-24"><a id="__codelineno-9-24" name="__codelineno-9-24" href="#__codelineno-9-24"></a>
+</span><span id="__span-9-25"><a id="__codelineno-9-25" name="__codelineno-9-25" href="#__codelineno-9-25"></a><span class="c"># === Initial log entry ===</span>
+</span><span id="__span-9-26"><a id="__codelineno-9-26" name="__codelineno-9-26" href="#__codelineno-9-26"></a><span class="nb">Write-Log</span> <span class="s2">&quot;=== LENOVO BIOS CERTIFICATE INSTALL STARTED ===&quot;</span> <span class="s1">&#39;INFO&#39;</span>
+</span><span id="__span-9-27"><a id="__codelineno-9-27" name="__codelineno-9-27" href="#__codelineno-9-27"></a>
+</span><span id="__span-9-28"><a id="__codelineno-9-28" name="__codelineno-9-28" href="#__codelineno-9-28"></a><span class="c"># --- Paths ---</span>
+</span><span id="__span-9-29"><a id="__codelineno-9-29" name="__codelineno-9-29" href="#__codelineno-9-29"></a><span class="nv">$ModulePath</span> <span class="p">=</span> <span class="nb">Join-Path</span> <span class="nv">$PSScriptRoot</span> <span class="s1">&#39;Lenovo.BIOS.Certificates\*\*.psd1&#39;</span>
+</span><span id="__span-9-30"><a id="__codelineno-9-30" name="__codelineno-9-30" href="#__codelineno-9-30"></a><span class="nv">$CertFilePath</span> <span class="p">=</span> <span class="nb">Join-Path</span> <span class="nv">$PSScriptRoot</span> <span class="s1">&#39;.\*.pem&#39;</span>
+</span><span id="__span-9-31"><a id="__codelineno-9-31" name="__codelineno-9-31" href="#__codelineno-9-31"></a>
+</span><span id="__span-9-32"><a id="__codelineno-9-32" name="__codelineno-9-32" href="#__codelineno-9-32"></a><span class="c"># --- Certificate Password ---</span>
+</span><span id="__span-9-33"><a id="__codelineno-9-33" name="__codelineno-9-33" href="#__codelineno-9-33"></a><span class="nv">$CertPassword</span> <span class="p">=</span> <span class="s1">&#39;temppassword&#39;</span>  <span class="c"># Replace with temporary BIOS password set at factory</span>
+</span><span id="__span-9-34"><a id="__codelineno-9-34" name="__codelineno-9-34" href="#__codelineno-9-34"></a>
+</span><span id="__span-9-35"><a id="__codelineno-9-35" name="__codelineno-9-35" href="#__codelineno-9-35"></a><span class="c"># === Registry Tattoo Settings ===</span>
+</span><span id="__span-9-36"><a id="__codelineno-9-36" name="__codelineno-9-36" href="#__codelineno-9-36"></a><span class="nv">$RegPath</span> <span class="p">=</span> <span class="s1">&#39;HKLM:\SOFTWARE\Lenovo\BIOSConfigDeployment&#39;</span>
+</span><span id="__span-9-37"><a id="__codelineno-9-37" name="__codelineno-9-37" href="#__codelineno-9-37"></a><span class="nv">$RegCertStatus</span> <span class="p">=</span> <span class="s1">&#39;CertStatus&#39;</span>
+</span><span id="__span-9-38"><a id="__codelineno-9-38" name="__codelineno-9-38" href="#__codelineno-9-38"></a><span class="nv">$RegLastCert</span> <span class="p">=</span> <span class="s1">&#39;LastCertInstall&#39;</span>
+</span><span id="__span-9-39"><a id="__codelineno-9-39" name="__codelineno-9-39" href="#__codelineno-9-39"></a><span class="nv">$RegCertName</span> <span class="p">=</span> <span class="s1">&#39;LastCertFile&#39;</span>
+</span><span id="__span-9-40"><a id="__codelineno-9-40" name="__codelineno-9-40" href="#__codelineno-9-40"></a>
+</span><span id="__span-9-41"><a id="__codelineno-9-41" name="__codelineno-9-41" href="#__codelineno-9-41"></a><span class="c"># -------------------------------------------------</span>
+</span><span id="__span-9-42"><a id="__codelineno-9-42" name="__codelineno-9-42" href="#__codelineno-9-42"></a><span class="c"># 1. Load Lenovo Certificates Module</span>
+</span><span id="__span-9-43"><a id="__codelineno-9-43" name="__codelineno-9-43" href="#__codelineno-9-43"></a><span class="c"># -------------------------------------------------</span>
+</span><span id="__span-9-44"><a id="__codelineno-9-44" name="__codelineno-9-44" href="#__codelineno-9-44"></a><span class="k">try</span>
+</span><span id="__span-9-45"><a id="__codelineno-9-45" name="__codelineno-9-45" href="#__codelineno-9-45"></a><span class="p">{</span>
+</span><span id="__span-9-46"><a id="__codelineno-9-46" name="__codelineno-9-46" href="#__codelineno-9-46"></a>    <span class="nv">$ModuleFile</span> <span class="p">=</span> <span class="nb">Get-Item</span> <span class="nv">$ModulePath</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="n">-First</span> <span class="n">1</span>
+</span><span id="__span-9-47"><a id="__codelineno-9-47" name="__codelineno-9-47" href="#__codelineno-9-47"></a>    <span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="nv">$ModuleFile</span><span class="p">)</span> <span class="p">{</span> <span class="k">throw</span> <span class="s2">&quot;No .psd1 module found in $ModulePath&quot;</span> <span class="p">}</span>
+</span><span id="__span-9-48"><a id="__codelineno-9-48" name="__codelineno-9-48" href="#__codelineno-9-48"></a>
+</span><span id="__span-9-49"><a id="__codelineno-9-49" name="__codelineno-9-49" href="#__codelineno-9-49"></a>    <span class="nb">Import-Module</span> <span class="nv">$ModuleFile</span><span class="p">.</span><span class="n">FullName</span> <span class="n">-Force</span>
+</span><span id="__span-9-50"><a id="__codelineno-9-50" name="__codelineno-9-50" href="#__codelineno-9-50"></a>    <span class="nb">Write-Log</span> <span class="s2">&quot;Loaded module: </span><span class="p">$(</span><span class="nv">$ModuleFile</span><span class="p">.</span><span class="n">Directory</span><span class="p">.</span><span class="n">Name</span><span class="p">)</span><span class="s2">&quot;</span> <span class="s1">&#39;SUCCESS&#39;</span>
+</span><span id="__span-9-51"><a id="__codelineno-9-51" name="__codelineno-9-51" href="#__codelineno-9-51"></a><span class="p">}</span>
+</span><span id="__span-9-52"><a id="__codelineno-9-52" name="__codelineno-9-52" href="#__codelineno-9-52"></a><span class="k">catch</span>
+</span><span id="__span-9-53"><a id="__codelineno-9-53" name="__codelineno-9-53" href="#__codelineno-9-53"></a><span class="p">{</span>
+</span><span id="__span-9-54"><a id="__codelineno-9-54" name="__codelineno-9-54" href="#__codelineno-9-54"></a>    <span class="nb">Write-Log</span> <span class="s2">&quot;Failed to load BIOS module: </span><span class="p">$(</span><span class="nv">$_</span><span class="p">.</span><span class="n">Exception</span><span class="p">.</span><span class="n">Message</span><span class="p">)</span><span class="s2">&quot;</span> <span class="s1">&#39;ERROR&#39;</span>
+</span><span id="__span-9-55"><a id="__codelineno-9-55" name="__codelineno-9-55" href="#__codelineno-9-55"></a>    <span class="k">try</span>
+</span><span id="__span-9-56"><a id="__codelineno-9-56" name="__codelineno-9-56" href="#__codelineno-9-56"></a>    <span class="p">{</span>
+</span><span id="__span-9-57"><a id="__codelineno-9-57" name="__codelineno-9-57" href="#__codelineno-9-57"></a>        <span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="p">(</span><span class="nb">Test-Path</span> <span class="nv">$RegPath</span><span class="p">))</span> <span class="p">{</span> <span class="nb">New-Item</span> <span class="n">-Path</span> <span class="nv">$RegPath</span> <span class="n">-Force</span> <span class="p">|</span> <span class="nb">Out-Null</span> <span class="p">}</span>
+</span><span id="__span-9-58"><a id="__codelineno-9-58" name="__codelineno-9-58" href="#__codelineno-9-58"></a>        <span class="nb">Set-ItemProperty</span> <span class="n">-Path</span> <span class="nv">$RegPath</span> <span class="n">-Name</span> <span class="nv">$RegCertStatus</span> <span class="n">-Value</span> <span class="s1">&#39;Failed&#39;</span> <span class="n">-Type</span> <span class="n">String</span> <span class="n">-Force</span>
+</span><span id="__span-9-59"><a id="__codelineno-9-59" name="__codelineno-9-59" href="#__codelineno-9-59"></a>        <span class="nb">Set-ItemProperty</span> <span class="n">-Path</span> <span class="nv">$RegPath</span> <span class="n">-Name</span> <span class="s1">&#39;LastError&#39;</span> <span class="n">-Value</span> <span class="s2">&quot;Module load failed: </span><span class="p">$(</span><span class="nv">$_</span><span class="p">.</span><span class="n">Exception</span><span class="p">.</span><span class="n">Message</span><span class="p">)</span><span class="s2">&quot;</span> <span class="n">-Type</span> <span class="n">String</span> <span class="n">-Force</span>
+</span><span id="__span-9-60"><a id="__codelineno-9-60" name="__codelineno-9-60" href="#__codelineno-9-60"></a>    <span class="p">}</span>
+</span><span id="__span-9-61"><a id="__codelineno-9-61" name="__codelineno-9-61" href="#__codelineno-9-61"></a>    <span class="k">catch</span> <span class="p">{</span> <span class="nb">Write-Log</span> <span class="s2">&quot;Could not write failure tattoo&quot;</span> <span class="s1">&#39;WARN&#39;</span> <span class="p">}</span>
+</span><span id="__span-9-62"><a id="__codelineno-9-62" name="__codelineno-9-62" href="#__codelineno-9-62"></a>    <span class="n">exit</span> <span class="n">1</span>
+</span><span id="__span-9-63"><a id="__codelineno-9-63" name="__codelineno-9-63" href="#__codelineno-9-63"></a><span class="p">}</span>
+</span><span id="__span-9-64"><a id="__codelineno-9-64" name="__codelineno-9-64" href="#__codelineno-9-64"></a>
+</span><span id="__span-9-65"><a id="__codelineno-9-65" name="__codelineno-9-65" href="#__codelineno-9-65"></a><span class="c"># -------------------------------------------------</span>
+</span><span id="__span-9-66"><a id="__codelineno-9-66" name="__codelineno-9-66" href="#__codelineno-9-66"></a><span class="c"># 2. Verify Certificate File</span>
+</span><span id="__span-9-67"><a id="__codelineno-9-67" name="__codelineno-9-67" href="#__codelineno-9-67"></a><span class="c"># -------------------------------------------------</span>
+</span><span id="__span-9-68"><a id="__codelineno-9-68" name="__codelineno-9-68" href="#__codelineno-9-68"></a><span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="p">(</span><span class="nb">Test-Path</span> <span class="nv">$CertFilePath</span> <span class="n">-PathType</span> <span class="n">Leaf</span><span class="p">))</span>
+</span><span id="__span-9-69"><a id="__codelineno-9-69" name="__codelineno-9-69" href="#__codelineno-9-69"></a><span class="p">{</span>
+</span><span id="__span-9-70"><a id="__codelineno-9-70" name="__codelineno-9-70" href="#__codelineno-9-70"></a>    <span class="nv">$msg</span> <span class="p">=</span> <span class="s2">&quot;Certificate file not found: $CertFilePath&quot;</span>
+</span><span id="__span-9-71"><a id="__codelineno-9-71" name="__codelineno-9-71" href="#__codelineno-9-71"></a>    <span class="nb">Write-Log</span> <span class="nv">$msg</span> <span class="s1">&#39;ERROR&#39;</span>
+</span><span id="__span-9-72"><a id="__codelineno-9-72" name="__codelineno-9-72" href="#__codelineno-9-72"></a>    <span class="k">try</span>
+</span><span id="__span-9-73"><a id="__codelineno-9-73" name="__codelineno-9-73" href="#__codelineno-9-73"></a>    <span class="p">{</span>
+</span><span id="__span-9-74"><a id="__codelineno-9-74" name="__codelineno-9-74" href="#__codelineno-9-74"></a>        <span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="p">(</span><span class="nb">Test-Path</span> <span class="nv">$RegPath</span><span class="p">))</span> <span class="p">{</span> <span class="nb">New-Item</span> <span class="n">-Path</span> <span class="nv">$RegPath</span> <span class="n">-Force</span> <span class="p">|</span> <span class="nb">Out-Null</span> <span class="p">}</span>
+</span><span id="__span-9-75"><a id="__codelineno-9-75" name="__codelineno-9-75" href="#__codelineno-9-75"></a>        <span class="nb">Set-ItemProperty</span> <span class="n">-Path</span> <span class="nv">$RegPath</span> <span class="n">-Name</span> <span class="nv">$RegCertStatus</span> <span class="n">-Value</span> <span class="s1">&#39;Failed&#39;</span> <span class="n">-Type</span> <span class="n">String</span> <span class="n">-Force</span>
+</span><span id="__span-9-76"><a id="__codelineno-9-76" name="__codelineno-9-76" href="#__codelineno-9-76"></a>        <span class="nb">Set-ItemProperty</span> <span class="n">-Path</span> <span class="nv">$RegPath</span> <span class="n">-Name</span> <span class="s1">&#39;LastError&#39;</span> <span class="n">-Value</span> <span class="nv">$msg</span> <span class="n">-Type</span> <span class="n">String</span> <span class="n">-Force</span>
+</span><span id="__span-9-77"><a id="__codelineno-9-77" name="__codelineno-9-77" href="#__codelineno-9-77"></a>    <span class="p">}</span>
+</span><span id="__span-9-78"><a id="__codelineno-9-78" name="__codelineno-9-78" href="#__codelineno-9-78"></a>    <span class="k">catch</span> <span class="p">{</span> <span class="nb">Write-Log</span> <span class="s2">&quot;Could not write failure tattoo.&quot;</span> <span class="s1">&#39;WARN&#39;</span> <span class="p">}</span>
+</span><span id="__span-9-79"><a id="__codelineno-9-79" name="__codelineno-9-79" href="#__codelineno-9-79"></a>    <span class="n">exit</span> <span class="n">1</span>
+</span><span id="__span-9-80"><a id="__codelineno-9-80" name="__codelineno-9-80" href="#__codelineno-9-80"></a><span class="p">}</span>
+</span><span id="__span-9-81"><a id="__codelineno-9-81" name="__codelineno-9-81" href="#__codelineno-9-81"></a><span class="nb">Write-Log</span> <span class="s2">&quot;Found certificate: $CertFilePath&quot;</span> <span class="s1">&#39;INFO&#39;</span>
+</span><span id="__span-9-82"><a id="__codelineno-9-82" name="__codelineno-9-82" href="#__codelineno-9-82"></a>
+</span><span id="__span-9-83"><a id="__codelineno-9-83" name="__codelineno-9-83" href="#__codelineno-9-83"></a><span class="c"># -------------------------------------------------</span>
+</span><span id="__span-9-84"><a id="__codelineno-9-84" name="__codelineno-9-84" href="#__codelineno-9-84"></a><span class="c"># 3. Install Certificate</span>
+</span><span id="__span-9-85"><a id="__codelineno-9-85" name="__codelineno-9-85" href="#__codelineno-9-85"></a><span class="c"># -------------------------------------------------</span>
+</span><span id="__span-9-86"><a id="__codelineno-9-86" name="__codelineno-9-86" href="#__codelineno-9-86"></a><span class="k">try</span>
+</span><span id="__span-9-87"><a id="__codelineno-9-87" name="__codelineno-9-87" href="#__codelineno-9-87"></a><span class="p">{</span>
+</span><span id="__span-9-88"><a id="__codelineno-9-88" name="__codelineno-9-88" href="#__codelineno-9-88"></a>    <span class="nv">$Result</span> <span class="p">=</span> <span class="nb">Set-LnvBiosCertificate</span> <span class="n">-CertFile</span> <span class="nv">$CertFilePath</span> <span class="n">-Pass</span> <span class="nv">$CertPassword</span>
+</span><span id="__span-9-89"><a id="__codelineno-9-89" name="__codelineno-9-89" href="#__codelineno-9-89"></a>    <span class="nb">Write-Log</span> <span class="s2">&quot;Certificate installation command executed.&quot;</span> <span class="s1">&#39;INFO&#39;</span>
+</span><span id="__span-9-90"><a id="__codelineno-9-90" name="__codelineno-9-90" href="#__codelineno-9-90"></a>
+</span><span id="__span-9-91"><a id="__codelineno-9-91" name="__codelineno-9-91" href="#__codelineno-9-91"></a>    <span class="k">if</span> <span class="p">(</span><span class="nv">$null</span> <span class="o">-eq</span> <span class="nv">$Result</span><span class="p">)</span>
+</span><span id="__span-9-92"><a id="__codelineno-9-92" name="__codelineno-9-92" href="#__codelineno-9-92"></a>    <span class="p">{</span>
+</span><span id="__span-9-93"><a id="__codelineno-9-93" name="__codelineno-9-93" href="#__codelineno-9-93"></a>        <span class="nv">$msg</span> <span class="p">=</span> <span class="s2">&quot;No result returned from Set-LnvBiosCertificate&quot;</span>
+</span><span id="__span-9-94"><a id="__codelineno-9-94" name="__codelineno-9-94" href="#__codelineno-9-94"></a>        <span class="nb">Write-Log</span> <span class="nv">$msg</span> <span class="s1">&#39;ERROR&#39;</span>
+</span><span id="__span-9-95"><a id="__codelineno-9-95" name="__codelineno-9-95" href="#__codelineno-9-95"></a>        <span class="k">throw</span> <span class="nv">$msg</span>
+</span><span id="__span-9-96"><a id="__codelineno-9-96" name="__codelineno-9-96" href="#__codelineno-9-96"></a>    <span class="p">}</span>
+</span><span id="__span-9-97"><a id="__codelineno-9-97" name="__codelineno-9-97" href="#__codelineno-9-97"></a>
+</span><span id="__span-9-98"><a id="__codelineno-9-98" name="__codelineno-9-98" href="#__codelineno-9-98"></a>    <span class="nv">$returnVal</span> <span class="p">=</span> <span class="nv">$Result</span><span class="p">.</span><span class="n">ReturnValue</span>
+</span><span id="__span-9-99"><a id="__codelineno-9-99" name="__codelineno-9-99" href="#__codelineno-9-99"></a>
+</span><span id="__span-9-100"><a id="__codelineno-9-100" name="__codelineno-9-100" href="#__codelineno-9-100"></a>    <span class="nb">Write-Log</span> <span class="s2">&quot;Result: ReturnValue=&#39;$returnVal&#39; | $env:COMPUTERNAME&#39;&quot;</span> <span class="s1">&#39;INFO&#39;</span>
+</span><span id="__span-9-101"><a id="__codelineno-9-101" name="__codelineno-9-101" href="#__codelineno-9-101"></a>
+</span><span id="__span-9-102"><a id="__codelineno-9-102" name="__codelineno-9-102" href="#__codelineno-9-102"></a>    <span class="k">if</span> <span class="p">(</span><span class="nv">$returnVal</span> <span class="o">-eq</span> <span class="s1">&#39;Success&#39;</span><span class="p">)</span>
+</span><span id="__span-9-103"><a id="__codelineno-9-103" name="__codelineno-9-103" href="#__codelineno-9-103"></a>    <span class="p">{</span>
+</span><span id="__span-9-104"><a id="__codelineno-9-104" name="__codelineno-9-104" href="#__codelineno-9-104"></a>        <span class="nb">Write-Log</span> <span class="s2">&quot;BIOS certificate installed successfully.&quot;</span> <span class="s1">&#39;SUCCESS&#39;</span>
+</span><span id="__span-9-105"><a id="__codelineno-9-105" name="__codelineno-9-105" href="#__codelineno-9-105"></a>
+</span><span id="__span-9-106"><a id="__codelineno-9-106" name="__codelineno-9-106" href="#__codelineno-9-106"></a>        <span class="c"># === Tattoo Success ===</span>
+</span><span id="__span-9-107"><a id="__codelineno-9-107" name="__codelineno-9-107" href="#__codelineno-9-107"></a>        <span class="k">try</span>
+</span><span id="__span-9-108"><a id="__codelineno-9-108" name="__codelineno-9-108" href="#__codelineno-9-108"></a>        <span class="p">{</span>
+</span><span id="__span-9-109"><a id="__codelineno-9-109" name="__codelineno-9-109" href="#__codelineno-9-109"></a>            <span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="p">(</span><span class="nb">Test-Path</span> <span class="nv">$RegPath</span><span class="p">))</span>
+</span><span id="__span-9-110"><a id="__codelineno-9-110" name="__codelineno-9-110" href="#__codelineno-9-110"></a>            <span class="p">{</span>
+</span><span id="__span-9-111"><a id="__codelineno-9-111" name="__codelineno-9-111" href="#__codelineno-9-111"></a>                <span class="nb">New-Item</span> <span class="n">-Path</span> <span class="nv">$RegPath</span> <span class="n">-Force</span> <span class="p">|</span> <span class="nb">Out-Null</span>
+</span><span id="__span-9-112"><a id="__codelineno-9-112" name="__codelineno-9-112" href="#__codelineno-9-112"></a>                <span class="nb">Write-Log</span> <span class="s2">&quot;Created registry path: $RegPath&quot;</span> <span class="s1">&#39;INFO&#39;</span>
+</span><span id="__span-9-113"><a id="__codelineno-9-113" name="__codelineno-9-113" href="#__codelineno-9-113"></a>            <span class="p">}</span>
+</span><span id="__span-9-114"><a id="__codelineno-9-114" name="__codelineno-9-114" href="#__codelineno-9-114"></a>            <span class="nv">$certName</span> <span class="p">=</span> <span class="p">(</span><span class="nb">Get-Item</span> <span class="nv">$CertFilePath</span><span class="p">).</span><span class="n">Name</span>
+</span><span id="__span-9-115"><a id="__codelineno-9-115" name="__codelineno-9-115" href="#__codelineno-9-115"></a>            <span class="nb">Set-ItemProperty</span> <span class="n">-Path</span> <span class="nv">$RegPath</span> <span class="n">-Name</span> <span class="nv">$RegCertStatus</span> <span class="n">-Value</span> <span class="s1">&#39;Installed&#39;</span> <span class="n">-Type</span> <span class="n">String</span> <span class="n">-Force</span>
+</span><span id="__span-9-116"><a id="__codelineno-9-116" name="__codelineno-9-116" href="#__codelineno-9-116"></a>            <span class="nb">Set-ItemProperty</span> <span class="n">-Path</span> <span class="nv">$RegPath</span> <span class="n">-Name</span> <span class="nv">$RegLastCert</span> <span class="n">-Value</span> <span class="p">(</span><span class="nb">Get-Date</span><span class="p">).</span><span class="n">ToString</span><span class="p">(</span><span class="s1">&#39;yyyy-MM-dd HH:mm:ss&#39;</span><span class="p">)</span> <span class="n">-Type</span> <span class="n">String</span> <span class="n">-Force</span>
+</span><span id="__span-9-117"><a id="__codelineno-9-117" name="__codelineno-9-117" href="#__codelineno-9-117"></a>            <span class="nb">Set-ItemProperty</span> <span class="n">-Path</span> <span class="nv">$RegPath</span> <span class="n">-Name</span> <span class="nv">$RegCertName</span> <span class="n">-Value</span> <span class="nv">$certName</span> <span class="n">-Type</span> <span class="n">String</span> <span class="n">-Force</span>
+</span><span id="__span-9-118"><a id="__codelineno-9-118" name="__codelineno-9-118" href="#__codelineno-9-118"></a>            <span class="nb">Write-Log</span> <span class="s2">&quot;Registry tattoo: CertStatus=&#39;Installed&#39;, LastCertFile=&#39;$certName&#39;&quot;</span> <span class="s1">&#39;SUCCESS&#39;</span>
+</span><span id="__span-9-119"><a id="__codelineno-9-119" name="__codelineno-9-119" href="#__codelineno-9-119"></a>        <span class="p">}</span>
+</span><span id="__span-9-120"><a id="__codelineno-9-120" name="__codelineno-9-120" href="#__codelineno-9-120"></a>        <span class="k">catch</span>
+</span><span id="__span-9-121"><a id="__codelineno-9-121" name="__codelineno-9-121" href="#__codelineno-9-121"></a>        <span class="p">{</span>
+</span><span id="__span-9-122"><a id="__codelineno-9-122" name="__codelineno-9-122" href="#__codelineno-9-122"></a>            <span class="nb">Write-Log</span> <span class="s2">&quot;Failed to write success tattoo: </span><span class="p">$(</span><span class="nv">$_</span><span class="p">.</span><span class="n">Exception</span><span class="p">.</span><span class="n">Message</span><span class="p">)</span><span class="s2">&quot;</span> <span class="s1">&#39;WARN&#39;</span>
+</span><span id="__span-9-123"><a id="__codelineno-9-123" name="__codelineno-9-123" href="#__codelineno-9-123"></a>        <span class="p">}</span>
+</span><span id="__span-9-124"><a id="__codelineno-9-124" name="__codelineno-9-124" href="#__codelineno-9-124"></a>
+</span><span id="__span-9-125"><a id="__codelineno-9-125" name="__codelineno-9-125" href="#__codelineno-9-125"></a>        <span class="nb">Write-Log</span> <span class="s2">&quot;=== CERTIFICATE INSTALL COMPLETE (Exit 1641) ===&quot;</span> <span class="s1">&#39;SUCCESS&#39;</span>
+</span><span id="__span-9-126"><a id="__codelineno-9-126" name="__codelineno-9-126" href="#__codelineno-9-126"></a>        <span class="c"># Only on first install, hard reboot is required to convert to certificate-based auth.</span>
+</span><span id="__span-9-127"><a id="__codelineno-9-127" name="__codelineno-9-127" href="#__codelineno-9-127"></a>        <span class="n">exit</span> <span class="n">1641</span>
+</span><span id="__span-9-128"><a id="__codelineno-9-128" name="__codelineno-9-128" href="#__codelineno-9-128"></a>    <span class="p">}</span>
+</span><span id="__span-9-129"><a id="__codelineno-9-129" name="__codelineno-9-129" href="#__codelineno-9-129"></a>    <span class="k">else</span>
+</span><span id="__span-9-130"><a id="__codelineno-9-130" name="__codelineno-9-130" href="#__codelineno-9-130"></a>    <span class="p">{</span>
+</span><span id="__span-9-131"><a id="__codelineno-9-131" name="__codelineno-9-131" href="#__codelineno-9-131"></a>        <span class="nv">$msg</span> <span class="p">=</span> <span class="s2">&quot;CERTIFICATE INSTALL FAILED. ReturnValue=&#39;$returnVal&#39;&quot;</span>
+</span><span id="__span-9-132"><a id="__codelineno-9-132" name="__codelineno-9-132" href="#__codelineno-9-132"></a>        <span class="nb">Write-Log</span> <span class="nv">$msg</span> <span class="s1">&#39;ERROR&#39;</span>
+</span><span id="__span-9-133"><a id="__codelineno-9-133" name="__codelineno-9-133" href="#__codelineno-9-133"></a>
+</span><span id="__span-9-134"><a id="__codelineno-9-134" name="__codelineno-9-134" href="#__codelineno-9-134"></a>        <span class="c"># === Tattoo Failure ===</span>
+</span><span id="__span-9-135"><a id="__codelineno-9-135" name="__codelineno-9-135" href="#__codelineno-9-135"></a>        <span class="k">try</span>
+</span><span id="__span-9-136"><a id="__codelineno-9-136" name="__codelineno-9-136" href="#__codelineno-9-136"></a>        <span class="p">{</span>
+</span><span id="__span-9-137"><a id="__codelineno-9-137" name="__codelineno-9-137" href="#__codelineno-9-137"></a>            <span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="p">(</span><span class="nb">Test-Path</span> <span class="nv">$RegPath</span><span class="p">))</span> <span class="p">{</span> <span class="nb">New-Item</span> <span class="n">-Path</span> <span class="nv">$RegPath</span> <span class="n">-Force</span> <span class="p">|</span> <span class="nb">Out-Null</span> <span class="p">}</span>
+</span><span id="__span-9-138"><a id="__codelineno-9-138" name="__codelineno-9-138" href="#__codelineno-9-138"></a>            <span class="nb">Set-ItemProperty</span> <span class="n">-Path</span> <span class="nv">$RegPath</span> <span class="n">-Name</span> <span class="nv">$RegCertStatus</span> <span class="n">-Value</span> <span class="s1">&#39;Failed&#39;</span> <span class="n">-Type</span> <span class="n">String</span> <span class="n">-Force</span>
+</span><span id="__span-9-139"><a id="__codelineno-9-139" name="__codelineno-9-139" href="#__codelineno-9-139"></a>            <span class="nb">Set-ItemProperty</span> <span class="n">-Path</span> <span class="nv">$RegPath</span> <span class="n">-Name</span> <span class="s1">&#39;LastError&#39;</span> <span class="n">-Value</span> <span class="nv">$msg</span> <span class="n">-Type</span> <span class="n">String</span> <span class="n">-Force</span>
+</span><span id="__span-9-140"><a id="__codelineno-9-140" name="__codelineno-9-140" href="#__codelineno-9-140"></a>        <span class="p">}</span>
+</span><span id="__span-9-141"><a id="__codelineno-9-141" name="__codelineno-9-141" href="#__codelineno-9-141"></a>        <span class="k">catch</span> <span class="p">{</span> <span class="nb">Write-Log</span> <span class="s2">&quot;Could not write failure tattoo&quot;</span> <span class="s1">&#39;WARN&#39;</span> <span class="p">}</span>
+</span><span id="__span-9-142"><a id="__codelineno-9-142" name="__codelineno-9-142" href="#__codelineno-9-142"></a>
+</span><span id="__span-9-143"><a id="__codelineno-9-143" name="__codelineno-9-143" href="#__codelineno-9-143"></a>        <span class="n">exit</span> <span class="n">1</span>
+</span><span id="__span-9-144"><a id="__codelineno-9-144" name="__codelineno-9-144" href="#__codelineno-9-144"></a>    <span class="p">}</span>
+</span><span id="__span-9-145"><a id="__codelineno-9-145" name="__codelineno-9-145" href="#__codelineno-9-145"></a><span class="p">}</span>
+</span><span id="__span-9-146"><a id="__codelineno-9-146" name="__codelineno-9-146" href="#__codelineno-9-146"></a><span class="k">catch</span>
+</span><span id="__span-9-147"><a id="__codelineno-9-147" name="__codelineno-9-147" href="#__codelineno-9-147"></a><span class="p">{</span>
+</span><span id="__span-9-148"><a id="__codelineno-9-148" name="__codelineno-9-148" href="#__codelineno-9-148"></a>    <span class="nb">Write-Log</span> <span class="s2">&quot;EXCEPTION during certificate install: </span><span class="p">$(</span><span class="nv">$_</span><span class="p">.</span><span class="n">Exception</span><span class="p">.</span><span class="n">Message</span><span class="p">)</span><span class="s2">&quot;</span> <span class="s1">&#39;ERROR&#39;</span>
+</span><span id="__span-9-149"><a id="__codelineno-9-149" name="__codelineno-9-149" href="#__codelineno-9-149"></a>
+</span><span id="__span-9-150"><a id="__codelineno-9-150" name="__codelineno-9-150" href="#__codelineno-9-150"></a>    <span class="c"># === Tattoo Exception ===</span>
+</span><span id="__span-9-151"><a id="__codelineno-9-151" name="__codelineno-9-151" href="#__codelineno-9-151"></a>    <span class="k">try</span>
+</span><span id="__span-9-152"><a id="__codelineno-9-152" name="__codelineno-9-152" href="#__codelineno-9-152"></a>    <span class="p">{</span>
+</span><span id="__span-9-153"><a id="__codelineno-9-153" name="__codelineno-9-153" href="#__codelineno-9-153"></a>        <span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="p">(</span><span class="nb">Test-Path</span> <span class="nv">$RegPath</span><span class="p">))</span> <span class="p">{</span> <span class="nb">New-Item</span> <span class="n">-Path</span> <span class="nv">$RegPath</span> <span class="n">-Force</span> <span class="p">|</span> <span class="nb">Out-Null</span> <span class="p">}</span>
+</span><span id="__span-9-154"><a id="__codelineno-9-154" name="__codelineno-9-154" href="#__codelineno-9-154"></a>        <span class="nb">Set-ItemProperty</span> <span class="n">-Path</span> <span class="nv">$RegPath</span> <span class="n">-Name</span> <span class="nv">$RegCertStatus</span> <span class="n">-Value</span> <span class="s1">&#39;Failed&#39;</span> <span class="n">-Type</span> <span class="n">String</span> <span class="n">-Force</span>
+</span><span id="__span-9-155"><a id="__codelineno-9-155" name="__codelineno-9-155" href="#__codelineno-9-155"></a>        <span class="nb">Set-ItemProperty</span> <span class="n">-Path</span> <span class="nv">$RegPath</span> <span class="n">-Name</span> <span class="s1">&#39;LastError&#39;</span> <span class="n">-Value</span> <span class="s2">&quot;Exception: </span><span class="p">$(</span><span class="nv">$_</span><span class="p">.</span><span class="n">Exception</span><span class="p">.</span><span class="n">Message</span><span class="p">)</span><span class="s2">&quot;</span> <span class="n">-Type</span> <span class="n">String</span> <span class="n">-Force</span>
+</span><span id="__span-9-156"><a id="__codelineno-9-156" name="__codelineno-9-156" href="#__codelineno-9-156"></a>    <span class="p">}</span>
+</span><span id="__span-9-157"><a id="__codelineno-9-157" name="__codelineno-9-157" href="#__codelineno-9-157"></a>    <span class="k">catch</span> <span class="p">{</span> <span class="nb">Write-Log</span> <span class="s2">&quot;Could not write exception tattoo&quot;</span> <span class="s1">&#39;WARN&#39;</span> <span class="p">}</span>
+</span><span id="__span-9-158"><a id="__codelineno-9-158" name="__codelineno-9-158" href="#__codelineno-9-158"></a>
+</span><span id="__span-9-159"><a id="__codelineno-9-159" name="__codelineno-9-159" href="#__codelineno-9-159"></a>    <span class="n">exit</span> <span class="n">1</span>
+</span><span id="__span-9-160"><a id="__codelineno-9-160" name="__codelineno-9-160" href="#__codelineno-9-160"></a><span class="p">}</span>
+</span></code></pre></div>
+</details>
+<p>Your source directory should now look this</p>
+<ul>
+<li>C:\Sources\IntuneWin\ThinkBiosConfig<ul>
+<li>Lenovo.BIOS.Certificates</li>
+<li>Install-LnvBiosCertificate.ps1</li>
+<li>thinkpadconfig.ini</li>
+<li>publicCert.pem</li>
+</ul>
+</li>
+</ul>
+<p>Download the latest <strong>Microsoft Win32 Content Prep Tool</strong> (<code>IntuneWinAppUtil.exe</code>) from <a href="https://github.com/microsoft/Microsoft-Win32-Content-Prep-Tool">GitHub</a>.</p>
+<p>Open an elevated terminal and run:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>IntuneWinAppUtil.exe -c &quot;C:\Sources\IntuneWin\ThinkBiosConfig -s &quot;Install-LnvBiosCertificate.ps1&quot; -o &quot;C:\Sources\IntuneWin\Output&quot; -q
+</span></code></pre></div>
+<p>This generates <code>Install-LnvBiosCertificate.intunewin</code>.</p>
+<p>Navigate to <strong>Microsoft Intune admin center → Apps → Windows → Create+ → Windows app (Win32)</strong>.</p>
+<h3 id="app-information">App information<a class="headerlink" href="#app-information" title="Permanent link">#</a></h3>
+<ul>
+<li><strong>Name:</strong> <code>Convert to Cert-based Authentication</code></li>
+<li><strong>Description:</strong> <code>Replaces BIOS Supervisor Password with certificate-based authentication – runs once during Autopilot</code></li>
+<li><strong>Publisher:</strong> <code>Lenovo / Your Org</code></li>
+</ul>
+<h3 id="program">Program<a class="headerlink" href="#program" title="Permanent link">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Install command</td>
+<td><code>%windir%\sysnative\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -File ".\Install-LnvBiosCertificate.ps1"</code></td>
+</tr>
+<tr>
+<td>Uninstall command</td>
+<td><code>cmd.exe /c</code></td>
+</tr>
+<tr>
+<td>Install behavior</td>
+<td><strong>System</strong></td>
+</tr>
+<tr>
+<td>Device restart behavior</td>
+<td><strong>Determine behavior based on return codes</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Minimum operating system</td>
+<td>Windows 11 21H2</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Additional requirement rule – Run only during OOBE/Autopilot</p>
+</blockquote>
+<ul>
+<li><strong>Rule type:</strong> Script</li>
+<li><strong>Script:</strong> (save/add the script below. Slightly modified from <a href="https://oofhours.com/2023/09/15/detecting-when-you-are-in-oobe/">here</a>)</li>
+<li><strong>Run script as 32-bit process on 64-bit clients:</strong> No</li>
+<li><strong>Return type:</strong> Boolean</li>
+<li><strong>Operator:</strong> Equals → <strong>No</strong></li>
+</ul>
+<details class="example">
+<summary>Requirement Rule Script</summary>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nv">$Definition</span> <span class="p">=</span> <span class="sh">@&quot;</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="sh">using System;</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="sh">using System.Text;</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="sh">using System.Collections.Generic;</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="sh">using System.Runtime.InteropServices;</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="sh">namespace Api</span>
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="sh">{</span>
+</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="sh">    public class Kernel32</span>
+</span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="sh">    {</span>
+</span><span id="__span-11-12"><a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="sh">        [DllImport(&quot;kernel32.dll&quot;, CharSet = CharSet.Auto, SetLastError = true)]</span>
+</span><span id="__span-11-13"><a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="sh">        public static extern int OOBEComplete(ref int bIsOOBEComplete);</span>
+</span><span id="__span-11-14"><a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a><span class="sh">    }</span>
+</span><span id="__span-11-15"><a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a><span class="sh">}</span>
+</span><span id="__span-11-16"><a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a><span class="sh">&quot;@</span>
+</span><span id="__span-11-17"><a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a>
+</span><span id="__span-11-18"><a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a><span class="nb">Add-Type</span> <span class="n">-TypeDefinition</span> <span class="nv">$Definition</span> <span class="n">-Language</span> <span class="n">CSharp</span>
+</span><span id="__span-11-19"><a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a>
+</span><span id="__span-11-20"><a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a><span class="nv">$IsOOBEComplete</span> <span class="p">=</span> <span class="nv">$false</span>
+</span><span id="__span-11-21"><a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a><span class="nv">$appRequirement</span> <span class="p">=</span> <span class="no">[Api.Kernel32]</span><span class="p">::</span><span class="n">OOBEComplete</span><span class="p">(</span><span class="no">[ref]</span> <span class="nv">$IsOOBEComplete</span><span class="p">)</span>
+</span><span id="__span-11-22"><a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a>
+</span><span id="__span-11-23"><a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a><span class="k">if</span> <span class="p">(</span><span class="nv">$IsOOBEComplete</span> <span class="o">-eq</span> <span class="s1">&#39;1&#39;</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nv">$true</span> <span class="p">}</span>
+</span><span id="__span-11-24"><a id="__codelineno-11-24" name="__codelineno-11-24" href="#__codelineno-11-24"></a><span class="k">else</span> <span class="p">{</span> <span class="k">return</span> <span class="nv">$false</span> <span class="p">}</span>
+</span></code></pre></div>
+</details>
+<h3 id="detection-rules">Detection rules<a class="headerlink" href="#detection-rules" title="Permanent link">#</a></h3>
+<ul>
+<li><strong>Rule type:</strong> Registry</li>
+<li><strong>Key path:</strong> <code>HKEY_LOCAL_MACHINE\SOFTWARE\Lenovo\BIOSConfigDeployment</code></li>
+<li><strong>Value name:</strong> <code>CertStatus</code></li>
+<li><strong>Detection method:</strong> String comparison</li>
+<li><strong>Operator:</strong> Equals</li>
+<li><strong>Value:</strong> <code>Installed</code></li>
+<li><strong>Associated with a 32-bit app on 64-bit clients:</strong> No</li>
+</ul>
+<h3 id="assignments">Assignments<a class="headerlink" href="#assignments" title="Permanent link">#</a></h3>
+<p>This will be a dependency app so you don't have to assign to a group.</p>
+<h3 id="what-happens-on-the-device">What Happens on the Device<a class="headerlink" href="#what-happens-on-the-device" title="Permanent link">#</a></h3>
+<ol>
+<li>The requirement script checks the device is in OOBE.</li>
+<li>The script installs the public certificate on the device, replacing the Supervisor Password.</li>
+<li>On success it exits with <strong>1641</strong> → device reboots immediately.</li>
+<li>After reboot, the BIOS converts to <strong>certificate-based authentication</strong>.</li>
+<li>Registry detection rule confirms the certificate status as installed → does not run again.</li>
+</ol>
+<p>The device's BIOS is now secured with a certificate, ready for the second Win32 app that will apply signed WMI commands to configure BIOS settings using the private key stored in Azure Key Vault.</p>
+<h2 id="step-4-create-the-second-win32-app-applying-the-settings">Step 4: Create the Second Win32 App - Applying the Settings<a class="headerlink" href="#step-4-create-the-second-win32-app-applying-the-settings" title="Permanent link">#</a></h2>
+<p>Save the below script as <strong>Set-LnvBiosSettings.ps1</strong> to the <strong>ThinkBiosConfig</strong> source directory.</p>
+<details class="example">
+<summary>Set-LnvBiosSettings.ps1</summary>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nv">$ErrorActionPreference</span> <span class="p">=</span> <span class="s1">&#39;Stop&#39;</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="c"># === Log File ===</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="nv">$LogFile</span> <span class="p">=</span> <span class="s2">&quot;$env:ProgramData\Lenovo\BIOSCertificates\Logs\BIOSConfig.log&quot;</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="nv">$LogDir</span> <span class="p">=</span> <span class="nb">Split-Path</span> <span class="nv">$LogFile</span> <span class="n">-Parent</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="p">(</span><span class="nb">Test-Path</span> <span class="nv">$LogDir</span><span class="p">))</span> <span class="p">{</span> <span class="nb">New-Item</span> <span class="n">-ItemType</span> <span class="n">Directory</span> <span class="n">-Path</span> <span class="nv">$LogDir</span> <span class="n">-Force</span> <span class="p">|</span> <span class="nb">Out-Null</span> <span class="p">}</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="c"># === Write-Log Function ===</span>
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="k">function</span> <span class="nb">Write-Log</span>
+</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="p">{</span>
+</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>    <span class="k">param</span> <span class="p">(</span>
+</span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+</span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>        <span class="no">[string]</span><span class="nv">$Message</span><span class="p">,</span>
+</span><span id="__span-12-14"><a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>        <span class="p">[</span><span class="k">ValidateSet</span><span class="p">(</span><span class="s1">&#39;INFO&#39;</span><span class="p">,</span> <span class="s1">&#39;WARN&#39;</span><span class="p">,</span> <span class="s1">&#39;ERROR&#39;</span><span class="p">,</span> <span class="s1">&#39;SUCCESS&#39;</span><span class="p">)]</span>
+</span><span id="__span-12-15"><a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>        <span class="no">[string]</span><span class="nv">$Level</span> <span class="p">=</span> <span class="s1">&#39;INFO&#39;</span>
+</span><span id="__span-12-16"><a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a>    <span class="p">)</span>
+</span><span id="__span-12-17"><a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a>    <span class="nv">$timestamp</span> <span class="p">=</span> <span class="nb">Get-Date</span> <span class="n">-Format</span> <span class="s1">&#39;yyyy-MM-dd HH:mm:ss&#39;</span>
+</span><span id="__span-12-18"><a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a>    <span class="nv">$logEntry</span> <span class="p">=</span> <span class="s2">&quot;$timestamp [$Level]: $Message&quot;</span>
+</span><span id="__span-12-19"><a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a>    <span class="nb">Add-Content</span> <span class="n">-Path</span> <span class="nv">$LogFile</span> <span class="n">-Value</span> <span class="nv">$logEntry</span> <span class="n">-Encoding</span> <span class="n">UTF8</span>
+</span><span id="__span-12-20"><a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a><span class="p">}</span>
+</span><span id="__span-12-21"><a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a>
+</span><span id="__span-12-22"><a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a><span class="c"># === Initial log entry ===</span>
+</span><span id="__span-12-23"><a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a><span class="nb">Write-Log</span> <span class="s2">&quot;=== BIOS Configuration Started ===&quot;</span> <span class="s1">&#39;INFO&#39;</span>
+</span><span id="__span-12-24"><a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a>
+</span><span id="__span-12-25"><a id="__codelineno-12-25" name="__codelineno-12-25" href="#__codelineno-12-25"></a><span class="c"># --- Paths ---</span>
+</span><span id="__span-12-26"><a id="__codelineno-12-26" name="__codelineno-12-26" href="#__codelineno-12-26"></a><span class="nv">$ModulePath</span> <span class="p">=</span> <span class="nb">Join-Path</span> <span class="n">-Path</span> <span class="nv">$PSScriptRoot</span> <span class="n">-ChildPath</span> <span class="s1">&#39;Lenovo.BIOS.Certificates\*\*.psd1&#39;</span> <span class="n">-Resolve</span>
+</span><span id="__span-12-27"><a id="__codelineno-12-27" name="__codelineno-12-27" href="#__codelineno-12-27"></a><span class="nv">$ConfigFilePath</span> <span class="p">=</span> <span class="nb">Join-Path</span> <span class="n">-Path</span> <span class="nv">$PSScriptRoot</span> <span class="n">-ChildPath</span> <span class="s1">&#39;*.ini&#39;</span> <span class="n">-Resolve</span>
+</span><span id="__span-12-28"><a id="__codelineno-12-28" name="__codelineno-12-28" href="#__codelineno-12-28"></a>
+</span><span id="__span-12-29"><a id="__codelineno-12-29" name="__codelineno-12-29" href="#__codelineno-12-29"></a><span class="c"># === Registry Tattoo Settings ===</span>
+</span><span id="__span-12-30"><a id="__codelineno-12-30" name="__codelineno-12-30" href="#__codelineno-12-30"></a><span class="nv">$RegPath</span> <span class="p">=</span> <span class="s1">&#39;HKLM:\SOFTWARE\Lenovo\BIOSConfigDeployment&#39;</span>
+</span><span id="__span-12-31"><a id="__codelineno-12-31" name="__codelineno-12-31" href="#__codelineno-12-31"></a><span class="nv">$RegNameConfig</span> <span class="p">=</span> <span class="s1">&#39;LastAppliedConfig&#39;</span>
+</span><span id="__span-12-32"><a id="__codelineno-12-32" name="__codelineno-12-32" href="#__codelineno-12-32"></a><span class="nv">$RegNameSuccess</span> <span class="p">=</span> <span class="s1">&#39;LastAppliedSuccess&#39;</span>
+</span><span id="__span-12-33"><a id="__codelineno-12-33" name="__codelineno-12-33" href="#__codelineno-12-33"></a>
+</span><span id="__span-12-34"><a id="__codelineno-12-34" name="__codelineno-12-34" href="#__codelineno-12-34"></a><span class="c"># -------------------------------------------------</span>
+</span><span id="__span-12-35"><a id="__codelineno-12-35" name="__codelineno-12-35" href="#__codelineno-12-35"></a><span class="c"># 1. Hybrid Detection: Registry + WMI Fallback</span>
+</span><span id="__span-12-36"><a id="__codelineno-12-36" name="__codelineno-12-36" href="#__codelineno-12-36"></a><span class="c"># -------------------------------------------------</span>
+</span><span id="__span-12-37"><a id="__codelineno-12-37" name="__codelineno-12-37" href="#__codelineno-12-37"></a><span class="nv">$CertInstalled</span> <span class="p">=</span> <span class="nv">$false</span>
+</span><span id="__span-12-38"><a id="__codelineno-12-38" name="__codelineno-12-38" href="#__codelineno-12-38"></a>
+</span><span id="__span-12-39"><a id="__codelineno-12-39" name="__codelineno-12-39" href="#__codelineno-12-39"></a><span class="c"># --- Step 1: Check Registry Tattoo ---</span>
+</span><span id="__span-12-40"><a id="__codelineno-12-40" name="__codelineno-12-40" href="#__codelineno-12-40"></a><span class="k">if</span> <span class="p">(</span><span class="nb">Test-Path</span> <span class="nv">$RegPath</span><span class="p">)</span>
+</span><span id="__span-12-41"><a id="__codelineno-12-41" name="__codelineno-12-41" href="#__codelineno-12-41"></a><span class="p">{</span>
+</span><span id="__span-12-42"><a id="__codelineno-12-42" name="__codelineno-12-42" href="#__codelineno-12-42"></a>    <span class="k">try</span>
+</span><span id="__span-12-43"><a id="__codelineno-12-43" name="__codelineno-12-43" href="#__codelineno-12-43"></a>    <span class="p">{</span>
+</span><span id="__span-12-44"><a id="__codelineno-12-44" name="__codelineno-12-44" href="#__codelineno-12-44"></a>        <span class="nv">$regProps</span> <span class="p">=</span> <span class="nb">Get-ItemProperty</span> <span class="n">-Path</span> <span class="nv">$RegPath</span>
+</span><span id="__span-12-45"><a id="__codelineno-12-45" name="__codelineno-12-45" href="#__codelineno-12-45"></a>
+</span><span id="__span-12-46"><a id="__codelineno-12-46" name="__codelineno-12-46" href="#__codelineno-12-46"></a>        <span class="c"># Debug: Log all properties</span>
+</span><span id="__span-12-47"><a id="__codelineno-12-47" name="__codelineno-12-47" href="#__codelineno-12-47"></a>        <span class="nv">$regProps</span> <span class="p">|</span> <span class="nb">Get-Member</span> <span class="n">-MemberType</span> <span class="n">NoteProperty</span> <span class="p">|</span> <span class="k">ForEach</span><span class="n">-Object</span> <span class="p">{</span>
+</span><span id="__span-12-48"><a id="__codelineno-12-48" name="__codelineno-12-48" href="#__codelineno-12-48"></a>            <span class="nb">Write-Log</span> <span class="s2">&quot;Registry entry: </span><span class="p">$(</span><span class="nv">$_</span><span class="p">.</span><span class="n">Name</span><span class="p">)</span><span class="s2"> = &#39;</span><span class="p">$(</span><span class="nv">$regProps</span><span class="p">.(</span><span class="nv">$_</span><span class="p">.</span><span class="n">Name</span><span class="p">))</span><span class="s2">&#39;&quot;</span> <span class="s1">&#39;INFO&#39;</span>
+</span><span id="__span-12-49"><a id="__codelineno-12-49" name="__codelineno-12-49" href="#__codelineno-12-49"></a>        <span class="p">}</span>
+</span><span id="__span-12-50"><a id="__codelineno-12-50" name="__codelineno-12-50" href="#__codelineno-12-50"></a>
+</span><span id="__span-12-51"><a id="__codelineno-12-51" name="__codelineno-12-51" href="#__codelineno-12-51"></a>        <span class="k">if</span> <span class="p">(</span><span class="nv">$regProps</span><span class="p">.</span><span class="n">CertStatus</span> <span class="o">-eq</span> <span class="s1">&#39;Installed&#39;</span><span class="p">)</span>
+</span><span id="__span-12-52"><a id="__codelineno-12-52" name="__codelineno-12-52" href="#__codelineno-12-52"></a>        <span class="p">{</span>
+</span><span id="__span-12-53"><a id="__codelineno-12-53" name="__codelineno-12-53" href="#__codelineno-12-53"></a>            <span class="nb">Write-Log</span> <span class="s2">&quot;Registry confirms certificate installed (CertStatus=Success)&quot;</span> <span class="s1">&#39;SUCCESS&#39;</span>
+</span><span id="__span-12-54"><a id="__codelineno-12-54" name="__codelineno-12-54" href="#__codelineno-12-54"></a>            <span class="nv">$CertInstalled</span> <span class="p">=</span> <span class="nv">$true</span>
+</span><span id="__span-12-55"><a id="__codelineno-12-55" name="__codelineno-12-55" href="#__codelineno-12-55"></a>        <span class="p">}</span>
+</span><span id="__span-12-56"><a id="__codelineno-12-56" name="__codelineno-12-56" href="#__codelineno-12-56"></a>        <span class="k">else</span>
+</span><span id="__span-12-57"><a id="__codelineno-12-57" name="__codelineno-12-57" href="#__codelineno-12-57"></a>        <span class="p">{</span>
+</span><span id="__span-12-58"><a id="__codelineno-12-58" name="__codelineno-12-58" href="#__codelineno-12-58"></a>            <span class="nb">Write-Log</span> <span class="s2">&quot;Registry exists but CertStatus is not Success (found: &#39;</span><span class="p">$(</span><span class="nv">$regProps</span><span class="p">.</span><span class="n">CertStatus</span><span class="p">)</span><span class="s2">&#39;)&quot;</span> <span class="s1">&#39;WARN&#39;</span>
+</span><span id="__span-12-59"><a id="__codelineno-12-59" name="__codelineno-12-59" href="#__codelineno-12-59"></a>        <span class="p">}</span>
+</span><span id="__span-12-60"><a id="__codelineno-12-60" name="__codelineno-12-60" href="#__codelineno-12-60"></a>    <span class="p">}</span>
+</span><span id="__span-12-61"><a id="__codelineno-12-61" name="__codelineno-12-61" href="#__codelineno-12-61"></a>    <span class="k">catch</span>
+</span><span id="__span-12-62"><a id="__codelineno-12-62" name="__codelineno-12-62" href="#__codelineno-12-62"></a>    <span class="p">{</span>
+</span><span id="__span-12-63"><a id="__codelineno-12-63" name="__codelineno-12-63" href="#__codelineno-12-63"></a>        <span class="nb">Write-Log</span> <span class="s2">&quot;Failed to read registry key </span><span class="p">$(</span><span class="nv">$RegPath</span><span class="p">)</span><span class="s2">: </span><span class="p">$(</span><span class="nv">$_</span><span class="p">.</span><span class="n">Exception</span><span class="p">.</span><span class="n">Message</span><span class="p">)</span><span class="s2">&quot;</span> <span class="s1">&#39;WARN&#39;</span>
+</span><span id="__span-12-64"><a id="__codelineno-12-64" name="__codelineno-12-64" href="#__codelineno-12-64"></a>    <span class="p">}</span>
+</span><span id="__span-12-65"><a id="__codelineno-12-65" name="__codelineno-12-65" href="#__codelineno-12-65"></a><span class="p">}</span>
+</span><span id="__span-12-66"><a id="__codelineno-12-66" name="__codelineno-12-66" href="#__codelineno-12-66"></a><span class="k">else</span>
+</span><span id="__span-12-67"><a id="__codelineno-12-67" name="__codelineno-12-67" href="#__codelineno-12-67"></a><span class="p">{</span>
+</span><span id="__span-12-68"><a id="__codelineno-12-68" name="__codelineno-12-68" href="#__codelineno-12-68"></a>    <span class="nb">Write-Log</span> <span class="s2">&quot;Registry path $RegPath does not exist yet.&quot;</span> <span class="s1">&#39;INFO&#39;</span>
+</span><span id="__span-12-69"><a id="__codelineno-12-69" name="__codelineno-12-69" href="#__codelineno-12-69"></a><span class="p">}</span>
+</span><span id="__span-12-70"><a id="__codelineno-12-70" name="__codelineno-12-70" href="#__codelineno-12-70"></a>
+</span><span id="__span-12-71"><a id="__codelineno-12-71" name="__codelineno-12-71" href="#__codelineno-12-71"></a><span class="c"># --- Step 2: WMI Fallback ---</span>
+</span><span id="__span-12-72"><a id="__codelineno-12-72" name="__codelineno-12-72" href="#__codelineno-12-72"></a><span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="nv">$CertInstalled</span><span class="p">)</span>
+</span><span id="__span-12-73"><a id="__codelineno-12-73" name="__codelineno-12-73" href="#__codelineno-12-73"></a><span class="p">{</span>
+</span><span id="__span-12-74"><a id="__codelineno-12-74" name="__codelineno-12-74" href="#__codelineno-12-74"></a>    <span class="k">try</span>
+</span><span id="__span-12-75"><a id="__codelineno-12-75" name="__codelineno-12-75" href="#__codelineno-12-75"></a>    <span class="p">{</span>
+</span><span id="__span-12-76"><a id="__codelineno-12-76" name="__codelineno-12-76" href="#__codelineno-12-76"></a>        <span class="nv">$BiosPassword</span> <span class="p">=</span> <span class="nb">Get-CimInstance</span> <span class="n">-Namespace</span> <span class="n">root</span><span class="p">\</span><span class="n">WMI</span> <span class="n">-ClassName</span> <span class="n">Lenovo_BiosPasswordSettings</span>
+</span><span id="__span-12-77"><a id="__codelineno-12-77" name="__codelineno-12-77" href="#__codelineno-12-77"></a>        <span class="nv">$PasswordState</span> <span class="p">=</span> <span class="nv">$BiosPassword</span><span class="p">.</span><span class="n">PasswordState</span>
+</span><span id="__span-12-78"><a id="__codelineno-12-78" name="__codelineno-12-78" href="#__codelineno-12-78"></a>        <span class="nb">Write-Log</span> <span class="s2">&quot;WMI PasswordState: $PasswordState&quot;</span> <span class="s1">&#39;INFO&#39;</span>
+</span><span id="__span-12-79"><a id="__codelineno-12-79" name="__codelineno-12-79" href="#__codelineno-12-79"></a>
+</span><span id="__span-12-80"><a id="__codelineno-12-80" name="__codelineno-12-80" href="#__codelineno-12-80"></a>        <span class="c"># Password State 128 indicates certificate-based authentication (https://docs.lenovocdrt.com/ref/bios/wmi/wmi_guide/#detecting-password-state)</span>
+</span><span id="__span-12-81"><a id="__codelineno-12-81" name="__codelineno-12-81" href="#__codelineno-12-81"></a>        <span class="k">if</span> <span class="p">(</span><span class="nv">$PasswordState</span> <span class="o">-eq</span> <span class="n">128</span><span class="p">)</span>
+</span><span id="__span-12-82"><a id="__codelineno-12-82" name="__codelineno-12-82" href="#__codelineno-12-82"></a>        <span class="p">{</span>
+</span><span id="__span-12-83"><a id="__codelineno-12-83" name="__codelineno-12-83" href="#__codelineno-12-83"></a>            <span class="nb">Write-Log</span> <span class="s2">&quot;WMI confirms certificate installed (PasswordState=128)&quot;</span> <span class="s1">&#39;SUCCESS&#39;</span>
+</span><span id="__span-12-84"><a id="__codelineno-12-84" name="__codelineno-12-84" href="#__codelineno-12-84"></a>            <span class="nv">$CertInstalled</span> <span class="p">=</span> <span class="nv">$true</span>
+</span><span id="__span-12-85"><a id="__codelineno-12-85" name="__codelineno-12-85" href="#__codelineno-12-85"></a>
+</span><span id="__span-12-86"><a id="__codelineno-12-86" name="__codelineno-12-86" href="#__codelineno-12-86"></a>            <span class="c"># Sync registry</span>
+</span><span id="__span-12-87"><a id="__codelineno-12-87" name="__codelineno-12-87" href="#__codelineno-12-87"></a>            <span class="k">try</span>
+</span><span id="__span-12-88"><a id="__codelineno-12-88" name="__codelineno-12-88" href="#__codelineno-12-88"></a>            <span class="p">{</span>
+</span><span id="__span-12-89"><a id="__codelineno-12-89" name="__codelineno-12-89" href="#__codelineno-12-89"></a>                <span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="p">(</span><span class="nb">Test-Path</span> <span class="nv">$RegPath</span><span class="p">))</span> <span class="p">{</span> <span class="nb">New-Item</span> <span class="n">-Path</span> <span class="nv">$RegPath</span> <span class="n">-Force</span> <span class="p">|</span> <span class="nb">Out-Null</span> <span class="p">}</span>
+</span><span id="__span-12-90"><a id="__codelineno-12-90" name="__codelineno-12-90" href="#__codelineno-12-90"></a>                <span class="nb">Set-ItemProperty</span> <span class="n">-Path</span> <span class="nv">$RegPath</span> <span class="n">-Name</span> <span class="s1">&#39;CertStatus&#39;</span> <span class="n">-Value</span> <span class="s1">&#39;Success&#39;</span> <span class="n">-Type</span> <span class="n">String</span> <span class="n">-Force</span>
+</span><span id="__span-12-91"><a id="__codelineno-12-91" name="__codelineno-12-91" href="#__codelineno-12-91"></a>                <span class="nb">Set-ItemProperty</span> <span class="n">-Path</span> <span class="nv">$RegPath</span> <span class="n">-Name</span> <span class="s1">&#39;LastCertInstall&#39;</span> <span class="n">-Value</span> <span class="p">(</span><span class="nb">Get-Date</span><span class="p">).</span><span class="n">ToString</span><span class="p">(</span><span class="s1">&#39;yyyy-MM-dd HH:mm:ss&#39;</span><span class="p">)</span> <span class="n">-Type</span> <span class="n">String</span> <span class="n">-Force</span>
+</span><span id="__span-12-92"><a id="__codelineno-12-92" name="__codelineno-12-92" href="#__codelineno-12-92"></a>                <span class="nb">Write-Log</span> <span class="s2">&quot;Updated registry tattoo from WMI detection&quot;</span> <span class="s1">&#39;INFO&#39;</span>
+</span><span id="__span-12-93"><a id="__codelineno-12-93" name="__codelineno-12-93" href="#__codelineno-12-93"></a>            <span class="p">}</span>
+</span><span id="__span-12-94"><a id="__codelineno-12-94" name="__codelineno-12-94" href="#__codelineno-12-94"></a>            <span class="k">catch</span>
+</span><span id="__span-12-95"><a id="__codelineno-12-95" name="__codelineno-12-95" href="#__codelineno-12-95"></a>            <span class="p">{</span>
+</span><span id="__span-12-96"><a id="__codelineno-12-96" name="__codelineno-12-96" href="#__codelineno-12-96"></a>                <span class="nb">Write-Log</span> <span class="s2">&quot;Could not update registry from WMI: </span><span class="p">$(</span><span class="nv">$_</span><span class="p">.</span><span class="n">Exception</span><span class="p">.</span><span class="n">Message</span><span class="p">)</span><span class="s2">&quot;</span> <span class="s1">&#39;WARN&#39;</span>
+</span><span id="__span-12-97"><a id="__codelineno-12-97" name="__codelineno-12-97" href="#__codelineno-12-97"></a>            <span class="p">}</span>
+</span><span id="__span-12-98"><a id="__codelineno-12-98" name="__codelineno-12-98" href="#__codelineno-12-98"></a>        <span class="p">}</span>
+</span><span id="__span-12-99"><a id="__codelineno-12-99" name="__codelineno-12-99" href="#__codelineno-12-99"></a>    <span class="p">}</span>
+</span><span id="__span-12-100"><a id="__codelineno-12-100" name="__codelineno-12-100" href="#__codelineno-12-100"></a>    <span class="k">catch</span>
+</span><span id="__span-12-101"><a id="__codelineno-12-101" name="__codelineno-12-101" href="#__codelineno-12-101"></a>    <span class="p">{</span>
+</span><span id="__span-12-102"><a id="__codelineno-12-102" name="__codelineno-12-102" href="#__codelineno-12-102"></a>        <span class="nb">Write-Log</span> <span class="s2">&quot;WMI query failed: </span><span class="p">$(</span><span class="nv">$_</span><span class="p">.</span><span class="n">Exception</span><span class="p">.</span><span class="n">Message</span><span class="p">)</span><span class="s2">&quot;</span> <span class="s1">&#39;WARN&#39;</span>
+</span><span id="__span-12-103"><a id="__codelineno-12-103" name="__codelineno-12-103" href="#__codelineno-12-103"></a>    <span class="p">}</span>
+</span><span id="__span-12-104"><a id="__codelineno-12-104" name="__codelineno-12-104" href="#__codelineno-12-104"></a><span class="p">}</span>
+</span><span id="__span-12-105"><a id="__codelineno-12-105" name="__codelineno-12-105" href="#__codelineno-12-105"></a>
+</span><span id="__span-12-106"><a id="__codelineno-12-106" name="__codelineno-12-106" href="#__codelineno-12-106"></a><span class="c"># --- Step 3: Final Decision ---</span>
+</span><span id="__span-12-107"><a id="__codelineno-12-107" name="__codelineno-12-107" href="#__codelineno-12-107"></a><span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="nv">$CertInstalled</span><span class="p">)</span>
+</span><span id="__span-12-108"><a id="__codelineno-12-108" name="__codelineno-12-108" href="#__codelineno-12-108"></a><span class="p">{</span>
+</span><span id="__span-12-109"><a id="__codelineno-12-109" name="__codelineno-12-109" href="#__codelineno-12-109"></a>    <span class="nv">$msg</span> <span class="p">=</span> <span class="s2">&quot;BIOS certificate not detected (registry or WMI). Waiting for dependency app.&quot;</span>
+</span><span id="__span-12-110"><a id="__codelineno-12-110" name="__codelineno-12-110" href="#__codelineno-12-110"></a>    <span class="nb">Write-Log</span> <span class="nv">$msg</span> <span class="s1">&#39;ERROR&#39;</span>
+</span><span id="__span-12-111"><a id="__codelineno-12-111" name="__codelineno-12-111" href="#__codelineno-12-111"></a>    <span class="k">try</span>
+</span><span id="__span-12-112"><a id="__codelineno-12-112" name="__codelineno-12-112" href="#__codelineno-12-112"></a>    <span class="p">{</span>
+</span><span id="__span-12-113"><a id="__codelineno-12-113" name="__codelineno-12-113" href="#__codelineno-12-113"></a>        <span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="p">(</span><span class="nb">Test-Path</span> <span class="nv">$RegPath</span><span class="p">))</span> <span class="p">{</span> <span class="nb">New-Item</span> <span class="n">-Path</span> <span class="nv">$RegPath</span> <span class="n">-Force</span> <span class="p">|</span> <span class="nb">Out-Null</span> <span class="p">}</span>
+</span><span id="__span-12-114"><a id="__codelineno-12-114" name="__codelineno-12-114" href="#__codelineno-12-114"></a>        <span class="nb">Set-ItemProperty</span> <span class="n">-Path</span> <span class="nv">$RegPath</span> <span class="n">-Name</span> <span class="s1">&#39;Status&#39;</span> <span class="n">-Value</span> <span class="s1">&#39;Failed&#39;</span> <span class="n">-Type</span> <span class="n">String</span> <span class="n">-Force</span>
+</span><span id="__span-12-115"><a id="__codelineno-12-115" name="__codelineno-12-115" href="#__codelineno-12-115"></a>        <span class="nb">Set-ItemProperty</span> <span class="n">-Path</span> <span class="nv">$RegPath</span> <span class="n">-Name</span> <span class="s1">&#39;LastError&#39;</span> <span class="n">-Value</span> <span class="nv">$msg</span> <span class="n">-Type</span> <span class="n">String</span> <span class="n">-Force</span>
+</span><span id="__span-12-116"><a id="__codelineno-12-116" name="__codelineno-12-116" href="#__codelineno-12-116"></a>    <span class="p">}</span>
+</span><span id="__span-12-117"><a id="__codelineno-12-117" name="__codelineno-12-117" href="#__codelineno-12-117"></a>    <span class="k">catch</span> <span class="p">{</span> <span class="p">}</span>
+</span><span id="__span-12-118"><a id="__codelineno-12-118" name="__codelineno-12-118" href="#__codelineno-12-118"></a>    <span class="nb">Write-Log</span> <span class="s2">&quot;Exiting 1 - will retry after cert app&quot;</span> <span class="s1">&#39;INFO&#39;</span>
+</span><span id="__span-12-119"><a id="__codelineno-12-119" name="__codelineno-12-119" href="#__codelineno-12-119"></a>    <span class="n">exit</span> <span class="n">1</span>
+</span><span id="__span-12-120"><a id="__codelineno-12-120" name="__codelineno-12-120" href="#__codelineno-12-120"></a><span class="p">}</span>
+</span><span id="__span-12-121"><a id="__codelineno-12-121" name="__codelineno-12-121" href="#__codelineno-12-121"></a>
+</span><span id="__span-12-122"><a id="__codelineno-12-122" name="__codelineno-12-122" href="#__codelineno-12-122"></a><span class="nb">Write-Log</span> <span class="s2">&quot;Certificate confirmed. Proceeding with BIOS config.&quot;</span> <span class="s1">&#39;SUCCESS&#39;</span>
+</span><span id="__span-12-123"><a id="__codelineno-12-123" name="__codelineno-12-123" href="#__codelineno-12-123"></a>
+</span><span id="__span-12-124"><a id="__codelineno-12-124" name="__codelineno-12-124" href="#__codelineno-12-124"></a><span class="c"># -------------------------------------------------</span>
+</span><span id="__span-12-125"><a id="__codelineno-12-125" name="__codelineno-12-125" href="#__codelineno-12-125"></a><span class="c"># 2. Import Lenovo BIOS Module</span>
+</span><span id="__span-12-126"><a id="__codelineno-12-126" name="__codelineno-12-126" href="#__codelineno-12-126"></a><span class="c"># -------------------------------------------------</span>
+</span><span id="__span-12-127"><a id="__codelineno-12-127" name="__codelineno-12-127" href="#__codelineno-12-127"></a><span class="k">try</span>
+</span><span id="__span-12-128"><a id="__codelineno-12-128" name="__codelineno-12-128" href="#__codelineno-12-128"></a><span class="p">{</span>
+</span><span id="__span-12-129"><a id="__codelineno-12-129" name="__codelineno-12-129" href="#__codelineno-12-129"></a>    <span class="nv">$Module</span> <span class="p">=</span> <span class="nb">Import-Module</span> <span class="n">-Name</span> <span class="nv">$ModulePath</span> <span class="n">-PassThru</span> <span class="n">-Force</span>
+</span><span id="__span-12-130"><a id="__codelineno-12-130" name="__codelineno-12-130" href="#__codelineno-12-130"></a>    <span class="nb">Write-Log</span> <span class="s2">&quot;Successfully imported module: </span><span class="p">$(</span><span class="nv">$Module</span><span class="p">.</span><span class="n">Name</span><span class="p">)</span><span class="s2">&quot;</span> <span class="s1">&#39;SUCCESS&#39;</span>
+</span><span id="__span-12-131"><a id="__codelineno-12-131" name="__codelineno-12-131" href="#__codelineno-12-131"></a><span class="p">}</span>
+</span><span id="__span-12-132"><a id="__codelineno-12-132" name="__codelineno-12-132" href="#__codelineno-12-132"></a><span class="k">catch</span>
+</span><span id="__span-12-133"><a id="__codelineno-12-133" name="__codelineno-12-133" href="#__codelineno-12-133"></a><span class="p">{</span>
+</span><span id="__span-12-134"><a id="__codelineno-12-134" name="__codelineno-12-134" href="#__codelineno-12-134"></a>    <span class="nb">Write-Log</span> <span class="s2">&quot;Failed to import Lenovo BIOS module from &#39;$ModulePath&#39;: </span><span class="p">$(</span><span class="nv">$_</span><span class="p">.</span><span class="n">Exception</span><span class="p">.</span><span class="n">Message</span><span class="p">)</span><span class="s2">&quot;</span> <span class="s1">&#39;ERROR&#39;</span>
+</span><span id="__span-12-135"><a id="__codelineno-12-135" name="__codelineno-12-135" href="#__codelineno-12-135"></a>    <span class="n">exit</span> <span class="n">1</span>
+</span><span id="__span-12-136"><a id="__codelineno-12-136" name="__codelineno-12-136" href="#__codelineno-12-136"></a><span class="p">}</span>
+</span><span id="__span-12-137"><a id="__codelineno-12-137" name="__codelineno-12-137" href="#__codelineno-12-137"></a>
+</span><span id="__span-12-138"><a id="__codelineno-12-138" name="__codelineno-12-138" href="#__codelineno-12-138"></a><span class="c"># -------------------------------------------------</span>
+</span><span id="__span-12-139"><a id="__codelineno-12-139" name="__codelineno-12-139" href="#__codelineno-12-139"></a><span class="c"># 3. Verify Config File Exists</span>
+</span><span id="__span-12-140"><a id="__codelineno-12-140" name="__codelineno-12-140" href="#__codelineno-12-140"></a><span class="c"># -------------------------------------------------</span>
+</span><span id="__span-12-141"><a id="__codelineno-12-141" name="__codelineno-12-141" href="#__codelineno-12-141"></a><span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="p">(</span><span class="nb">Test-Path</span> <span class="n">-Path</span> <span class="nv">$ConfigFilePath</span> <span class="n">-PathType</span> <span class="n">Leaf</span><span class="p">))</span>
+</span><span id="__span-12-142"><a id="__codelineno-12-142" name="__codelineno-12-142" href="#__codelineno-12-142"></a><span class="p">{</span>
+</span><span id="__span-12-143"><a id="__codelineno-12-143" name="__codelineno-12-143" href="#__codelineno-12-143"></a>    <span class="nb">Write-Log</span> <span class="s2">&quot;Configuration file not found: &#39;$ConfigFilePath&#39;&quot;</span> <span class="s1">&#39;ERROR&#39;</span>
+</span><span id="__span-12-144"><a id="__codelineno-12-144" name="__codelineno-12-144" href="#__codelineno-12-144"></a>    <span class="n">exit</span> <span class="n">1</span>
+</span><span id="__span-12-145"><a id="__codelineno-12-145" name="__codelineno-12-145" href="#__codelineno-12-145"></a><span class="p">}</span>
+</span><span id="__span-12-146"><a id="__codelineno-12-146" name="__codelineno-12-146" href="#__codelineno-12-146"></a><span class="nb">Write-Log</span> <span class="s2">&quot;Found config file: $ConfigFilePath&quot;</span> <span class="s1">&#39;INFO&#39;</span>
+</span><span id="__span-12-147"><a id="__codelineno-12-147" name="__codelineno-12-147" href="#__codelineno-12-147"></a>
+</span><span id="__span-12-148"><a id="__codelineno-12-148" name="__codelineno-12-148" href="#__codelineno-12-148"></a><span class="c"># -------------------------------------------------</span>
+</span><span id="__span-12-149"><a id="__codelineno-12-149" name="__codelineno-12-149" href="#__codelineno-12-149"></a><span class="c"># 4. Submit BIOS Config &amp; Validate ALL Results</span>
+</span><span id="__span-12-150"><a id="__codelineno-12-150" name="__codelineno-12-150" href="#__codelineno-12-150"></a><span class="c"># -------------------------------------------------</span>
+</span><span id="__span-12-151"><a id="__codelineno-12-151" name="__codelineno-12-151" href="#__codelineno-12-151"></a><span class="k">try</span>
+</span><span id="__span-12-152"><a id="__codelineno-12-152" name="__codelineno-12-152" href="#__codelineno-12-152"></a><span class="p">{</span>
+</span><span id="__span-12-153"><a id="__codelineno-12-153" name="__codelineno-12-153" href="#__codelineno-12-153"></a>    <span class="nv">$Result</span> <span class="p">=</span> <span class="nb">Submit-LnvBiosConfigFile</span> <span class="n">-ConfigFile</span> <span class="nv">$ConfigFilePath</span>
+</span><span id="__span-12-154"><a id="__codelineno-12-154" name="__codelineno-12-154" href="#__codelineno-12-154"></a>    <span class="nb">Write-Log</span> <span class="s2">&quot;BIOS configuration file submitted: &#39;$ConfigFilePath&#39;&quot;</span> <span class="s1">&#39;INFO&#39;</span>
+</span><span id="__span-12-155"><a id="__codelineno-12-155" name="__codelineno-12-155" href="#__codelineno-12-155"></a>    <span class="nb">Write-Log</span> <span class="s2">&quot;Refer to BiosCerts.log under %ProgramData%\Lenovo\BIOSCertificates\Logs&quot;</span> <span class="s1">&#39;INFO&#39;</span>
+</span><span id="__span-12-156"><a id="__codelineno-12-156" name="__codelineno-12-156" href="#__codelineno-12-156"></a>
+</span><span id="__span-12-157"><a id="__codelineno-12-157" name="__codelineno-12-157" href="#__codelineno-12-157"></a>    <span class="k">if</span> <span class="p">(</span><span class="nv">$Result</span> <span class="o">-and</span> <span class="nv">$Result</span><span class="p">.</span><span class="n">Count</span> <span class="o">-gt</span> <span class="n">0</span><span class="p">)</span>
+</span><span id="__span-12-158"><a id="__codelineno-12-158" name="__codelineno-12-158" href="#__codelineno-12-158"></a>    <span class="p">{</span>
+</span><span id="__span-12-159"><a id="__codelineno-12-159" name="__codelineno-12-159" href="#__codelineno-12-159"></a>        <span class="nv">$allSuccess</span> <span class="p">=</span> <span class="nv">$true</span>
+</span><span id="__span-12-160"><a id="__codelineno-12-160" name="__codelineno-12-160" href="#__codelineno-12-160"></a>        <span class="nv">$failureDetails</span> <span class="p">=</span> <span class="p">@()</span>
+</span><span id="__span-12-161"><a id="__codelineno-12-161" name="__codelineno-12-161" href="#__codelineno-12-161"></a>        <span class="nv">$successCount</span> <span class="p">=</span> <span class="n">0</span>
+</span><span id="__span-12-162"><a id="__codelineno-12-162" name="__codelineno-12-162" href="#__codelineno-12-162"></a>
+</span><span id="__span-12-163"><a id="__codelineno-12-163" name="__codelineno-12-163" href="#__codelineno-12-163"></a>        <span class="k">foreach</span> <span class="p">(</span><span class="nv">$setting</span> <span class="k">in</span> <span class="nv">$Result</span><span class="p">)</span>
+</span><span id="__span-12-164"><a id="__codelineno-12-164" name="__codelineno-12-164" href="#__codelineno-12-164"></a>        <span class="p">{</span>
+</span><span id="__span-12-165"><a id="__codelineno-12-165" name="__codelineno-12-165" href="#__codelineno-12-165"></a>            <span class="nv">$returnVal</span> <span class="p">=</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$setting</span><span class="p">.</span><span class="n">ReturnValue</span><span class="p">)</span> <span class="p">{</span> <span class="nv">$setting</span><span class="p">.</span><span class="n">ReturnValue</span> <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="s1">&#39;Unknown&#39;</span> <span class="p">}</span>
+</span><span id="__span-12-166"><a id="__codelineno-12-166" name="__codelineno-12-166" href="#__codelineno-12-166"></a>            <span class="nb">Write-Log</span> <span class="s2">&quot;  -&gt; Setting result Betting: ReturnValue=&#39;$returnVal&#39; | $env:COMPUTERNAME&quot;</span> <span class="s1">&#39;INFO&#39;</span>
+</span><span id="__span-12-167"><a id="__codelineno-12-167" name="__codelineno-12-167" href="#__codelineno-12-167"></a>
+</span><span id="__span-12-168"><a id="__codelineno-12-168" name="__codelineno-12-168" href="#__codelineno-12-168"></a>            <span class="k">if</span> <span class="p">(</span><span class="nv">$returnVal</span> <span class="o">-eq</span> <span class="s1">&#39;Success&#39;</span><span class="p">)</span>
+</span><span id="__span-12-169"><a id="__codelineno-12-169" name="__codelineno-12-169" href="#__codelineno-12-169"></a>            <span class="p">{</span>
+</span><span id="__span-12-170"><a id="__codelineno-12-170" name="__codelineno-12-170" href="#__codelineno-12-170"></a>                <span class="nv">$successCount</span><span class="p">++</span>
+</span><span id="__span-12-171"><a id="__codelineno-12-171" name="__codelineno-12-171" href="#__codelineno-12-171"></a>            <span class="p">}</span>
+</span><span id="__span-12-172"><a id="__codelineno-12-172" name="__codelineno-12-172" href="#__codelineno-12-172"></a>            <span class="k">else</span>
+</span><span id="__span-12-173"><a id="__codelineno-12-173" name="__codelineno-12-173" href="#__codelineno-12-173"></a>            <span class="p">{</span>
+</span><span id="__span-12-174"><a id="__codelineno-12-174" name="__codelineno-12-174" href="#__codelineno-12-174"></a>                <span class="nv">$allSuccess</span> <span class="p">=</span> <span class="nv">$false</span>
+</span><span id="__span-12-175"><a id="__codelineno-12-175" name="__codelineno-12-175" href="#__codelineno-12-175"></a>                <span class="nv">$failureDetails</span> <span class="p">+=</span> <span class="s2">&quot;ReturnValue=&#39;$returnVal&#39;&quot;</span>
+</span><span id="__span-12-176"><a id="__codelineno-12-176" name="__codelineno-12-176" href="#__codelineno-12-176"></a>            <span class="p">}</span>
+</span><span id="__span-12-177"><a id="__codelineno-12-177" name="__codelineno-12-177" href="#__codelineno-12-177"></a>        <span class="p">}</span>
+</span><span id="__span-12-178"><a id="__codelineno-12-178" name="__codelineno-12-178" href="#__codelineno-12-178"></a>
+</span><span id="__span-12-179"><a id="__codelineno-12-179" name="__codelineno-12-179" href="#__codelineno-12-179"></a>        <span class="k">if</span> <span class="p">(</span><span class="nv">$allSuccess</span><span class="p">)</span>
+</span><span id="__span-12-180"><a id="__codelineno-12-180" name="__codelineno-12-180" href="#__codelineno-12-180"></a>        <span class="p">{</span>
+</span><span id="__span-12-181"><a id="__codelineno-12-181" name="__codelineno-12-181" href="#__codelineno-12-181"></a>            <span class="nb">Write-Log</span> <span class="s2">&quot;All </span><span class="p">$(</span><span class="nv">$Result</span><span class="p">.</span><span class="n">Count</span><span class="p">)</span><span class="s2"> settings applied (ReturnValue: Success)&quot;</span> <span class="s1">&#39;SUCCESS&#39;</span>
+</span><span id="__span-12-182"><a id="__codelineno-12-182" name="__codelineno-12-182" href="#__codelineno-12-182"></a>
+</span><span id="__span-12-183"><a id="__codelineno-12-183" name="__codelineno-12-183" href="#__codelineno-12-183"></a>            <span class="c"># === Tattoo Registry on Success ===</span>
+</span><span id="__span-12-184"><a id="__codelineno-12-184" name="__codelineno-12-184" href="#__codelineno-12-184"></a>            <span class="k">try</span>
+</span><span id="__span-12-185"><a id="__codelineno-12-185" name="__codelineno-12-185" href="#__codelineno-12-185"></a>            <span class="p">{</span>
+</span><span id="__span-12-186"><a id="__codelineno-12-186" name="__codelineno-12-186" href="#__codelineno-12-186"></a>                <span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="p">(</span><span class="nb">Test-Path</span> <span class="nv">$RegPath</span><span class="p">))</span>
+</span><span id="__span-12-187"><a id="__codelineno-12-187" name="__codelineno-12-187" href="#__codelineno-12-187"></a>                <span class="p">{</span>
+</span><span id="__span-12-188"><a id="__codelineno-12-188" name="__codelineno-12-188" href="#__codelineno-12-188"></a>                    <span class="nb">New-Item</span> <span class="n">-Path</span> <span class="nv">$RegPath</span> <span class="n">-Force</span> <span class="p">|</span> <span class="nb">Out-Null</span>
+</span><span id="__span-12-189"><a id="__codelineno-12-189" name="__codelineno-12-189" href="#__codelineno-12-189"></a>                    <span class="nb">Write-Log</span> <span class="s2">&quot;Created registry path: $RegPath&quot;</span> <span class="s1">&#39;INFO&#39;</span>
+</span><span id="__span-12-190"><a id="__codelineno-12-190" name="__codelineno-12-190" href="#__codelineno-12-190"></a>                <span class="p">}</span>
+</span><span id="__span-12-191"><a id="__codelineno-12-191" name="__codelineno-12-191" href="#__codelineno-12-191"></a>                <span class="nv">$configName</span> <span class="p">=</span> <span class="p">(</span><span class="nb">Get-Item</span> <span class="nv">$ConfigFilePath</span><span class="p">).</span><span class="n">Name</span>
+</span><span id="__span-12-192"><a id="__codelineno-12-192" name="__codelineno-12-192" href="#__codelineno-12-192"></a>                <span class="nb">Set-ItemProperty</span> <span class="n">-Path</span> <span class="nv">$RegPath</span> <span class="n">-Name</span> <span class="nv">$RegNameConfig</span> <span class="n">-Value</span> <span class="nv">$configName</span> <span class="n">-Type</span> <span class="n">String</span> <span class="n">-Force</span>
+</span><span id="__span-12-193"><a id="__codelineno-12-193" name="__codelineno-12-193" href="#__codelineno-12-193"></a>                <span class="nb">Set-ItemProperty</span> <span class="n">-Path</span> <span class="nv">$RegPath</span> <span class="n">-Name</span> <span class="nv">$RegNameSuccess</span> <span class="n">-Value</span> <span class="p">(</span><span class="nb">Get-Date</span><span class="p">).</span><span class="n">ToString</span><span class="p">(</span><span class="s1">&#39;yyyy-MM-dd HH:mm:ss&#39;</span><span class="p">)</span> <span class="n">-Type</span> <span class="n">String</span> <span class="n">-Force</span>
+</span><span id="__span-12-194"><a id="__codelineno-12-194" name="__codelineno-12-194" href="#__codelineno-12-194"></a>                <span class="nb">Set-ItemProperty</span> <span class="n">-Path</span> <span class="nv">$RegPath</span> <span class="n">-Name</span> <span class="s1">&#39;Status&#39;</span> <span class="n">-Value</span> <span class="s1">&#39;Success&#39;</span> <span class="n">-Type</span> <span class="n">String</span> <span class="n">-Force</span>
+</span><span id="__span-12-195"><a id="__codelineno-12-195" name="__codelineno-12-195" href="#__codelineno-12-195"></a>                <span class="nb">Write-Log</span> <span class="s2">&quot;Registry tattoo applied: $RegNameConfig=&#39;$configName&#39;, Status=&#39;Success&#39;&quot;</span> <span class="s1">&#39;SUCCESS&#39;</span>
+</span><span id="__span-12-196"><a id="__codelineno-12-196" name="__codelineno-12-196" href="#__codelineno-12-196"></a>            <span class="p">}</span>
+</span><span id="__span-12-197"><a id="__codelineno-12-197" name="__codelineno-12-197" href="#__codelineno-12-197"></a>            <span class="k">catch</span>
+</span><span id="__span-12-198"><a id="__codelineno-12-198" name="__codelineno-12-198" href="#__codelineno-12-198"></a>            <span class="p">{</span>
+</span><span id="__span-12-199"><a id="__codelineno-12-199" name="__codelineno-12-199" href="#__codelineno-12-199"></a>                <span class="nb">Write-Log</span> <span class="s2">&quot;Failed to write success tattoo: </span><span class="p">$(</span><span class="nv">$_</span><span class="p">.</span><span class="n">Exception</span><span class="p">.</span><span class="n">Message</span><span class="p">)</span><span class="s2">&quot;</span> <span class="s1">&#39;WARN&#39;</span>
+</span><span id="__span-12-200"><a id="__codelineno-12-200" name="__codelineno-12-200" href="#__codelineno-12-200"></a>            <span class="p">}</span>
+</span><span id="__span-12-201"><a id="__codelineno-12-201" name="__codelineno-12-201" href="#__codelineno-12-201"></a>        <span class="p">}</span>
+</span><span id="__span-12-202"><a id="__codelineno-12-202" name="__codelineno-12-202" href="#__codelineno-12-202"></a>        <span class="k">else</span>
+</span><span id="__span-12-203"><a id="__codelineno-12-203" name="__codelineno-12-203" href="#__codelineno-12-203"></a>        <span class="p">{</span>
+</span><span id="__span-12-204"><a id="__codelineno-12-204" name="__codelineno-12-204" href="#__codelineno-12-204"></a>            <span class="nv">$msg</span> <span class="p">=</span> <span class="s2">&quot;PARTIAL FAILURE: $successCount/</span><span class="p">$(</span><span class="nv">$Result</span><span class="p">.</span><span class="n">Count</span><span class="p">)</span><span class="s2"> succeeded. Failed: </span><span class="p">$(</span><span class="nv">$failureDetails</span> <span class="n">-join</span> <span class="s1">&#39;; &#39;</span><span class="p">)</span><span class="s2">&quot;</span>
+</span><span id="__span-12-205"><a id="__codelineno-12-205" name="__codelineno-12-205" href="#__codelineno-12-205"></a>            <span class="nb">Write-Log</span> <span class="nv">$msg</span> <span class="s1">&#39;ERROR&#39;</span>
+</span><span id="__span-12-206"><a id="__codelineno-12-206" name="__codelineno-12-206" href="#__codelineno-12-206"></a>            <span class="k">try</span>
+</span><span id="__span-12-207"><a id="__codelineno-12-207" name="__codelineno-12-207" href="#__codelineno-12-207"></a>            <span class="p">{</span>
+</span><span id="__span-12-208"><a id="__codelineno-12-208" name="__codelineno-12-208" href="#__codelineno-12-208"></a>                <span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="p">(</span><span class="nb">Test-Path</span> <span class="nv">$RegPath</span><span class="p">))</span> <span class="p">{</span> <span class="nb">New-Item</span> <span class="n">-Path</span> <span class="nv">$RegPath</span> <span class="n">-Force</span> <span class="p">|</span> <span class="nb">Out-Null</span> <span class="p">}</span>
+</span><span id="__span-12-209"><a id="__codelineno-12-209" name="__codelineno-12-209" href="#__codelineno-12-209"></a>                <span class="nb">Set-ItemProperty</span> <span class="n">-Path</span> <span class="nv">$RegPath</span> <span class="n">-Name</span> <span class="s1">&#39;Status&#39;</span> <span class="n">-Value</span> <span class="s1">&#39;Failed&#39;</span> <span class="n">-Type</span> <span class="n">String</span> <span class="n">-Force</span>
+</span><span id="__span-12-210"><a id="__codelineno-12-210" name="__codelineno-12-210" href="#__codelineno-12-210"></a>                <span class="nb">Set-ItemProperty</span> <span class="n">-Path</span> <span class="nv">$RegPath</span> <span class="n">-Name</span> <span class="s1">&#39;LastError&#39;</span> <span class="n">-Value</span> <span class="nv">$msg</span> <span class="n">-Type</span> <span class="n">String</span> <span class="n">-Force</span>
+</span><span id="__span-12-211"><a id="__codelineno-12-211" name="__codelineno-12-211" href="#__codelineno-12-211"></a>            <span class="p">}</span>
+</span><span id="__span-12-212"><a id="__codelineno-12-212" name="__codelineno-12-212" href="#__codelineno-12-212"></a>            <span class="k">catch</span> <span class="p">{</span> <span class="nb">Write-Log</span> <span class="s2">&quot;Failed to write failure tattoo&quot;</span> <span class="s1">&#39;WARN&#39;</span> <span class="p">}</span>
+</span><span id="__span-12-213"><a id="__codelineno-12-213" name="__codelineno-12-213" href="#__codelineno-12-213"></a>            <span class="nb">Write-Log</span> <span class="s2">&quot;Exiting with code 1 (partial failure)&quot;</span> <span class="s1">&#39;INFO&#39;</span>
+</span><span id="__span-12-214"><a id="__codelineno-12-214" name="__codelineno-12-214" href="#__codelineno-12-214"></a>            <span class="n">exit</span> <span class="n">1</span>
+</span><span id="__span-12-215"><a id="__codelineno-12-215" name="__codelineno-12-215" href="#__codelineno-12-215"></a>        <span class="p">}</span>
+</span><span id="__span-12-216"><a id="__codelineno-12-216" name="__codelineno-12-216" href="#__codelineno-12-216"></a>    <span class="p">}</span>
+</span><span id="__span-12-217"><a id="__codelineno-12-217" name="__codelineno-12-217" href="#__codelineno-12-217"></a>    <span class="k">else</span>
+</span><span id="__span-12-218"><a id="__codelineno-12-218" name="__codelineno-12-218" href="#__codelineno-12-218"></a>    <span class="p">{</span>
+</span><span id="__span-12-219"><a id="__codelineno-12-219" name="__codelineno-12-219" href="#__codelineno-12-219"></a>        <span class="nv">$msg</span> <span class="p">=</span> <span class="s2">&quot;No results returned from Submit-LnvBiosConfigFile&quot;</span>
+</span><span id="__span-12-220"><a id="__codelineno-12-220" name="__codelineno-12-220" href="#__codelineno-12-220"></a>        <span class="nb">Write-Log</span> <span class="nv">$msg</span> <span class="s1">&#39;ERROR&#39;</span>
+</span><span id="__span-12-221"><a id="__codelineno-12-221" name="__codelineno-12-221" href="#__codelineno-12-221"></a>        <span class="k">try</span>
+</span><span id="__span-12-222"><a id="__codelineno-12-222" name="__codelineno-12-222" href="#__codelineno-12-222"></a>        <span class="p">{</span>
+</span><span id="__span-12-223"><a id="__codelineno-12-223" name="__codelineno-12-223" href="#__codelineno-12-223"></a>            <span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="p">(</span><span class="nb">Test-Path</span> <span class="nv">$RegPath</span><span class="p">))</span> <span class="p">{</span> <span class="nb">New-Item</span> <span class="n">-Path</span> <span class="nv">$RegPath</span> <span class="n">-Force</span> <span class="p">|</span> <span class="nb">Out-Null</span> <span class="p">}</span>
+</span><span id="__span-12-224"><a id="__codelineno-12-224" name="__codelineno-12-224" href="#__codelineno-12-224"></a>            <span class="nb">Set-ItemProperty</span> <span class="n">-Path</span> <span class="nv">$RegPath</span> <span class="n">-Name</span> <span class="s1">&#39;Status&#39;</span> <span class="n">-Value</span> <span class="s1">&#39;Failed&#39;</span> <span class="n">-Type</span> <span class="n">String</span> <span class="n">-Force</span>
+</span><span id="__span-12-225"><a id="__codelineno-12-225" name="__codelineno-12-225" href="#__codelineno-12-225"></a>            <span class="nb">Set-ItemProperty</span> <span class="n">-Path</span> <span class="nv">$RegPath</span> <span class="n">-Name</span> <span class="s1">&#39;LastError&#39;</span> <span class="n">-Value</span> <span class="nv">$msg</span> <span class="n">-Type</span> <span class="n">String</span> <span class="n">-Force</span>
+</span><span id="__span-12-226"><a id="__codelineno-12-226" name="__codelineno-12-226" href="#__codelineno-12-226"></a>        <span class="p">}</span>
+</span><span id="__span-12-227"><a id="__codelineno-12-227" name="__codelineno-12-227" href="#__codelineno-12-227"></a>        <span class="k">catch</span> <span class="p">{</span> <span class="nb">Write-Log</span> <span class="s2">&quot;Failed to write failure tattoo&quot;</span> <span class="s1">&#39;WARN&#39;</span> <span class="p">}</span>
+</span><span id="__span-12-228"><a id="__codelineno-12-228" name="__codelineno-12-228" href="#__codelineno-12-228"></a>        <span class="n">exit</span> <span class="n">1</span>
+</span><span id="__span-12-229"><a id="__codelineno-12-229" name="__codelineno-12-229" href="#__codelineno-12-229"></a>    <span class="p">}</span>
+</span><span id="__span-12-230"><a id="__codelineno-12-230" name="__codelineno-12-230" href="#__codelineno-12-230"></a><span class="p">}</span>
+</span><span id="__span-12-231"><a id="__codelineno-12-231" name="__codelineno-12-231" href="#__codelineno-12-231"></a><span class="k">catch</span>
+</span><span id="__span-12-232"><a id="__codelineno-12-232" name="__codelineno-12-232" href="#__codelineno-12-232"></a><span class="p">{</span>
+</span><span id="__span-12-233"><a id="__codelineno-12-233" name="__codelineno-12-233" href="#__codelineno-12-233"></a>    <span class="nb">Write-Log</span> <span class="s2">&quot;EXCEPTION in Submit-LnvBiosConfigFile: </span><span class="p">$(</span><span class="nv">$_</span><span class="p">.</span><span class="n">Exception</span><span class="p">.</span><span class="n">Message</span><span class="p">)</span><span class="s2">&quot;</span> <span class="s1">&#39;ERROR&#39;</span>
+</span><span id="__span-12-234"><a id="__codelineno-12-234" name="__codelineno-12-234" href="#__codelineno-12-234"></a>    <span class="k">try</span>
+</span><span id="__span-12-235"><a id="__codelineno-12-235" name="__codelineno-12-235" href="#__codelineno-12-235"></a>    <span class="p">{</span>
+</span><span id="__span-12-236"><a id="__codelineno-12-236" name="__codelineno-12-236" href="#__codelineno-12-236"></a>        <span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="p">(</span><span class="nb">Test-Path</span> <span class="nv">$RegPath</span><span class="p">))</span> <span class="p">{</span> <span class="nb">New-Item</span> <span class="n">-Path</span> <span class="nv">$RegPath</span> <span class="n">-Force</span> <span class="p">|</span> <span class="nb">Out-Null</span> <span class="p">}</span>
+</span><span id="__span-12-237"><a id="__codelineno-12-237" name="__codelineno-12-237" href="#__codelineno-12-237"></a>        <span class="nb">Set-ItemProperty</span> <span class="n">-Path</span> <span class="nv">$RegPath</span> <span class="n">-Name</span> <span class="s1">&#39;Status&#39;</span> <span class="n">-Value</span> <span class="s1">&#39;Failed&#39;</span> <span class="n">-Type</span> <span class="n">String</span> <span class="n">-Force</span>
+</span><span id="__span-12-238"><a id="__codelineno-12-238" name="__codelineno-12-238" href="#__codelineno-12-238"></a>        <span class="nb">Set-ItemProperty</span> <span class="n">-Path</span> <span class="nv">$RegPath</span> <span class="n">-Name</span> <span class="s1">&#39;LastError&#39;</span> <span class="n">-Value</span> <span class="nv">$_</span><span class="p">.</span><span class="n">Exception</span><span class="p">.</span><span class="n">Message</span> <span class="n">-Type</span> <span class="n">String</span> <span class="n">-Force</span>
+</span><span id="__span-12-239"><a id="__codelineno-12-239" name="__codelineno-12-239" href="#__codelineno-12-239"></a>    <span class="p">}</span>
+</span><span id="__span-12-240"><a id="__codelineno-12-240" name="__codelineno-12-240" href="#__codelineno-12-240"></a>    <span class="k">catch</span> <span class="p">{</span> <span class="nb">Write-Log</span> <span class="s2">&quot;Failed to write exception tattoo&quot;</span> <span class="s1">&#39;WARN&#39;</span> <span class="p">}</span>
+</span><span id="__span-12-241"><a id="__codelineno-12-241" name="__codelineno-12-241" href="#__codelineno-12-241"></a>    <span class="n">exit</span> <span class="n">1</span>
+</span><span id="__span-12-242"><a id="__codelineno-12-242" name="__codelineno-12-242" href="#__codelineno-12-242"></a><span class="p">}</span>
+</span><span id="__span-12-243"><a id="__codelineno-12-243" name="__codelineno-12-243" href="#__codelineno-12-243"></a>
+</span><span id="__span-12-244"><a id="__codelineno-12-244" name="__codelineno-12-244" href="#__codelineno-12-244"></a><span class="c"># -------------------------------------------------</span>
+</span><span id="__span-12-245"><a id="__codelineno-12-245" name="__codelineno-12-245" href="#__codelineno-12-245"></a><span class="c"># 5. Success → Request Reboot</span>
+</span><span id="__span-12-246"><a id="__codelineno-12-246" name="__codelineno-12-246" href="#__codelineno-12-246"></a><span class="c"># -------------------------------------------------</span>
+</span><span id="__span-12-247"><a id="__codelineno-12-247" name="__codelineno-12-247" href="#__codelineno-12-247"></a><span class="nb">Write-Log</span> <span class="s2">&quot;=== BIOS CONFIG COMPLETED SUCCESSFULLY ===&quot;</span> <span class="s1">&#39;SUCCESS&#39;</span>
+</span><span id="__span-12-248"><a id="__codelineno-12-248" name="__codelineno-12-248" href="#__codelineno-12-248"></a><span class="nb">Write-Log</span> <span class="s2">&quot;Exit code: 1641 (reboot required to apply settings)&quot;</span> <span class="s1">&#39;INFO&#39;</span>
+</span><span id="__span-12-249"><a id="__codelineno-12-249" name="__codelineno-12-249" href="#__codelineno-12-249"></a><span class="n">exit</span> <span class="n">1641</span>
+</span></code></pre></div>
+</details>
+<p>The source directory should look like this:</p>
+<ul>
+<li>C:\Sources\IntuneWin\ThinkBiosConfig<ul>
+<li>Lenovo.BIOS.Certificates</li>
+<li>Install-LnvBiosCertificate.ps1</li>
+<li>publicCert.pem</li>
+<li>Set-LnvBiosSettings.ps1</li>
+<li>thinkpadconfig.ini</li>
+</ul>
+</li>
+</ul>
+<h3 id="app-information_1">App information<a class="headerlink" href="#app-information_1" title="Permanent link">#</a></h3>
+<ul>
+<li><strong>Name:</strong> <code>Set Lenovo BIOS Settings</code></li>
+<li><strong>Description:</strong> <code>Configure Lenovo BIOS settings using signed WMI commands</code></li>
+<li><strong>Publisher:</strong> <code>Lenovo / Your Org</code></li>
+</ul>
+<h3 id="program_1">Program<a class="headerlink" href="#program_1" title="Permanent link">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Install command</td>
+<td><code>%windir%\sysnative\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -File ".\Set-LnvBiosSettings.ps1"</code></td>
+</tr>
+<tr>
+<td>Uninstall command</td>
+<td><code>cmd.exe /c</code></td>
+</tr>
+<tr>
+<td>Install behavior</td>
+<td><strong>System</strong></td>
+</tr>
+<tr>
+<td>Device restart behavior</td>
+<td><strong>Determine behavior based on return codes</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="requirements_1">Requirements<a class="headerlink" href="#requirements_1" title="Permanent link">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Minimum operating system</td>
+<td>Windows 11 21H2</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Additional requirement rule – Run only during OOBE/Autopilot</p>
+</blockquote>
+<ul>
+<li><strong>Rule type:</strong> Script</li>
+<li><strong>Script:</strong> (same script as above)</li>
+<li><strong>Run script as 32-bit process on 64-bit clients:</strong> No</li>
+<li><strong>Return type:</strong> Boolean</li>
+<li><strong>Operator:</strong> Equals → <strong>No</strong></li>
+</ul>
+<details class="example">
+<summary>Requirement Rule Script</summary>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nv">$Definition</span> <span class="p">=</span> <span class="sh">@&quot;</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="sh">using System;</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="sh">using System.Text;</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="sh">using System.Collections.Generic;</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="sh">using System.Runtime.InteropServices;</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="sh">namespace Api</span>
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="sh">{</span>
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="sh">    public class Kernel32</span>
+</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="sh">    {</span>
+</span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="sh">        [DllImport(&quot;kernel32.dll&quot;, CharSet = CharSet.Auto, SetLastError = true)]</span>
+</span><span id="__span-13-13"><a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a><span class="sh">        public static extern int OOBEComplete(ref int bIsOOBEComplete);</span>
+</span><span id="__span-13-14"><a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a><span class="sh">    }</span>
+</span><span id="__span-13-15"><a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a><span class="sh">}</span>
+</span><span id="__span-13-16"><a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a><span class="sh">&quot;@</span>
+</span><span id="__span-13-17"><a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a>
+</span><span id="__span-13-18"><a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a><span class="nb">Add-Type</span> <span class="n">-TypeDefinition</span> <span class="nv">$Definition</span> <span class="n">-Language</span> <span class="n">CSharp</span>
+</span><span id="__span-13-19"><a id="__codelineno-13-19" name="__codelineno-13-19" href="#__codelineno-13-19"></a>
+</span><span id="__span-13-20"><a id="__codelineno-13-20" name="__codelineno-13-20" href="#__codelineno-13-20"></a><span class="nv">$IsOOBEComplete</span> <span class="p">=</span> <span class="nv">$false</span>
+</span><span id="__span-13-21"><a id="__codelineno-13-21" name="__codelineno-13-21" href="#__codelineno-13-21"></a><span class="nv">$appRequirement</span> <span class="p">=</span> <span class="no">[Api.Kernel32]</span><span class="p">::</span><span class="n">OOBEComplete</span><span class="p">(</span><span class="no">[ref]</span> <span class="nv">$IsOOBEComplete</span><span class="p">)</span>
+</span><span id="__span-13-22"><a id="__codelineno-13-22" name="__codelineno-13-22" href="#__codelineno-13-22"></a>
+</span><span id="__span-13-23"><a id="__codelineno-13-23" name="__codelineno-13-23" href="#__codelineno-13-23"></a><span class="k">if</span> <span class="p">(</span><span class="nv">$IsOOBEComplete</span> <span class="o">-eq</span> <span class="s1">&#39;1&#39;</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nv">$true</span> <span class="p">}</span>
+</span><span id="__span-13-24"><a id="__codelineno-13-24" name="__codelineno-13-24" href="#__codelineno-13-24"></a><span class="k">else</span> <span class="p">{</span> <span class="k">return</span> <span class="nv">$false</span> <span class="p">}</span>
+</span></code></pre></div>
+</details>
+<h3 id="detection-rules_1">Detection rules<a class="headerlink" href="#detection-rules_1" title="Permanent link">#</a></h3>
+<blockquote>
+<p>Rule #1</p>
+</blockquote>
+<ul>
+<li><strong>Rule type:</strong> Registry</li>
+<li><strong>Key path:</strong> <code>HKEY_LOCAL_MACHINE\SOFTWARE\Lenovo\BIOSConfigDeployment</code></li>
+<li><strong>Value name:</strong> <code>CertStatus</code></li>
+<li><strong>Detection method:</strong> String comparison</li>
+<li><strong>Operator:</strong> Equals</li>
+<li><strong>Value:</strong> <code>Installed</code></li>
+<li><strong>Associated with a 32-bit app on 64-bit clients:</strong> No</li>
+</ul>
+<blockquote>
+<p>Rule #2</p>
+</blockquote>
+<ul>
+<li><strong>Rule type:</strong> Registry</li>
+<li><strong>Key path:</strong> <code>HKEY_LOCAL_MACHINE\SOFTWARE\Lenovo\BIOSConfigDeployment</code></li>
+<li><strong>Value name:</strong> <code>Status</code></li>
+<li><strong>Detection method:</strong> String comparison</li>
+<li><strong>Operator:</strong> Equals</li>
+<li><strong>Value:</strong> <code>Success</code></li>
+<li><strong>Associated with a 32-bit app on 64-bit clients:</strong> No</li>
+</ul>
+<h3 id="dependencies">Dependencies<a class="headerlink" href="#dependencies" title="Permanent link">#</a></h3>
+<p>Add the first Win32 app here and toggle the option to automatically install the app.</p>
+<h3 id="assignments_1">Assignments<a class="headerlink" href="#assignments_1" title="Permanent link">#</a></h3>
+<p>Assign to a device group containing Autopilot registered devices with an Autopilot deployment profile also assigned.</p>
+<h3 id="what-happens-on-the-device_1">What Happens on the Device<a class="headerlink" href="#what-happens-on-the-device_1" title="Permanent link">#</a></h3>
+<ol>
+<li>Pre-provisioned deployment starts</li>
+<li>Dependency App #1 runs → installs public cert → converts BIOS to cert auth → reboots (1641)</li>
+<li>After reboot → ESP continues → App #2 runs → confirms certificate is installed via registry + WMI → submits signed <code>.ini</code> → settings applied → reboots</li>
+<li>All detection rules pass → ESP continues and reseals</li>
+</ol>
+<h2 id="final-notes">Final Notes<a class="headerlink" href="#final-notes" title="Permanent link">#</a></h2>
+<p>The new version of the Think BIOS Config tool is not capable of initially setting a Supervisor password. The tool only exposes settings and their values through WMI. It's still recommended to have a Supervisor password set at the factory.</p>
+<p>You can combine different settings across supported Think-branded products into a single configuration file for simplicity sake.</p>
+<p>In a future version of the tools, specifying the Supervisor password in plain text will be replaced with an encrypted string for security purposes.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2025 <a href="https://blog.lenovocdrt.com"  target="_blank" rel="noopener">Lenovo Commercial Deployment Readiness Team</a><br><a href="#__consent" style="text-decoration:underline;">Change cookie settings</a>
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+      <div class="md-consent" data-md-component="consent" id="__consent" hidden>
+        <div class="md-consent__overlay"></div>
+        <aside class="md-consent__inner">
+          <form class="md-consent__form md-grid md-typeset" name="consent">
+            
+
+
+
+  
+
+<h4>Cookie consent</h4>
+<p>We use cookies to recognize your repeated visits and preferences such as light and dark mode, as well as to measure anonymous usage data to determine effectiveness of our documentation and whether users find what they're searching for. With your consent, you're helping us to make our documentation better.</p>
+<input class="md-toggle" type="checkbox" id="__settings" checked>
+<div class="md-consent__settings">
+  <ul class="task-list">
+    
+    
+      
+        
+  
+  
+    
+    
+  
+  <li class="task-list-item">
+    <label class="task-list-control">
+      <input type="checkbox" name="analytics" checked>
+      <span class="task-list-indicator"></span>
+      Google Analytics
+    </label>
+  </li>
+
+      
+    
+    
+      
+    
+    
+  </ul>
+</div>
+<div class="md-consent__controls">
+  
+    
+      <button class="md-button md-button--primary">Accept</button>
+    
+    
+    
+  
+    
+    
+      <button type="reset" class="md-button md-button--primary">Reject</button>
+    
+    
+  
+</div>
+          </form>
+        </aside>
+      </div>
+      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout((function(){document.querySelector("[data-md-component=consent]").hidden=!1}),250);var form=document.forms.consent;for(var action of["submit","reset"])form.addEventListener(action,(function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map((function(e){return[e,!0]})))),location.hash="",location.reload()}))</script>
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tracking", "navigation.instant", "navigation.instant.progress", "navigation.expand", "navigation.path", "navigation.sections", "toc.integrate", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy", "content.code.select"], "search": "../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+        <script src="../js/open_in_new_tab.js"></script>
+      
+    
+  </body>
+</html>

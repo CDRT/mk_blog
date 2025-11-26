@@ -63,7 +63,7 @@ In the console, navigate to **Software Library > Application Management > Applic
 
     - Path: **ProgramFiles\WindowsApps**
 
-    - File or folder name: **E046963F.LenovoSettingsforEnterprise_20.2506.39.0_x64__k1h2ywk1493x8**
+    - File or folder name: **E046963F.LenovoSettingsforEnterprise_20.2508.42.0_x64__k1h2ywk1493x8**
 
     - Tick the box **This file or folder is associated with a 32-bit application on 64-bit systems**.
 
@@ -76,7 +76,7 @@ The script can also be downloaded from my [GitHub](https://github.com/philjorgen
 
 ```powershell title="Detect-CommercialVantage.ps1"
 # Version of Lenovo Vantage that is being deployed
-$DeployedVantageVersion = [version]"20.2506.39.0"
+$DeployedVantageVersion = [version]"20.2508.42.0"
 
 try
 {

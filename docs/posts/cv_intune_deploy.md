@@ -97,7 +97,7 @@ This sample PowerShell script can be used for detection
 
 ```powershell
 # Version of Lenovo Vantage that is being deployed
-$DeployedVantageVersion = [version]"20.2506.39.0"
+$DeployedVantageVersion = [version]"20.2508.42.0"
 
 try
 {

@@ -9,7 +9,7 @@ title: Introducing Lenovo Odometer
 ---
 ![Odometer](https://cdrt.github.io/mk_blog/img/2020/odometer_image.png)
 
-In some previous articles we have highlighted how you can collect Lenovo Updates History from a new WMI class in the root\Lenovo namespace. See <https://thinkdeploy.blogspot.com/2018/10/tracking-thininstaller-update-history.html>
+In some previous articles we have highlighted how you can collect Lenovo Updates History from a new WMI class in the root\Lenovo namespace. See <https://blog.lenovocdrt.com/tracking-thin-installer-update-history-with-configmgr-current-branch/>
 
 We are now adding a new class under this namespace for the new "Odometer" feature found in the latest ThinkPads that were recently launched.  This feature keeps track of several metrics that can provide an indication of how a system has been used.  The metrics collected are:
 <!-- more -->
@@ -20,7 +20,7 @@ We are now adding a new class under this namespace for the new "Odometer" featur
 * Battery cycles - number of charge cycles performed on battery
 * SSD Read/Writes - number of block reads and writes on one or more internal SSDs
 
-These counters are maintained by the Embedded Controller and the current values are exposed each time the system boots using SMBIOS Table data. In order to have this data stored in a meaningful way so it can be inventoried and collected by MEM Configuration Manager, we have created a PowerShell script (odometer.ps1, available from download link below) that can be implemented as either a scheduled task or used on demand to populate the Lenovo_Odometer class in WMI. 
+These counters are maintained by the Embedded Controller and the current values are exposed each time the system boots using SMBIOS Table data. In order to have this data stored in a meaningful way so it can be inventoried and collected by MEM Configuration Manager, we have created a PowerShell script (odometer.ps1, available from download link below) that can be implemented as either a scheduled task or used on demand to populate the Lenovo_Odometer class in WMI.
 
 Once you have run the PowerShell script on a system that supports Odometer you will be able to find the data in WMI as shown below:
 

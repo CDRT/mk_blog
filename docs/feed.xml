@@ -19,6 +19,12 @@
 			<link></link>
 			</item>
 		-->
+        <item>
+			<title>HSA Best Practices Guide</title>
+			<description>A quick look at the easiest way to deploy and manage Hardware Support Apps</description>
+			<pubDate>Thu, 26 Feb 2026 15:43:35 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/hsa-best-practices-guide/</link>
+			</item>
 		<item>
 			<title>Autopilot Certificate-based BIOS Authentication</title>
 			<description>A deep-dive on converting to certificate-based BIOS authentication in an Autopilot pre-provisioning deployment</description>

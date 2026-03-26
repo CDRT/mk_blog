@@ -1,7 +1,7 @@
 ---
 date:
     created: 2020-06-19
-    updated: 2024-04-10
+    updated: 2026-03-02
 authors:
     - Thad
 categories:
@@ -37,8 +37,8 @@ We have created a script to read JSON manifest files provided in the HSA packs. 
 ##                                                                            ##
 ##      Title: Install-HSA.ps1                                                ##
 ##  Publisher: Lenovo                                                         ##
-##    Version: 1.03                                                           ##
-##       Date: 2024-04-10                                                     ##
+##    Version: 1.04                                                           ##
+##       Date: 2026-02-27                                                     ##
 ##                                                                            ##
 ##                              Legal Disclaimer                              ##
 ##                                                                            ##
@@ -69,15 +69,17 @@ We have created a script to read JSON manifest files provided in the HSA packs. 
 .DESCRIPTION
 
     By reading manifest files found in the subdirectories of a Hardware Support 
-    Applications Pack, this script allows for the deployment of one, many, or 
+    Applications Pack, this script facilitates the deployment of one, many, or 
     all Hardware Support Applications for a given model.  All installations are 
-    against an offline installation of Windows 10.
+    against an offline installation of Windows 10 or 11.  This script will edit
+    the registry of the offline Windows installation to allow sideloaded
+    applications. 
 
 .PARAMETER LIST
 
     Used to list the names of all Hardware Support Applications in the 
     subdirectories.  Returns the list of the Hardware Support 
- Applications names to the screen.
+    Applications names to the screen.
 
     -LIST
 
@@ -132,10 +134,10 @@ We have created a script to read JSON manifest files provided in the HSA packs. 
 .PARAMETER DEBUGINFORMATION
 
     Use to turn on Transcript logging and full logging of DISM Commands.  The 
-    transcript file can be found at C:\Windows\Logs.  There will be a separate  
+    transcript file can be found at C:\Windows\Logs.  There will be a separate 
     log file from each DISM command generated at C:\Windows\Logs\DISM.
 
-    -DEBUGINFORMATION
+	-DEBUGINFORMATION
 
 .EXAMPLE
 
@@ -176,6 +178,8 @@ We have created a script to read JSON manifest files provided in the HSA packs. 
 
 <#
 Version history
+
+- 1.04: Add offline Windows registry changes for sideloading apps.
 
 - 1.03: Remove incompatible characters from the log file name.
 
@@ -350,46 +354,59 @@ If($List -or $PSBoundParameters.Count -eq 0 -or ($DebugInformation -and $PSBound
 }
 If($Offline)
 {
-    If($All)
+    $SOFTWAREHivePath = "$Drive\Windows\SYSTEM32\Config\SOFTWARE"
+    If(Test-Path $SOFTWAREHivePath)
     {
-        Write-Host "Installing all HSAs found in the folder structure."
-    }
-    ElseIf($NamePresent)
-    {
-        Write-Host "Installing the $Name HSA."
-    }
-    ElseIf($FilePresent)
-    {
-        Write-Host "Reading the list of HSAs from $File."
-        If(!(Test-Path -Path "$ScriptDir\$File"))
-        {
-            Write-Host "File: $File not found in $ScriptDir"
-            Return 4
-        }
-    }
-    ForEach($Package in $HSAPackages)
-    {
+        $SOFTWAREMountPoint = "HKLM\Sideload"
+        # Load Offline SOFTWARE Hive to MountPoint
+        reg.exe load $SOFTWAREMountPoint $SOFTWAREHivePath
+        # Edit Offline SOFTWARE Hive
+        reg.exe add "$SOFTWAREMountPoint\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock" /t REG_DWORD /f /v "AllowAllTrustedApps" /d "1" 
+        Start-Sleep -Seconds 5
+        # Unload Offline SOFTWARE Hive
+        reg.exe unload $SOFTWAREMountPoint
+
         If($All)
         {
-            Install-HSA -HSAPackage $Package
+            Write-Host "Installing all HSAs found in the folder structure."
         }
-        ElseIf($FilePresent -or $NamePresent)
-        { 
-            If($FilePresent)
+        ElseIf($NamePresent)
+        {
+            Write-Host "Installing the $Name HSA."
+        }
+        ElseIf($FilePresent)
+        {
+            Write-Host "Reading the list of HSAs from $File."
+            If(!(Test-Path -Path "$ScriptDir\$File"))
             {
-                $InstallFileArray = @()
-                $InstallFileArray = Get-Content -Path "$ScriptDir\$File"
-                ForEach($InstallFile in $InstallFileArray)
+                Write-Host "File: $File not found in $ScriptDir"
+                Return 4
+            }
+        }
+        ForEach($Package in $HSAPackages)
+        {
+            If($All)
+            {
+                Install-HSA -HSAPackage $Package
+            }
+            ElseIf($FilePresent -or $NamePresent)
+            { 
+                If($FilePresent)
                 {
-                    Install-HSA -HSAPackage $Package -HSAName $InstallFile
+                    $InstallFileArray = @()
+                    $InstallFileArray = Get-Content -Path "$ScriptDir\$File"
+                    ForEach($InstallFile in $InstallFileArray)
+                    {
+                        Install-HSA -HSAPackage $Package -HSAName $InstallFile
+                    }
+                }
+                If($NamePresent)
+                {
+                    Install-HSA -HSAPackage $Package -HSAName $Name
                 }
             }
-            If($NamePresent)
-            {
-                Install-HSA -HSAPackage $Package -HSAName $Name
-            }
+            $InstallFileArray = $Null
         }
-        $InstallFileArray = $Null
     }
 }
 If($DebugInformation)

@@ -8,20 +8,31 @@ categories:
 title: Introducing the ThinkVantage PowerShell Library
 ---
 
-![ThinkVantage](https://cdrt.github.io/mk_blog/img/2026/thinkvantage_powershell_library/thinkvantage_logo.png){ width="360" }
+<!--
+![ThinkVantage](https://cdrt.github.io/mk_blog/img/2026/thinkvantage_powershell_library/thinkvantage_logo.png){ width="360" } -->
 
 ![ThinkVantage](../img/2026/thinkvantage_powershell_library/thinkvantage_logo.png){ width="360" }
 
 The ThinkVantage PowerShell Library is a collection of PowerShell modules for managing Lenovo ThinkPad, ThinkCentre, and ThinkStation fleets at scale. It covers the full lifecycle — driver and firmware updates, BIOS configuration, and certificate-based BIOS authentication — all from the command line or scripted into your deployment workflows.
-
-The library consists of three modules available on the PowerShell Gallery: **Lenovo.Client.Update**, **Lenovo.BIOS.Config**, and **Lenovo.Bios.Certificates**. Each can be installed independently and used on its own, but together they provide a unified toolkit for automating Lenovo device management across Intune, ConfigMgr, and bare-metal OSD environments.
 <!-- more -->
 
-## The Three Modules
+The library consists of these modules and scripts available in the PowerShell Gallery:
+
+- **New**{ .badge-new } **Lenovo.Client.Update** module
+- **Lenovo.BIOS.Config** module
+- **Think BIOS Config Tool** script
+- **Lenovo.Bios.Certificates** module
+- **Lenovo BIOS Certs Tool** script
+- **Lenovo.Client.Scripting** module
+
+Each can be installed independently and used on its own, but together they provide a unified toolkit for automating Lenovo device management across Intune, Configuration Manager, and bare-metal OSD environments.
+
+
+## The Four Modules
 
 ### Lenovo.Client.Update
 
-The official successor to [LSUClient](https://www.powershellgallery.com/packages/LSUClient). Discover, download, and install driver, BIOS/UEFI, and firmware updates on Lenovo commercial PCs. Ships with 12 cmdlets and includes support for local update repositories, OSD task sequences, and digital signature verification.
+The Lenovo fork of [LSUClient](https://www.powershellgallery.com/packages/LSUClient). Discover, download, and install driver, BIOS/UEFI, and firmware updates on Lenovo commercial PCs. Ships with 12 cmdlets and includes support for local update repositories, OSD task sequences, and digital signature verification.
 
 ``` powershell
 Install-Module 'Lenovo.Client.Update'
@@ -32,7 +43,13 @@ Install-Module 'Lenovo.Client.Update'
 Read and modify BIOS settings via WMI. Export and import INI-based configuration profiles with optional encrypted passwords. Package BIOS configurations as Win32 apps or Remediations and deploy through Microsoft Intune — including direct upload via Microsoft Graph.
 
 ``` powershell
-Install-Module 'Lenovo.BIOS.Config'
+Install-Module -Name Lenovo.BIOS.Config
+```
+
+This module is a dependency for the **Think BIOS Config Tool v2** script that provides a graphical user interface for ease of use. This script can also be installed from the PowerShell Gallery.
+
+``` powershell
+Install-Script -Name ThinkBiosConfigUI
 ```
 
 ### Lenovo.Bios.Certificates
@@ -40,32 +57,54 @@ Install-Module 'Lenovo.BIOS.Config'
 Replace Supervisor passwords with X.509 certificates. BIOS commands are cryptographically signed using local key files or Azure Key Vault — the private key never leaves its secure store. Supports PEM, DER, and PFX formats, with batch processing for INI config files.
 
 ``` powershell
-Install-Module 'Lenovo.Bios.Certificates'
+Install-Module -Name Lenovo.BIOS.Certificates
+```
+
+This module is also a dependency for the Lenovo BIOS Certificates Tool which provides the graphical user interface for working with BIOS Certificates. It can be installed from the PowerSehl Gallery as well.
+
+``` powershell
+Install-Script -Name LnvBiosCertInterface
+```
+
+### Lenovo.Client.Scripting
+
+Collect useful information and perform simplified actions that can be leveraged in day to day management of Lenovo commercial PCs (ThinkPad, ThinkCentre, ThinkStation). Use intuitive Get- cmdlets to retrieve information from devices directly, or use Find- cmdlets to get information from Internet-hosted resources.
+
+``` powershell
+Install-Script -Name Lenovo.Client.Scripting
 ```
 
 !!! note
-    All three modules require **Windows 10/11**, **PowerShell 5.0+**, and **Administrator** privileges.
+    All four modules require **Windows 10/11**, **PowerShell 5.0+**, and **Administrator** privileges.
 
 ## Why Automate?
 
 - **Consistent, repeatable deployments** — Script-driven updates eliminate manual steps and configuration drift across your device fleet
 - **Full PowerShell pipeline support** — Cmdlets are designed for chaining. Discover, download, and install in a single pipeline
-- **Intune and ConfigMgr ready** — Package BIOS configurations as Win32 apps or Remediations and deploy via Intune with MS Graph upload
+- **Intune and Configuration Manager ready** — Package BIOS configurations as Win32 apps or Remediations and deploy via Intune with MS Graph upload
 - **Enterprise security built in** — Digital signature verification, certificate-based BIOS authentication, and Azure Key Vault integration
 - **OSD optimized** — Dynamically install applicable updates during bare-metal deployments without maintaining static driver packages
 
 ## Lenovo.Client.Update
 
+Lenovo has published the Lenovo.Client.Update module as our own modified version of the popular LSUClient solution by jantari. The Lenovo version of this solution provides digitally signed PowerShell scripts as well as digital signature verification of the Lenovo update packages. Additional features have been added as well as some cmdlets moved into this module from the Lenovo.Client.Scripting module to consolidate the Lenovo updates related functions.
+
+Read more about it in the [Product Guide](https://docs.lenovocdrt.com/guides/lcu/lcu_top.md)
+
 ### Core Cmdlets
+
+<div class="first-col-nowrap" markdown>
 
 | Cmdlet | Purpose |
 |---|---|
 | `Get-LnvUpdate` | Query applicable updates for the current device or a target model. Returns only needed updates by default |
 | `Save-LnvUpdate` | Download packages to a local directory with optional progress display. Supports custom repositories |
-| `Install-LnvUpdate` | Install packages silently. Use `-VerifySignature` to block unsigned packages or `-ExportToWMI` to log install history |
+| `Install-LnvUpdate` | Install packages silently. Use `-ExportToWMI` to log install history |
 | `Get-LnvUpdatesRepo` | Build a local update repository filtered by package type and reboot behavior — ideal for OSD staging |
 | `Get-LnvUpdateSummary` | Get an instant snapshot of update compliance status. Useful in Intune Remediations |
 | `Get-LnvUpdateHistory` | Retrieve full installation history filtered by date range for compliance reporting |
+
+</div>
 
 ### Update Workflow in 3 Lines
 
@@ -106,9 +145,8 @@ Get-LnvUpdate -Repository $repo |
 
 ### Security
 
-- **Digital signature verification** — Test any package with `Test-LnvSignature` before installation to confirm Lenovo authenticity
-- **Enforced installation signing** — Pass `-VerifySignature` to `Install-LnvUpdate` to block unsigned or tampered packages
-- **Dedicated certificate DLL** — `Lenovo.CertificateValidation.dll` provides enhanced cryptographic verification beyond what LSUClient offered
+- **Enforced installation signing** — By default `Install-LnvUpdate` will block unsigned or tampered packages
+
 
 ### Migrating from LSUClient
 
@@ -202,6 +240,15 @@ Get-LnvUpdate | Format-Table -Property Title, Category, ReleaseDate
 ```
 
 ## Resources
+
+### Product Guides
+
+- [Lenovo.Client.Scripting module](https://docs.lenovocdrt.com/guides/lcsm/lcsm_top/)
+- [Think BIOS Config Tool V2 and Lenovo.BIOS.Config module](https://docs.lenovocdrt.com/guides/tbct_v2/tbct_v2_top/)
+- [Lenovo BIOS Certificate Tool and Lenovo.Bios.Certificates module](https://docs.lenovocdrt.com/guides/lbct/)
+- [Lenovo.Client.Update module](https://docs.lenovocdrt.com/guides/lcu/)
+
+### Other Resources
 
 - [PowerShell Gallery](https://www.powershellgallery.com/) — search "Lenovo"
 - [ThinkDeploy Docs](https://docs.lenovocdrt.com)

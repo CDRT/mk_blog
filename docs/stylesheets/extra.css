@@ -1,3 +1,25 @@
 .md-content {
     max-width: 1000px;
 }
+
+.badge-new {
+  display: inline-block;
+  padding: 0.05rem 0.5rem;
+  margin-left: 0.4rem;
+  border-radius: 999px;
+  font-size: 0.55em;
+  font-weight: 600;
+  vertical-align: middle;
+  background: var(--md-accent-fg-color);
+  color: var(--md-accent-bg-color);
+}
+
+.first-col-nowrap table {
+  table-layout: auto;
+}
+
+.first-col-nowrap th:nth-child(1),
+.first-col-nowrap td:nth-child(1) {
+  white-space: nowrap;
+  width: 1%; /* shrink-to-fit, expands to longest item */
+}

@@ -19,6 +19,12 @@
 			<link></link>
 			</item>
 		-->
+		<item>
+			<title>Using the new Lenovo.Client.Update PowerShell Module in a Configuration Manager Task Sequence</title>
+			<description>An example of how to use the Lenovo.Client.Update PowerShell module in a Configuration Manager task sequence to install the latest drivers, BIOS, and firmware</description>
+			<pubDate>Thu, 09 Apr 2026 11:00:00 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/hsa-best-practices-guide/</link>
+			</item>
         <item>
 			<title>HSA Best Practices Guide</title>
 			<description>A quick look at the easiest way to deploy and manage Hardware Support Apps</description>

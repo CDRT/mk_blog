@@ -1,6 +1,6 @@
 ---
 date:
-    created: 2026-01-28
+    created: 2026-04-09
 authors:
     - Phil
 categories:
@@ -8,12 +8,12 @@ categories:
 title: Updating Lenovo BIOS, Drivers, and Firmware in a Configuration Manager Task Sequence Using the Lenovo Client Update Module
 ---
 
-Using LCU to install current drivers and BIOS during a bare metal OSD
+Installing current drivers, BIOS, and firmware during a bare metal OSD with the Lenovo Client Update PowerShell Module (LCU)
 <!-- more -->
 
 ## Overview
 
-This guide provides a step-by-step into integrating the new "Lenovo Client Update" PowerShell module into a Microsoft Configuration Manager (CM) Operating System Deployment (OSD) task sequence. The module automates the download and installation of the latest BIOS, drivers, and firmware for Lenovo devices during deployment, ensuring devices are up-to-date without manual intervention.
+This guide provides a step-by-step into integrating the new "Lenovo Client Update" [(LCU)](https://docs.lenovocdrt.com/guides/lcu/) PowerShell module into a Microsoft Configuration Manager (CM) Operating System Deployment (OSD) task sequence. The module automates the download and installation of the latest BIOS, drivers, and firmware for Lenovo devices during deployment, ensuring devices are up-to-date without manual intervention.
 
 This approach assumes you're working in a CM environment with OSD task sequences. We'll cover preparing the module, creating a CM package, and adding a dedicated "Run PowerShell Script" step to your task sequence.
 
@@ -27,16 +27,27 @@ This approach assumes you're working in a CM environment with OSD task sequences
 
 ## Step 1: Prepare the Lenovo Client Update Module and Script
 
+You can install the module from the PowerShell gallery using this command during the task sequence:
+
+```powershell
+Install-Module -Name Lenovo.Client.Update -Scope CurrentUser
+```
+
+This demonstration will use the below steps to save/import the module during the task sequence to perform the necessary actions.
+
 First, organize the module files and create the installation script in a source directory that will be used for the CM package.
 
-1. Create a source directory (e.g., `\\Server\Sources\LenovoClientUpdate`).
-2. Copy the extracted Lenovo Client Update module files into this directory (place them in the root or a subfolder like `Module`).
-   - Key files: `Lenovo.Client.Update.psd1`, `Lenovo.Client.Update.psm1`, and any dependencies.
+1. Create a source directory (e.g., `\\Server\Sources\PowerShell\Modules\Lenovo`).
+2. Use the **Save-Module** cmdlet to download the module to the source directory.
+
+```powershell
+Save-Module -Name Lenovo.Client.Update -Path "\\Server\Sources\PowerShell\Modules\Lenovo"
+```
 
 3. Create a PowerShell script file named `Install-LenovoUpdates.ps1` in the root of the source directory with the below sample code. This script imports the module, builds an Update Retriever style local repository on the device, and installs the latest drivers/BIOS/firmware.
 
    ```powershell
-    # Install-LenovoUpdates-NoDock.ps1
+    # Install-LenovoUpdates.ps1
     [CmdletBinding()]
     param (
         [Parameter(
@@ -78,13 +89,16 @@ First, organize the module files and create the installation script in a source 
     exit 0
    ```
 
-   **Directory Structure Example:**
+   **Directory Structure**
    ```
-   LenovoClientUpdate\
-   ├─ Install-LenovoUpdates.ps1
-   ├─ Lenovo.Client.Update.psd1
-   ├─ Lenovo.Client.Update.psm1
-   └─ (any other module dependencies)
+   Lenovo.Client.Update\
+    <ModuleVersion>\
+        ├─ private
+        ├─ public
+        ├─ Install-LenovoUpdates.ps1
+        ├─ Lenovo.Client.Update.Format.ps1xml
+        ├─ Lenovo.Client.Update.psd1
+        ├─ Lenovo.Client.Update.psm1
    ```
 
 ## Step 2: Create the Configuration Manager Package
@@ -97,7 +111,7 @@ Create a standard CM package (not an application) to host the module and script 
     - **Name:** PSModule - Lenovo Client Update
     - **Description:** Package for LCU PowerShell Module
     - **Version**: `<ModuleVersion>`
-    - **Source folder:** UNC path to your source directory (e.g., `\\Server\Sources\LenovoClientUpdate`)
+    - **Source folder:** UNC path to your source directory (e.g., `\\Server\Sources\PowerShell\Modules\Lenovo\Lenovo.Client.Update\1.0.0`)
     - Check **This package contains source files**.
 4. Do not create a program (this package is for content only).
 5. Complete the wizard.

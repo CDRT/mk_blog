@@ -41,6 +41,9 @@ You must have:
 - [Lenovo BIOS Certificates Tool (LBCT)](https://docs.lenovocdrt.com/guides/lbct/)
 - [Think BIOS Config Tool V2](https://docs.lenovocdrt.com/guides/tbct_v2/tbct_v2_top/)
 
+!!! info
+    Scripts can be downloaded from my GitHub [here](https://github.com/philjorgensen/Intune/tree/main/Autopilot/BiosCertificateAuth)
+
 ## Step 1: Generate a Self-Signed Certificate in Azure Key Vault
 
 We’ll create a self-signed X.509 certificate **directly inside Key Vault**.

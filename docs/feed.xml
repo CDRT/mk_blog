@@ -20,10 +20,16 @@
 			</item>
 		-->
 		<item>
+			<title>Changing the BIOS Supervisor Password with Intune and the new Think BIOS Config Tool v2</title>
+			<description>A guide to changing the BIOS supervisor password using Intune and the new Think BIOS Config Tool v2</description>
+			<pubDate>Mon, 20 Apr 2026 13:00:00 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/changing-the-bios-supervisor-password-with-intune-and-the-think-bios-config-tool-v2/</link>
+			</item>
+		<item>
 			<title>Using the new Lenovo.Client.Update PowerShell Module in a Configuration Manager Task Sequence</title>
 			<description>An example of how to use the Lenovo.Client.Update PowerShell module in a Configuration Manager task sequence to install the latest drivers, BIOS, and firmware</description>
 			<pubDate>Thu, 09 Apr 2026 11:00:00 EST</pubDate>
-			<link>https://blog.lenovocdrt.com/hsa-best-practices-guide/</link>
+			<link>https://blog.lenovocdrt.com/updating-lenovo-bios-drivers-and-firmware-in-a-configuration-manager-task-sequence-using-the-lenovo-client-update-module/</link>
 			</item>
         <item>
 			<title>HSA Best Practices Guide</title>

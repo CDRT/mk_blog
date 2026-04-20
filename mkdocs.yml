@@ -43,6 +43,7 @@ nav:
 
 plugins:
   - search
+  - glightbox
   - open-in-new-tab
   - blog:
       blog_dir: .

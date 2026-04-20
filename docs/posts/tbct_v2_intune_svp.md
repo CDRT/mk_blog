@@ -1,6 +1,7 @@
 ---
 date:
     created: 2026-04-16
+    updated: 2026-04-20
 authors:
     - Phil
 categories:
@@ -209,7 +210,9 @@ Add a new **Windows app (Win32)** in the [Intune admin center](https://intune.mi
 |---|---|
 | Minimum operating system | Windows 11 21H2 |
 
-> Additional requirement rule – Run only during OOBE/Autopilot
+#### Additional Requirement Rule # 1
+
+This rule checks is if the device is in OOBE. Ideal for pre-provisioning.
 
 - **Rule type:** Script
 - **Script:** (save/add the script below. Slightly modified from [here](https://oofhours.com/2023/09/15/detecting-when-you-are-in-oobe/))
@@ -217,7 +220,7 @@ Add a new **Windows app (Win32)** in the [Intune admin center](https://intune.mi
 - **Return type:** Boolean
 - **Operator:** Equals → **No**
 
-??? example "Requirement Rule Script"
+??? example "Requirement Rule Script #1"
 
     ```powershell
     $Definition = @"
@@ -244,6 +247,27 @@ Add a new **Windows app (Win32)** in the [Intune admin center](https://intune.mi
 
     if ($IsOOBEComplete -eq '1') { return $true }
     else { return $false }
+    ```
+
+#### Additional Requirement Rule # 2 (Optional)
+
+This rule checks the PasswordState value in the Lenovo_BiosPasswordSettings WMI class. If no password is set (value = 0), the requirement fails. The app will appear in Company Portal but will be greyed out to install if the assignment is set as available.
+
+- **Rule type:** Script
+- **Script:** (save/add the script below.)
+- **Run script as 32-bit process on 64-bit clients:** No
+- **Return type:** Boolean
+- **Operator:** Equals → **Yes**
+
+??? example "Requirement Rule Script #2"
+
+    ```powershell
+    $namespace = "root\wmi"
+    $class = "Lenovo_BiosPasswordSettings"
+    $value = (Get-CimInstance -Namespace $namespace -ClassName $class -ErrorAction SilentlyContinue).PasswordState
+
+    if ($value -ne 0) { return $true } # Password is set
+    else { return $false } # No password set
     ```
 
 ### Detection Rules

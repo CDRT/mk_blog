@@ -44,6 +44,7 @@ nav:
 plugins:
   - search
   - open-in-new-tab
+  - glightbox
   - blog:
       blog_dir: .
       post_url_format: "/{slug}"

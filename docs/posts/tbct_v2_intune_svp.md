@@ -44,58 +44,83 @@ Organize the module files and script into the source directory that will be pack
 ??? example "Update-SupervisorPassword.ps1"
 
     ```powershell
-    # Update-SupervisorPassword.ps1
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory)]
-        [string] $Passphrase
-    )
+    $ErrorActionPreference = 'Stop'
 
-    $statusDir  = "$env:ProgramData\Lenovo\ThinkBIOSConfig"
-    $statusFile = Join-Path $statusDir "svp.status"
+    # === Log File ===
+    $LogFile = "$env:ProgramData\Lenovo\ThinkBiosConfig\Logs\PasswordChange.log"
+    $LogDir = Split-Path $LogFile -Parent
+    if (-not (Test-Path $LogDir)) { New-Item -ItemType Directory -Path $LogDir -Force | Out-Null }
 
-    # Import Lenovo.BIOS.Config from the package directory
+    # === Write-Log Function ===
+    function Write-Log
+    {
+        param (
+            [Parameter(Mandatory = $true)]
+            [string]$Message,
+            [ValidateSet('INFO', 'WARN', 'ERROR', 'SUCCESS')]
+            [string]$Level = 'INFO'
+        )
+        $timestamp = Get-Date -Format 'yyyy-MM-dd HH:mm:ss'
+        $logEntry = "$timestamp [$Level]: $Message"
+        Add-Content -Path $LogFile -Value $logEntry -Encoding UTF8
+    }
+
+    # === Initial log entry ===
+    Write-Log "=== LENOVO PASSWORD CHANGE CONFIG INSTALL STARTED ===" 'INFO'
+
+    # --- Paths ---
+    $ModulePath = Join-Path $PSScriptRoot 'Lenovo.BIOS.Config\*\*.psd1'
+
+    # --- Secret Key ---
+    $SecretKey = "secretkey"  # Secret key for decryption - update as needed
+
+    # -------------------------------------------------
+    # 1. Load Lenovo BIOS Config Module
+    # -------------------------------------------------
     try
     {
-        $psd1 = Get-ChildItem -Path $PSScriptRoot -Filter "Lenovo.BIOS.Config.psd1" -Recurse |
-                Select-Object -First 1
-        if (-not $psd1)
-        {
-            throw "Lenovo.BIOS.Config.psd1 not found under $PSScriptRoot"
-        }
-        Import-Module $psd1.FullName -Force
-        Write-Output "Lenovo.BIOS.Config module imported successfully"
+        $ModuleFile = Get-Item $ModulePath | Select-Object -First 1
+        if (-not $ModuleFile) { throw "No .psd1 module found in $ModulePath" }
+
+        Import-Module $ModuleFile.FullName -Force
+        Write-Log "Loaded module: $($ModuleFile.Directory.Name)" 'SUCCESS'
     }
     catch
     {
-        Write-Error $_.Exception.Message
+        Write-Log "Failed to load Lenovo BIOS Config module: $($_.Exception.Message)" 'ERROR'
         exit 1
     }
 
-    # Locate the password change INI file bundled with the package
-    $iniFile = Get-ChildItem -Path $PSScriptRoot -Filter "*.ini" | Select-Object -First 1
-    if (-not $iniFile)
-    {
-        Write-Error "No password change INI file found in $PSScriptRoot"
-        exit 1
-    }
-
+    # -------------------------------------------------
+    # 2. Verify Password Change File
+    # -------------------------------------------------
     try
     {
-        Initialize-LnvThinkBiosConfig
-        Import-LnvWmiSettings -FilePath $iniFile.FullName -Passphrase $Passphrase
+        $ConfigFile = Get-ChildItem -Path $PSScriptRoot -Filter "*.ini" | Select-Object -First 1
+        if (-not $ConfigFile) { throw "No .ini file found in $PSScriptRoot" }
+        $ConfigFilePath = $ConfigFile.FullName
+        Write-Log "Found password change file: $ConfigFilePath" 'INFO'
+    }
+    catch
+    {
+        Write-Log "Failed to find password change file: $($_.Exception.Message)" 'ERROR'
+        exit 1
+    }
 
-        if (-not (Test-Path $statusDir))
-        {
-            New-Item -ItemType Directory -Path $statusDir -Force | Out-Null
-        }
-        Set-Content -Path $statusFile -Value "SVP updated $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
-        Write-Output "Supervisor password changed successfully"
+    # -------------------------------------------------
+    # 3. Import Password Change File
+    # -------------------------------------------------
+    try
+    {
+        Import-LnvPasswordChangeFile -ConfigFile $ConfigFilePath -Key $SecretKey | Out-Null
+        Write-Log "Password change configuration imported successfully." 'SUCCESS'
+
+        Write-Log "=== PASSWORD CHANGE CONFIG INSTALL COMPLETE (Exit 3010) ===" 'SUCCESS'
         exit 3010
     }
     catch
     {
-        Write-Error $_.Exception.Message
+        Write-Log "EXCEPTION during password change import: $($_.Exception.Message)" 'ERROR'
         exit 1
     }
     ```

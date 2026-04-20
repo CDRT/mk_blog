@@ -264,8 +264,10 @@ Add a **custom detection script** for the rule
 
     if ($logFile)
     {
-        # Read the log file content
+        # Read the log file content and isolate the last run block
         $logContent = Get-Content -Path $logFile.FullName
+        $lastBlockStart = ($logContent | Select-String -SimpleMatch -Pattern "Import-LnvPasswordChangeFile" | Select-Object -Last 1).LineNumber
+        if ($lastBlockStart) { $logContent = $logContent[($lastBlockStart)..($logContent.Count - 1)] }
 
         # Define the expected success messages for each step
         $expectedSuccesses = @(
@@ -335,7 +337,7 @@ Authenticating: Success
 Committing change: Success
 ```
 
-The detection script will make sure each line from the TBC_Log matches a **Success** to confirm the password change. If there's a **Failed** anywhere, the result will return an error.
+The detection script will make sure each line from the TBC_Log matches a **Success** to confirm the password change. If there's an **Access Denied** or **Invalid parameter** anywhere, the status details for the Win32 app will show not detected in Intune.
 
 ## Final Notes
 

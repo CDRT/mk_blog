@@ -20,6 +20,12 @@
 			</item>
 		-->
 		<item>
+			<title>Community Tool Spotlight: PowerBios</title>
+			<description>PowerBios is a free, community-developed Windows utility by Claude Boucher (SomeTools) that lets you read, modify, and export BIOS settings on Lenovo ThinkPad, ThinkCentre, and ThinkStation devices using the WMI interface - locally or remotely. </description>
+			<pubDate>Tue, 28 Apr 2026 08:48:00 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/community-tool-spotlight-powerbios--wmi-bios-utility-for-lenovo/</link>
+			</item>
+		<item>
 			<title>Changing the BIOS Supervisor Password with Intune and the new Think BIOS Config Tool v2</title>
 			<description>A guide to changing the BIOS supervisor password using Intune and the new Think BIOS Config Tool v2</description>
 			<pubDate>Mon, 20 Apr 2026 13:00:00 EST</pubDate>

@@ -53,8 +53,6 @@ The list of policies, their OMA-URIs, data elements, and tree structure is **not
 https://raw.githubusercontent.com/CDRT/api/main/cv-policies.json
 ```
 
-If the fetch fails (no internet, firewall, etc.) it falls back to a `cv-policies.json` placed next to the script. This means new policies added to Commercial Vantage can be picked up without re-releasing the GUI — update the catalog, restart the tool.
-
 ## Workflow
 
 ### 1. Sign in
@@ -83,8 +81,6 @@ The recommended baseline policies are:
 | Turn off Run Once Task | Suppresses first-run popups |
 
 These are the settings most enterprise environments end up configuring anyway, bundled so you don't have to click through each one.
-
-![Recommended Baseline](https://cdrt.github.io/mk_blog/img/2026/intro_cv_policy_manager/image3.jpg)
 
 ### 3. Browse and configure
 

@@ -11,7 +11,7 @@ title: "Introducing: Commercial Vantage Policy Manager for Intune"
 Commercial Vantage ships ADMX/ADML templates for configuring its policies, and the documented path for Intune is to either ingest those templates and configure each setting or create a custom template profile and add each individual policy as an OMA-URI setting. That works, but can be tedious. **Commercial Vantage Policy Manager** is a WPF-based PowerShell GUI that takes the same policies and deploys them as a single Custom OMA-URI profile through the Microsoft Graph API — no template ingestion required.
 <!-- more -->
 
-https://github.com/user-attachments/assets/26366dcf-b217-47fe-8cab-b1c043f7795b
+[CV Policy Manager Demo](https://github.com/user-attachments/assets/26366dcf-b217-47fe-8cab-b1c043f7795b ":include :type=video controls width=100%")
 
 ## Why an alternative?
 

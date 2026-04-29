@@ -13,7 +13,6 @@ Commercial Vantage ships ADMX/ADML templates for configuring its policies, and t
 
 <video controls width="100%" preload="metadata">
   <source src="https://cdrt.github.io/mk_blog/img/2026/intro_cv_policy_manager/CVPolicyManager.mp4" type="video/mp4">
-  Your browser does not support HTML5 video.
 </video>
 
 ## Why an alternative?

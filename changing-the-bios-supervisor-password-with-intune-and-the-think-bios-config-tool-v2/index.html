@@ -1,0 +1,1511 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Ideas for managing Lenovo devices in the corporate environment.">
+      
+      
+      
+        <link rel="canonical" href="https://blog.lenovocdrt.com/changing-the-bios-supervisor-password-with-intune-and-the-think-bios-config-tool-v2/">
+      
+      
+        <link rel="prev" href="../updating-lenovo-bios-drivers-and-firmware-in-a-configuration-manager-task-sequence-using-the-lenovo-client-update-module/">
+      
+      
+        <link rel="next" href="../community-tool-spotlight-powerbios--wmi-bios-utility-for-lenovo/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../img/fav/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Changing the BIOS Supervisor Password with Intune and the Think BIOS Config Tool V2 - ThinkDeploy Blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Work+Sans:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Work Sans";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-288025816"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-288025816",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-288025816",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>if("undefined"!=typeof __md_analytics){var consent=__md_get("__consent");consent&&consent.analytics&&__md_analytics()}</script>
+  
+
+    
+    
+  <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="light-blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#overview" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="ThinkDeploy Blog" class="md-header__button md-logo" aria-label="ThinkDeploy Blog" data-md-component="logo">
+      
+  <img src="../img/CDRT-REV-Red_s.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ThinkDeploy Blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Changing the BIOS Supervisor Password with Intune and the Think BIOS Config Tool V2
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="light-blue" aria-label="Switch to dark mode" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="blue-grey" aria-label="Switch to light mode" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required="">
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix="">
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden="">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="ThinkDeploy Blog" class="md-nav__button md-logo" aria-label="ThinkDeploy Blog" data-md-component="logo">
+      
+  <img src="../img/CDRT-REV-Red_s.png" alt="logo">
+
+    </a>
+    ThinkDeploy Blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix="">
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../feed.xml" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RSS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3">
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Archive
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Archive
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2026/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2026
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2025/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2025
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2024/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2024
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2023/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2023
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2022/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2022
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2021/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2021
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2020/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2020
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2019/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2019
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2018/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2018
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2017/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2017
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href=".." class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="../img/fav/avatar.png" alt="Philip Jorgensen">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          Philip Jorgensen
+                        
+                      </strong>
+                      <br>
+                      Deployment Expert
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"></path></svg>
+                        <time datetime="2026-04-16 00:00:00+00:00" class="md-ellipsis">April 16, 2026</time>
+                      </div>
+                    </li>
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15 13h1.5v2.82l2.44 1.41-.75 1.3L15 16.69zm4-5H5v11h4.67c-.43-.91-.67-1.93-.67-3a7 7 0 0 1 7-7c1.07 0 2.09.24 3 .67zM5 21a2 2 0 0 1-2-2V5c0-1.11.89-2 2-2h1V1h2v2h8V1h2v2h1a2 2 0 0 1 2 2v6.1c1.24 1.26 2 2.99 2 4.9a7 7 0 0 1-7 7c-1.91 0-3.64-.76-4.9-2zm11-9.85A4.85 4.85 0 0 0 11.15 16c0 2.68 2.17 4.85 4.85 4.85A4.85 4.85 0 0 0 20.85 16c0-2.68-2.17-4.85-4.85-4.85"></path></svg>
+                          <time datetime="2026-04-20 00:00:00+00:00" class="md-ellipsis">April 20, 2026</time>
+                        </div>
+                      </li>
+                    
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"></path></svg>
+                          <span class="md-ellipsis">
+                            
+                              7 min read
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+            
+          </nav>
+          
+            
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prepare-the-lenovobiosconfig-module-and-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prepare the Lenovo.BIOS.Config Module and Script
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generate-the-password-change-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Generate the Password Change File
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Generate the Password Change File">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-the-gui" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using the GUI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-the-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using the CLI
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#package-with-the-win32-content-prep-tool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Package with the Win32 Content Prep Tool
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-the-win32-app-in-intune" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Create the Win32 App in Intune
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Create the Win32 App in Intune">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#app-information" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        App Information
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#program" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Program
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Requirements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#additional-requirement-rule-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Additional Requirement Rule # 1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#additional-requirement-rule-2-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Additional Requirement Rule # 2 (Optional)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#detection-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detection Rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assignment
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#final-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Final Notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+
+
+
+
+  <h1>Changing the BIOS Supervisor Password with Intune and the Think BIOS Config Tool V2</h1>
+
+<p>Using the Think BIOS Config Tool V2 and the Lenovo.BIOS.Config PowerShell module to securely change the BIOS supervisor password via an Intune Win32 app.</p>
+<!-- more -->
+
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">#</a></h2>
+<p>This guide walks through deploying a supervisor password change to Lenovo devices using the <strong>Think BIOS Config Tool V2</strong> and the <strong>Lenovo.BIOS.Config</strong> PowerShell module as an Intune Win32 app. The approach uses an encrypted password change file so the supervisor password is never exposed in plain text.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Previously created INI files from the original HTA-based Think BIOS Config Tool are <strong>not compatible</strong> with V2 due to changes in encryption methods. You must recreate the password change file using the new tool.</p>
+</div>
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">#</a></h2>
+<ul>
+<li>Think BIOS Config Tool V2 (<code>ThinkBIOSConfigUI.ps1</code>) and the <code>Lenovo.BIOS.Config</code> module installed on an admin workstation to generate the password change file.</li>
+<li>A source directory for the Win32 app content (e.g., <code>C:\Source\IntuneWin32\TBCT</code>).</li>
+<li>The <a href="https://github.com/Microsoft/Microsoft-Win32-Content-Prep-Tool">Win32 Content Prep Tool</a> (<code>IntuneWinAppUtil.exe</code>).</li>
+<li>An existing supervisor password set on target devices.</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The new Think BIOS Config Tool v2 does <strong><em>NOT</em></strong> set an initial supervisor password. The only way to programmatically set an initial password is boot to System Deployment Boot <a href="https://docs.lenovocdrt.com/ref/bios/sdbm/">Mode</a> or leverage a product offering by Absolute called <strong>Remote SVP</strong>.</p>
+</div>
+<h2 id="prepare-the-lenovobiosconfig-module-and-script">Prepare the Lenovo.BIOS.Config Module and Script<a class="headerlink" href="#prepare-the-lenovobiosconfig-module-and-script" title="Permanent link">#</a></h2>
+<p>Organize the module files and script into the source directory that will be packaged for deployment.</p>
+<ol>
+<li>Create the source directory: <code>C:\Source\IntuneWin32\TBCT</code></li>
+<li>
+<p>Use the <strong>Save-Module</strong> cmdlet to download the module into the source directory.</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">Save-Module</span> <span class="n">-Name</span> <span class="n">Lenovo</span><span class="p">.</span><span class="n">BIOS</span><span class="p">.</span><span class="n">Config</span> <span class="n">-Path</span> <span class="s2">"C:\Source\IntuneWin32\TBCT"</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>Create a PowerShell script named <code>Update-SupervisorPassword.ps1</code> in the root of the source directory.</p>
+</li>
+</ol>
+<details class="example">
+<summary>Update-SupervisorPassword.ps1</summary>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nv">$ErrorActionPreference</span> <span class="p">=</span> <span class="s1">'Stop'</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c"># === Log File ===</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="nv">$LogFile</span> <span class="p">=</span> <span class="s2">"$env:ProgramData\Lenovo\ThinkBiosConfig\Logs\PasswordChange.log"</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="nv">$LogDir</span> <span class="p">=</span> <span class="nb">Split-Path</span> <span class="nv">$LogFile</span> <span class="n">-Parent</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="p">(</span><span class="nb">Test-Path</span> <span class="nv">$LogDir</span><span class="p">))</span> <span class="p">{</span> <span class="nb">New-Item</span> <span class="n">-ItemType</span> <span class="n">Directory</span> <span class="n">-Path</span> <span class="nv">$LogDir</span> <span class="n">-Force</span> <span class="p">|</span> <span class="nb">Out-Null</span> <span class="p">}</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="c"># === Write-Log Function ===</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="k">function</span> <span class="nb">Write-Log</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="p">{</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>    <span class="k">param</span> <span class="p">(</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>        <span class="p">[</span><span class="k">Parameter</span><span class="p">(</span><span class="k">Mandatory</span> <span class="p">=</span> <span class="nv">$true</span><span class="p">)]</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>        <span class="no">[string]</span><span class="nv">$Message</span><span class="p">,</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>        <span class="p">[</span><span class="k">ValidateSet</span><span class="p">(</span><span class="s1">'INFO'</span><span class="p">,</span> <span class="s1">'WARN'</span><span class="p">,</span> <span class="s1">'ERROR'</span><span class="p">,</span> <span class="s1">'SUCCESS'</span><span class="p">)]</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>        <span class="no">[string]</span><span class="nv">$Level</span> <span class="p">=</span> <span class="s1">'INFO'</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>    <span class="p">)</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>    <span class="nv">$timestamp</span> <span class="p">=</span> <span class="nb">Get-Date</span> <span class="n">-Format</span> <span class="s1">'yyyy-MM-dd HH:mm:ss'</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>    <span class="nv">$logEntry</span> <span class="p">=</span> <span class="s2">"$timestamp [$Level]: $Message"</span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>    <span class="nb">Add-Content</span> <span class="n">-Path</span> <span class="nv">$LogFile</span> <span class="n">-Value</span> <span class="nv">$logEntry</span> <span class="n">-Encoding</span> <span class="n">UTF8</span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="p">}</span>
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="c"># === Initial log entry ===</span>
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="nb">Write-Log</span> <span class="s2">"=== LENOVO PASSWORD CHANGE CONFIG INSTALL STARTED ==="</span> <span class="s1">'INFO'</span>
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="c"># --- Paths ---</span>
+</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="nv">$ModulePath</span> <span class="p">=</span> <span class="nb">Join-Path</span> <span class="nv">$PSScriptRoot</span> <span class="s1">'Lenovo.BIOS.Config\*\*.psd1'</span>
+</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>
+</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a><span class="c"># --- Secret Key ---</span>
+</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a><span class="nv">$SecretKey</span> <span class="p">=</span> <span class="s2">"secretkey"</span>  <span class="c"># Secret key for decryption - update as needed</span>
+</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>
+</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a><span class="c"># -------------------------------------------------</span>
+</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a><span class="c"># 1. Load Lenovo BIOS Config Module</span>
+</span><span id="__span-1-33"><a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a><span class="c"># -------------------------------------------------</span>
+</span><span id="__span-1-34"><a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a><span class="k">try</span>
+</span><span id="__span-1-35"><a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a><span class="p">{</span>
+</span><span id="__span-1-36"><a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a>    <span class="nv">$ModuleFile</span> <span class="p">=</span> <span class="nb">Get-Item</span> <span class="nv">$ModulePath</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="n">-First</span> <span class="n">1</span>
+</span><span id="__span-1-37"><a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a>    <span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="nv">$ModuleFile</span><span class="p">)</span> <span class="p">{</span> <span class="k">throw</span> <span class="s2">"No .psd1 module found in $ModulePath"</span> <span class="p">}</span>
+</span><span id="__span-1-38"><a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a>
+</span><span id="__span-1-39"><a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a>    <span class="nb">Import-Module</span> <span class="nv">$ModuleFile</span><span class="p">.</span><span class="n">FullName</span> <span class="n">-Force</span>
+</span><span id="__span-1-40"><a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a>    <span class="nb">Write-Log</span> <span class="s2">"Loaded module: </span><span class="p">$(</span><span class="nv">$ModuleFile</span><span class="p">.</span><span class="n">Directory</span><span class="p">.</span><span class="n">Name</span><span class="p">)</span><span class="s2">"</span> <span class="s1">'SUCCESS'</span>
+</span><span id="__span-1-41"><a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a><span class="p">}</span>
+</span><span id="__span-1-42"><a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a><span class="k">catch</span>
+</span><span id="__span-1-43"><a id="__codelineno-1-43" name="__codelineno-1-43" href="#__codelineno-1-43"></a><span class="p">{</span>
+</span><span id="__span-1-44"><a id="__codelineno-1-44" name="__codelineno-1-44" href="#__codelineno-1-44"></a>    <span class="nb">Write-Log</span> <span class="s2">"Failed to load Lenovo BIOS Config module: </span><span class="p">$(</span><span class="nv">$_</span><span class="p">.</span><span class="n">Exception</span><span class="p">.</span><span class="n">Message</span><span class="p">)</span><span class="s2">"</span> <span class="s1">'ERROR'</span>
+</span><span id="__span-1-45"><a id="__codelineno-1-45" name="__codelineno-1-45" href="#__codelineno-1-45"></a>    <span class="n">exit</span> <span class="n">1</span>
+</span><span id="__span-1-46"><a id="__codelineno-1-46" name="__codelineno-1-46" href="#__codelineno-1-46"></a><span class="p">}</span>
+</span><span id="__span-1-47"><a id="__codelineno-1-47" name="__codelineno-1-47" href="#__codelineno-1-47"></a>
+</span><span id="__span-1-48"><a id="__codelineno-1-48" name="__codelineno-1-48" href="#__codelineno-1-48"></a><span class="c"># -------------------------------------------------</span>
+</span><span id="__span-1-49"><a id="__codelineno-1-49" name="__codelineno-1-49" href="#__codelineno-1-49"></a><span class="c"># 2. Verify Password Change File</span>
+</span><span id="__span-1-50"><a id="__codelineno-1-50" name="__codelineno-1-50" href="#__codelineno-1-50"></a><span class="c"># -------------------------------------------------</span>
+</span><span id="__span-1-51"><a id="__codelineno-1-51" name="__codelineno-1-51" href="#__codelineno-1-51"></a><span class="k">try</span>
+</span><span id="__span-1-52"><a id="__codelineno-1-52" name="__codelineno-1-52" href="#__codelineno-1-52"></a><span class="p">{</span>
+</span><span id="__span-1-53"><a id="__codelineno-1-53" name="__codelineno-1-53" href="#__codelineno-1-53"></a>    <span class="nv">$ConfigFile</span> <span class="p">=</span> <span class="nb">Get-ChildItem</span> <span class="n">-Path</span> <span class="nv">$PSScriptRoot</span> <span class="n">-Filter</span> <span class="s2">"*.ini"</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="n">-First</span> <span class="n">1</span>
+</span><span id="__span-1-54"><a id="__codelineno-1-54" name="__codelineno-1-54" href="#__codelineno-1-54"></a>    <span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="nv">$ConfigFile</span><span class="p">)</span> <span class="p">{</span> <span class="k">throw</span> <span class="s2">"No .ini file found in $PSScriptRoot"</span> <span class="p">}</span>
+</span><span id="__span-1-55"><a id="__codelineno-1-55" name="__codelineno-1-55" href="#__codelineno-1-55"></a>    <span class="nv">$ConfigFilePath</span> <span class="p">=</span> <span class="nv">$ConfigFile</span><span class="p">.</span><span class="n">FullName</span>
+</span><span id="__span-1-56"><a id="__codelineno-1-56" name="__codelineno-1-56" href="#__codelineno-1-56"></a>    <span class="nb">Write-Log</span> <span class="s2">"Found password change file: $ConfigFilePath"</span> <span class="s1">'INFO'</span>
+</span><span id="__span-1-57"><a id="__codelineno-1-57" name="__codelineno-1-57" href="#__codelineno-1-57"></a><span class="p">}</span>
+</span><span id="__span-1-58"><a id="__codelineno-1-58" name="__codelineno-1-58" href="#__codelineno-1-58"></a><span class="k">catch</span>
+</span><span id="__span-1-59"><a id="__codelineno-1-59" name="__codelineno-1-59" href="#__codelineno-1-59"></a><span class="p">{</span>
+</span><span id="__span-1-60"><a id="__codelineno-1-60" name="__codelineno-1-60" href="#__codelineno-1-60"></a>    <span class="nb">Write-Log</span> <span class="s2">"Failed to find password change file: </span><span class="p">$(</span><span class="nv">$_</span><span class="p">.</span><span class="n">Exception</span><span class="p">.</span><span class="n">Message</span><span class="p">)</span><span class="s2">"</span> <span class="s1">'ERROR'</span>
+</span><span id="__span-1-61"><a id="__codelineno-1-61" name="__codelineno-1-61" href="#__codelineno-1-61"></a>    <span class="n">exit</span> <span class="n">1</span>
+</span><span id="__span-1-62"><a id="__codelineno-1-62" name="__codelineno-1-62" href="#__codelineno-1-62"></a><span class="p">}</span>
+</span><span id="__span-1-63"><a id="__codelineno-1-63" name="__codelineno-1-63" href="#__codelineno-1-63"></a>
+</span><span id="__span-1-64"><a id="__codelineno-1-64" name="__codelineno-1-64" href="#__codelineno-1-64"></a><span class="c"># -------------------------------------------------</span>
+</span><span id="__span-1-65"><a id="__codelineno-1-65" name="__codelineno-1-65" href="#__codelineno-1-65"></a><span class="c"># 3. Import Password Change File</span>
+</span><span id="__span-1-66"><a id="__codelineno-1-66" name="__codelineno-1-66" href="#__codelineno-1-66"></a><span class="c"># -------------------------------------------------</span>
+</span><span id="__span-1-67"><a id="__codelineno-1-67" name="__codelineno-1-67" href="#__codelineno-1-67"></a><span class="k">try</span>
+</span><span id="__span-1-68"><a id="__codelineno-1-68" name="__codelineno-1-68" href="#__codelineno-1-68"></a><span class="p">{</span>
+</span><span id="__span-1-69"><a id="__codelineno-1-69" name="__codelineno-1-69" href="#__codelineno-1-69"></a>    <span class="nb">Import-LnvPasswordChangeFile</span> <span class="n">-ConfigFile</span> <span class="nv">$ConfigFilePath</span> <span class="n">-Key</span> <span class="nv">$SecretKey</span> <span class="p">|</span> <span class="nb">Out-Null</span>
+</span><span id="__span-1-70"><a id="__codelineno-1-70" name="__codelineno-1-70" href="#__codelineno-1-70"></a>    <span class="nb">Write-Log</span> <span class="s2">"Password change configuration imported successfully."</span> <span class="s1">'SUCCESS'</span>
+</span><span id="__span-1-71"><a id="__codelineno-1-71" name="__codelineno-1-71" href="#__codelineno-1-71"></a>
+</span><span id="__span-1-72"><a id="__codelineno-1-72" name="__codelineno-1-72" href="#__codelineno-1-72"></a>    <span class="nb">Write-Log</span> <span class="s2">"=== PASSWORD CHANGE CONFIG INSTALL COMPLETE (Exit 3010) ==="</span> <span class="s1">'SUCCESS'</span>
+</span><span id="__span-1-73"><a id="__codelineno-1-73" name="__codelineno-1-73" href="#__codelineno-1-73"></a>    <span class="n">exit</span> <span class="n">3010</span>
+</span><span id="__span-1-74"><a id="__codelineno-1-74" name="__codelineno-1-74" href="#__codelineno-1-74"></a><span class="p">}</span>
+</span><span id="__span-1-75"><a id="__codelineno-1-75" name="__codelineno-1-75" href="#__codelineno-1-75"></a><span class="k">catch</span>
+</span><span id="__span-1-76"><a id="__codelineno-1-76" name="__codelineno-1-76" href="#__codelineno-1-76"></a><span class="p">{</span>
+</span><span id="__span-1-77"><a id="__codelineno-1-77" name="__codelineno-1-77" href="#__codelineno-1-77"></a>    <span class="nb">Write-Log</span> <span class="s2">"EXCEPTION during password change import: </span><span class="p">$(</span><span class="nv">$_</span><span class="p">.</span><span class="n">Exception</span><span class="p">.</span><span class="n">Message</span><span class="p">)</span><span class="s2">"</span> <span class="s1">'ERROR'</span>
+</span><span id="__span-1-78"><a id="__codelineno-1-78" name="__codelineno-1-78" href="#__codelineno-1-78"></a>    <span class="n">exit</span> <span class="n">1</span>
+</span><span id="__span-1-79"><a id="__codelineno-1-79" name="__codelineno-1-79" href="#__codelineno-1-79"></a><span class="p">}</span>
+</span></code></pre></div>
+</details>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Alternatively, you can add code to install the module from the PowerShell gallery but not everyone may want to do this. Hence, saving the module in the Win32 app for this example.</p>
+</div>
+<p><strong>Directory Structure</strong>
+</p><div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>C:\Source\IntuneWin32\TBCT\
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    Lenovo.BIOS.Config\
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>        &lt;ModuleVersion&gt;\
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>            ├─ Lenovo.BIOS.Config.psd1
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>            ├─ Lenovo.BIOS.Config.psm1
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>            └─ ...
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    Update-SupervisorPassword.ps1
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    svp.ini
+</span></code></pre></div><p></p>
+<h2 id="generate-the-password-change-file">Generate the Password Change File<a class="headerlink" href="#generate-the-password-change-file" title="Permanent link">#</a></h2>
+<p>The encrypted password change file is created using the Think BIOS Config Tool V2.</p>
+<h3 id="using-the-gui">Using the GUI<a class="headerlink" href="#using-the-gui" title="Permanent link">#</a></h3>
+<ol>
+<li>Launch <code>ThinkBIOSConfigUI.ps1</code> as Administrator.</li>
+<li>In the <strong>Actions</strong> section, click <strong>Change Password</strong>.</li>
+<li>Enter the current password, new password, and confirm new password.</li>
+<li>Click <strong>Create Password Change File</strong>.</li>
+<li>Enter a passphrase. This will serve as the encrypting key.</li>
+<li>An <code>.ini</code> file will be generated at <code>%ProgramData%\Lenovo\ThinkBiosConfig\Output</code></li>
+<li>Copy the <code>.ini</code> file into <code>C:\Source\IntuneWin32\TBCT</code>.</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If using the GUI, the generated INI file name defaults to <strong>Password</strong>. You can rename it, but the script will pick up whichever <code>.ini</code> file is present in the package directory.</p>
+</div>
+<h3 id="using-the-cli">Using the CLI<a class="headerlink" href="#using-the-cli" title="Permanent link">#</a></h3>
+<p>The following commands can be used to generate the password change file.</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">Import-Module</span> <span class="n">Lenovo</span><span class="p">.</span><span class="n">BIOS</span><span class="p">.</span><span class="n">Config</span> <span class="n">-Force</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nb">Export-LnvPasswordChangeFile</span> <span class="n">-FileLocation</span> <span class="n">C</span><span class="p">:\</span><span class="n">Sources</span><span class="p">\</span><span class="n">IntuneWin32</span><span class="p">\</span><span class="n">TBCT</span><span class="p">\</span><span class="n">svp</span><span class="p">.</span><span class="n">ini</span> <span class="n">-Type</span> <span class="n">svp</span> <span class="n">-Verbose</span>
+</span></code></pre></div>
+<p>You'll be prompted for an encrypting key (passphrase), the current supervisor password, and the new supervisor password you intend to set.</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="https://cdrt.github.io/mk_blog/img/2026/tbct_v2_intune_svp/image1.jpg" data-desc-position="bottom"><img alt="" src="https://cdrt.github.io/mk_blog/img/2026/tbct_v2_intune_svp/image1.jpg"></a></p>
+<h2 id="package-with-the-win32-content-prep-tool">Package with the Win32 Content Prep Tool<a class="headerlink" href="#package-with-the-win32-content-prep-tool" title="Permanent link">#</a></h2>
+<p>With the source directory containing the module folder, the script, and the password change INI file, use the Win32 Content Prep <a href="https://github.com/Microsoft/Microsoft-Win32-Content-Prep-Tool">Tool</a> to create the <code>.intunewin</code> package.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>IntuneWinAppUtil.exe -c "C:\Source\IntuneWin32\TBCT" -s Update-SupervisorPassword.ps1 -o "C:\Source\IntuneWin32\" -q
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-c</code></td>
+<td>Source folder: <code>C:\Source\IntuneWin32\TBCT</code></td>
+</tr>
+<tr>
+<td><code>-s</code></td>
+<td>Setup file: <code>Update-SupervisorPassword.ps1</code></td>
+</tr>
+<tr>
+<td><code>-o</code></td>
+<td>Output folder: <code>C:\Source\IntuneWin32\</code></td>
+</tr>
+<tr>
+<td><code>-q</code></td>
+<td>Quiet mode</td>
+</tr>
+</tbody>
+</table>
+<p>This produces <code>Update-SupervisorPassword.intunewin</code> in <code>C:\Source\IntuneWin32\</code>.</p>
+<h2 id="create-the-win32-app-in-intune">Create the Win32 App in Intune<a class="headerlink" href="#create-the-win32-app-in-intune" title="Permanent link">#</a></h2>
+<h3 id="app-information">App Information<a class="headerlink" href="#app-information" title="Permanent link">#</a></h3>
+<p>Add a new <strong>Windows app (Win32)</strong> in the <a href="https://intune.microsoft.com/#view/Microsoft_Intune_DeviceSettings/AppsWindowsMenu/~/windowsApps">Intune admin center</a> and select the <code>.intunewin</code> package file to upload. Fill out the required fields and click <strong>Next</strong>.</p>
+<h3 id="program">Program<a class="headerlink" href="#program" title="Permanent link">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Installer type</td>
+<td>Command line</td>
+</tr>
+<tr>
+<td>Install command</td>
+<td><code>%windir%\sysnative\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -File ".\Update-SupervisorPassword.ps1"</code></td>
+</tr>
+<tr>
+<td>Uninstaller type</td>
+<td>Command line</td>
+</tr>
+<tr>
+<td>Uninstall command</td>
+<td><code>cmd.exe /c</code></td>
+</tr>
+<tr>
+<td>Install behavior</td>
+<td><strong>System</strong></td>
+</tr>
+<tr>
+<td>Device restart behavior</td>
+<td><strong>Determine behavior based on return codes</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Minimum operating system</td>
+<td>Windows 11 21H2</td>
+</tr>
+</tbody>
+</table>
+<h4 id="additional-requirement-rule-1">Additional Requirement Rule # 1<a class="headerlink" href="#additional-requirement-rule-1" title="Permanent link">#</a></h4>
+<p>This rule checks is if the device is in OOBE. Ideal for pre-provisioning.</p>
+<ul>
+<li><strong>Rule type:</strong> Script</li>
+<li><strong>Script:</strong> (save/add the script below. Slightly modified from <a href="https://oofhours.com/2023/09/15/detecting-when-you-are-in-oobe/">here</a>)</li>
+<li><strong>Run script as 32-bit process on 64-bit clients:</strong> No</li>
+<li><strong>Return type:</strong> Boolean</li>
+<li><strong>Operator:</strong> Equals → <strong>No</strong></li>
+</ul>
+<details class="example">
+<summary>Requirement Rule Script #1</summary>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nv">$Definition</span> <span class="p">=</span> <span class="sh">@"</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="sh">using System;</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="sh">using System.Text;</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="sh">using System.Collections.Generic;</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="sh">using System.Runtime.InteropServices;</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="sh">namespace Api</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="sh">{</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="sh">    public class Kernel32</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="sh">    {</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="sh">        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="sh">        public static extern int OOBEComplete(ref int bIsOOBEComplete);</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="sh">    }</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="sh">}</span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="sh">"@</span>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="nb">Add-Type</span> <span class="n">-TypeDefinition</span> <span class="nv">$Definition</span> <span class="n">-Language</span> <span class="n">CSharp</span>
+</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>
+</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="nv">$IsOOBEComplete</span> <span class="p">=</span> <span class="nv">$false</span>
+</span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="nv">$appRequirement</span> <span class="p">=</span> <span class="no">[Api.Kernel32]</span><span class="p">::</span><span class="n">OOBEComplete</span><span class="p">(</span><span class="no">[ref]</span> <span class="nv">$IsOOBEComplete</span><span class="p">)</span>
+</span><span id="__span-5-22"><a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>
+</span><span id="__span-5-23"><a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a><span class="k">if</span> <span class="p">(</span><span class="nv">$IsOOBEComplete</span> <span class="o">-eq</span> <span class="s1">'1'</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nv">$true</span> <span class="p">}</span>
+</span><span id="__span-5-24"><a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a><span class="k">else</span> <span class="p">{</span> <span class="k">return</span> <span class="nv">$false</span> <span class="p">}</span>
+</span></code></pre></div>
+</details>
+<h4 id="additional-requirement-rule-2-optional">Additional Requirement Rule # 2 (Optional)<a class="headerlink" href="#additional-requirement-rule-2-optional" title="Permanent link">#</a></h4>
+<p>This rule checks the PasswordState value in the Lenovo_BiosPasswordSettings WMI class. If no password is set (value = 0), the requirement fails. The app will appear in Company Portal but will be greyed out to install if the assignment is set as available.</p>
+<ul>
+<li><strong>Rule type:</strong> Script</li>
+<li><strong>Script:</strong> (save/add the script below.)</li>
+<li><strong>Run script as 32-bit process on 64-bit clients:</strong> No</li>
+<li><strong>Return type:</strong> Boolean</li>
+<li><strong>Operator:</strong> Equals → <strong>Yes</strong></li>
+</ul>
+<details class="example">
+<summary>Requirement Rule Script #2</summary>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nv">$namespace</span> <span class="p">=</span> <span class="s2">"root\wmi"</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nv">$class</span> <span class="p">=</span> <span class="s2">"Lenovo_BiosPasswordSettings"</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="nv">$value</span> <span class="p">=</span> <span class="p">(</span><span class="nb">Get-CimInstance</span> <span class="n">-Namespace</span> <span class="nv">$namespace</span> <span class="n">-ClassName</span> <span class="nv">$class</span> <span class="n">-ErrorAction</span> <span class="n">SilentlyContinue</span><span class="p">).</span><span class="n">PasswordState</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="k">if</span> <span class="p">(</span><span class="nv">$value</span> <span class="o">-ne</span> <span class="n">0</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nv">$true</span> <span class="p">}</span> <span class="c"># Password is set</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="k">else</span> <span class="p">{</span> <span class="k">return</span> <span class="nv">$false</span> <span class="p">}</span> <span class="c"># No password set</span>
+</span></code></pre></div>
+</details>
+<h3 id="detection-rules">Detection Rules<a class="headerlink" href="#detection-rules" title="Permanent link">#</a></h3>
+<p>Add a <strong>custom detection script</strong> for the rule</p>
+<details class="example">
+<summary>Detection Script</summary>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c"># Define the path where the log file is located</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nv">$tbctPath</span> <span class="p">=</span> <span class="nb">Join-Path</span> <span class="n">-Path</span> <span class="nv">$env:ProgramData</span> <span class="n">-ChildPath</span> <span class="s2">"Lenovo\ThinkBiosConfig"</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c"># Find the latest log file (*.log or *.txt) in the Lenovo ThinkBiosConfig directory</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="nv">$logFile</span> <span class="p">=</span> <span class="nb">Get-ChildItem</span> <span class="n">-Path</span> <span class="nv">$tbctPath</span> <span class="n">-Filter</span> <span class="s2">"*.log"</span> <span class="n">-Recurse</span> <span class="n">-ErrorAction</span> <span class="n">SilentlyContinue</span> <span class="p">|</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>    <span class="nb">Sort-Object</span> <span class="n">-Property</span> <span class="n">LastWriteTime</span> <span class="n">-Descending</span> <span class="p">|</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>    <span class="nb">Select-Object</span> <span class="n">-Last</span> <span class="n">1</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="k">if</span> <span class="p">(</span><span class="nv">$logFile</span><span class="p">)</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="p">{</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>    <span class="c"># Read the log file content and isolate the last run block</span>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>    <span class="nv">$logContent</span> <span class="p">=</span> <span class="nb">Get-Content</span> <span class="n">-Path</span> <span class="nv">$logFile</span><span class="p">.</span><span class="n">FullName</span>
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>    <span class="nv">$lastBlockStart</span> <span class="p">=</span> <span class="p">(</span><span class="nv">$logContent</span> <span class="p">|</span> <span class="nb">Select-String</span> <span class="n">-SimpleMatch</span> <span class="n">-Pattern</span> <span class="s2">"Import-LnvPasswordChangeFile"</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="n">-Last</span> <span class="n">1</span><span class="p">).</span><span class="n">LineNumber</span>
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>    <span class="k">if</span> <span class="p">(</span><span class="nv">$lastBlockStart</span><span class="p">)</span> <span class="p">{</span> <span class="nv">$logContent</span> <span class="p">=</span> <span class="nv">$logContent</span><span class="p">[(</span><span class="nv">$lastBlockStart</span><span class="p">)..(</span><span class="nv">$logContent</span><span class="p">.</span><span class="n">Count</span> <span class="p">-</span> <span class="n">1</span><span class="p">)]</span> <span class="p">}</span>
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>
+</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>    <span class="c"># Define the expected success messages for each step</span>
+</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>    <span class="nv">$expectedSuccesses</span> <span class="p">=</span> <span class="p">@(</span>
+</span><span id="__span-7-18"><a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>        <span class="s2">"Targeting password type: Success"</span><span class="p">,</span>
+</span><span id="__span-7-19"><a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a>        <span class="s2">"Setting current password: Success"</span><span class="p">,</span>
+</span><span id="__span-7-20"><a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a>        <span class="s2">"Setting new password: Success"</span><span class="p">,</span>
+</span><span id="__span-7-21"><a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a>        <span class="s2">"Authenticating: Success"</span><span class="p">,</span>
+</span><span id="__span-7-22"><a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a>        <span class="s2">"Committing change: Success"</span>
+</span><span id="__span-7-23"><a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a>    <span class="p">)</span>
+</span><span id="__span-7-24"><a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a>
+</span><span id="__span-7-25"><a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a>    <span class="c"># Check if all expected success messages are present in the log</span>
+</span><span id="__span-7-26"><a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a>    <span class="nv">$missing</span> <span class="p">=</span> <span class="p">@()</span>
+</span><span id="__span-7-27"><a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a>    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$success</span> <span class="k">in</span> <span class="nv">$expectedSuccesses</span><span class="p">)</span>
+</span><span id="__span-7-28"><a id="__codelineno-7-28" name="__codelineno-7-28" href="#__codelineno-7-28"></a>    <span class="p">{</span>
+</span><span id="__span-7-29"><a id="__codelineno-7-29" name="__codelineno-7-29" href="#__codelineno-7-29"></a>        <span class="k">if</span> <span class="p">(</span><span class="o">-not</span> <span class="p">(</span><span class="nv">$logContent</span> <span class="p">|</span> <span class="nb">Select-String</span> <span class="n">-SimpleMatch</span> <span class="n">-Pattern</span> <span class="nv">$success</span><span class="p">))</span>
+</span><span id="__span-7-30"><a id="__codelineno-7-30" name="__codelineno-7-30" href="#__codelineno-7-30"></a>        <span class="p">{</span>
+</span><span id="__span-7-31"><a id="__codelineno-7-31" name="__codelineno-7-31" href="#__codelineno-7-31"></a>            <span class="nv">$missing</span> <span class="p">+=</span> <span class="nv">$success</span>
+</span><span id="__span-7-32"><a id="__codelineno-7-32" name="__codelineno-7-32" href="#__codelineno-7-32"></a>        <span class="p">}</span>
+</span><span id="__span-7-33"><a id="__codelineno-7-33" name="__codelineno-7-33" href="#__codelineno-7-33"></a>    <span class="p">}</span>
+</span><span id="__span-7-34"><a id="__codelineno-7-34" name="__codelineno-7-34" href="#__codelineno-7-34"></a>
+</span><span id="__span-7-35"><a id="__codelineno-7-35" name="__codelineno-7-35" href="#__codelineno-7-35"></a>    <span class="k">if</span> <span class="p">(</span><span class="nv">$missing</span><span class="p">.</span><span class="n">Count</span> <span class="o">-eq</span> <span class="n">0</span><span class="p">)</span>
+</span><span id="__span-7-36"><a id="__codelineno-7-36" name="__codelineno-7-36" href="#__codelineno-7-36"></a>    <span class="p">{</span>
+</span><span id="__span-7-37"><a id="__codelineno-7-37" name="__codelineno-7-37" href="#__codelineno-7-37"></a>        <span class="nb">Write-Output</span> <span class="s2">"Supervisor Password change detected as successful."</span>
+</span><span id="__span-7-38"><a id="__codelineno-7-38" name="__codelineno-7-38" href="#__codelineno-7-38"></a>        <span class="n">exit</span> <span class="n">0</span>  <span class="c"># Detection successful</span>
+</span><span id="__span-7-39"><a id="__codelineno-7-39" name="__codelineno-7-39" href="#__codelineno-7-39"></a>    <span class="p">}</span>
+</span><span id="__span-7-40"><a id="__codelineno-7-40" name="__codelineno-7-40" href="#__codelineno-7-40"></a>    <span class="k">else</span>
+</span><span id="__span-7-41"><a id="__codelineno-7-41" name="__codelineno-7-41" href="#__codelineno-7-41"></a>    <span class="p">{</span>
+</span><span id="__span-7-42"><a id="__codelineno-7-42" name="__codelineno-7-42" href="#__codelineno-7-42"></a>        <span class="nb">Write-Output</span> <span class="s2">"Supervisor Password change not successful. Missing expected entries:"</span>
+</span><span id="__span-7-43"><a id="__codelineno-7-43" name="__codelineno-7-43" href="#__codelineno-7-43"></a>        <span class="nv">$missing</span> <span class="p">|</span> <span class="k">ForEach</span><span class="n">-Object</span> <span class="p">{</span> <span class="nb">Write-Output</span> <span class="s2">" - $_"</span> <span class="p">}</span>
+</span><span id="__span-7-44"><a id="__codelineno-7-44" name="__codelineno-7-44" href="#__codelineno-7-44"></a>        <span class="n">exit</span> <span class="n">1</span>  <span class="c"># Not detected</span>
+</span><span id="__span-7-45"><a id="__codelineno-7-45" name="__codelineno-7-45" href="#__codelineno-7-45"></a>    <span class="p">}</span>
+</span><span id="__span-7-46"><a id="__codelineno-7-46" name="__codelineno-7-46" href="#__codelineno-7-46"></a><span class="p">}</span>
+</span><span id="__span-7-47"><a id="__codelineno-7-47" name="__codelineno-7-47" href="#__codelineno-7-47"></a><span class="k">else</span>
+</span><span id="__span-7-48"><a id="__codelineno-7-48" name="__codelineno-7-48" href="#__codelineno-7-48"></a><span class="p">{</span>
+</span><span id="__span-7-49"><a id="__codelineno-7-49" name="__codelineno-7-49" href="#__codelineno-7-49"></a>    <span class="nb">Write-Output</span> <span class="s2">"Log file not found."</span>
+</span><span id="__span-7-50"><a id="__codelineno-7-50" name="__codelineno-7-50" href="#__codelineno-7-50"></a>    <span class="n">exit</span> <span class="n">1</span>  <span class="c"># Not detected</span>
+</span><span id="__span-7-51"><a id="__codelineno-7-51" name="__codelineno-7-51" href="#__codelineno-7-51"></a><span class="p">}</span>
+</span></code></pre></div>
+</details>
+<h3 id="assignment">Assignment<a class="headerlink" href="#assignment" title="Permanent link">#</a></h3>
+<p>No dependencies or supersedence required — assign the app to a device group to complete the deployment. Ideally, in an Autopilot pre-provisioned deployment, this would be added as a blocking app during ESP.</p>
+<h2 id="results">Results<a class="headerlink" href="#results" title="Permanent link">#</a></h2>
+<p>When complete, you should have 2 logs under <strong>C:\ProgramData\Lenovo\ThinkBiosConfig\Logs</strong>. Example output from each:</p>
+<ul>
+<li>PasswordChange.log</li>
+</ul>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>2026-04-20 11:12:46 [INFO]: === LENOVO PASSWORD CHANGE CONFIG INSTALL STARTED ===
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>2026-04-20 11:12:48 [SUCCESS]: Loaded module: 1.0.3
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>2026-04-20 11:12:48 [INFO]: Found password change file: C:\Windows\IMECache\32c3882a-fc0e-4ea5-becd-719f5376fe08_1\svp.ini
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>2026-04-20 11:13:04 [SUCCESS]: Password change configuration imported successfully.
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>2026-04-20 11:13:04 [SUCCESS]: === PASSWORD CHANGE CONFIG INSTALL COMPLETE (Exit 3010) ===
+</span></code></pre></div>
+<ul>
+<li>TBC_Log.log (TBCT v2 generated)</li>
+</ul>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>Timestamp             Username       Message
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>2026-04-20 09:40:08 - &lt;ComputerName&gt; - Import-LnvPasswordChangeFile
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>2026-04-20 09:40:10 - &lt;ComputerName&gt; - Targeting password type: Success
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>Setting current password: Success
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>Setting new password: Success
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>Authenticating: Success
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>Committing change: Success
+</span></code></pre></div>
+<p>The detection script will make sure each line from the TBC_Log matches a <strong>Success</strong> to confirm the password change. If there's an <strong>Access Denied</strong> or <strong>Invalid parameter</strong> anywhere, the status details for the Win32 app will show not detected in Intune.</p>
+<h2 id="final-notes">Final Notes<a class="headerlink" href="#final-notes" title="Permanent link">#</a></h2>
+<ul>
+<li><strong>Reboots:</strong> A supervisor password change requires a reboot to take effect. The install command exits with code <code>3010</code>, which Intune will interpret as a soft reboot. Ensure <strong>Device restart behavior</strong> is set accordingly.</li>
+<li><strong>Retry limit:</strong> If the wrong passphrase/secret key is supplied and the device fails consecutive install attempts, the BIOS may display a "Security password retry count exceeded" prompt on the next reboot.</li>
+<li><strong>Testing:</strong> Validate against a single device in a lab environment before broad deployment.</li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 <a href="https://blog.lenovocdrt.com" target="_blank" rel="noopener">Lenovo Commercial Deployment Readiness Team</a><br><a href="#__consent" style="text-decoration:underline;">Change cookie settings</a>
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+      <div class="md-consent" data-md-component="consent" id="__consent" hidden="">
+        <div class="md-consent__overlay"></div>
+        <aside class="md-consent__inner">
+          <form class="md-consent__form md-grid md-typeset" name="consent">
+            
+
+
+
+  
+
+<h4>Cookie consent</h4>
+<p>We use cookies to recognize your repeated visits and preferences such as light and dark mode, as well as to measure anonymous usage data to determine effectiveness of our documentation and whether users find what they're searching for. With your consent, you're helping us to make our documentation better.</p>
+<input class="md-toggle" type="checkbox" id="__settings" checked="">
+<div class="md-consent__settings">
+  <ul class="task-list">
+    
+    
+      
+        
+  
+  
+    
+    
+  
+  <li class="task-list-item">
+    <label class="task-list-control">
+      <input type="checkbox" name="analytics" checked="">
+      <span class="task-list-indicator"></span>
+      Google Analytics
+    </label>
+  </li>
+
+      
+    
+    
+      
+    
+    
+  </ul>
+</div>
+<div class="md-consent__controls">
+  
+    
+      <button class="md-button md-button--primary">Accept</button>
+    
+    
+    
+  
+    
+    
+      <button type="reset" class="md-button md-button--primary">Reject</button>
+    
+    
+  
+</div>
+          </form>
+        </aside>
+      </div>
+      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout((function(){document.querySelector("[data-md-component=consent]").hidden=!1}),250);var form=document.forms.consent;for(var action of["submit","reset"])form.addEventListener(action,(function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map((function(e){return[e,!0]})))),location.hash="",location.reload()}))</script>
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tracking", "navigation.instant", "navigation.instant.progress", "navigation.expand", "navigation.path", "navigation.sections", "toc.integrate", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy", "content.code.select"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../js/open_in_new_tab.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>

@@ -1,0 +1,1186 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Ideas for managing Lenovo devices in the corporate environment.">
+      
+      
+      
+        <link rel="canonical" href="https://blog.lenovocdrt.com/introducing-commercial-vantage-policy-manager-for-intune/">
+      
+      
+        <link rel="prev" href="../community-tool-spotlight-powerbios--wmi-bios-utility-for-lenovo/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../img/fav/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Introducing: Commercial Vantage Policy Manager for Intune - ThinkDeploy Blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Work+Sans:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Work Sans";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-288025816"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-288025816",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-288025816",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>if("undefined"!=typeof __md_analytics){var consent=__md_get("__consent");consent&&consent.analytics&&__md_analytics()}</script>
+  
+
+    
+    
+  <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="light-blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#why-an-alternative" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="ThinkDeploy Blog" class="md-header__button md-logo" aria-label="ThinkDeploy Blog" data-md-component="logo">
+      
+  <img src="../img/CDRT-REV-Red_s.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ThinkDeploy Blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Introducing: Commercial Vantage Policy Manager for Intune
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="light-blue" aria-label="Switch to dark mode" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="blue-grey" aria-label="Switch to light mode" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required="">
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix="">
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden="">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="ThinkDeploy Blog" class="md-nav__button md-logo" aria-label="ThinkDeploy Blog" data-md-component="logo">
+      
+  <img src="../img/CDRT-REV-Red_s.png" alt="logo">
+
+    </a>
+    ThinkDeploy Blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix="">
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../feed.xml" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RSS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3">
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Archive
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Archive
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2026/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2026
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2025/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2025
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2024/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2024
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2023/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2023
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2022/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2022
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2021/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2021
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2020/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2020
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2019/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2019
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2018/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2018
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2017/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2017
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href=".." class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="../img/fav/avatar.png" alt="Philip Jorgensen">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          Philip Jorgensen
+                        
+                      </strong>
+                      <br>
+                      Deployment Expert
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"></path></svg>
+                        <time datetime="2026-05-02 00:00:00+00:00" class="md-ellipsis">May 2, 2026</time>
+                      </div>
+                    </li>
+                    
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"></path></svg>
+                          <span class="md-ellipsis">
+                            
+                              5 min read
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+            
+          </nav>
+          
+            
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#why-an-alternative" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why an alternative?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-the-tool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Getting the tool
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-policy-catalog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The policy catalog
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Workflow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Workflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-sign-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Sign in
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-apply-the-recommended-baseline-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Apply the Recommended Baseline (optional)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-browse-and-configure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Browse and configure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-create-the-intune-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Create the Intune profile
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logging
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#theming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Theming
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+
+
+
+
+  <h1>Introducing: Commercial Vantage Policy Manager for Intune</h1>
+
+<p>Commercial Vantage ships ADMX/ADML templates for configuring its policies, and the documented path for Intune is to either ingest those templates and configure each setting or create a custom template profile and add each individual policy as an OMA-URI setting. That works, but can be tedious. <strong>Commercial Vantage Policy Manager</strong> is a WPF-based PowerShell GUI that takes the same policies and deploys them as a single Custom OMA-URI profile through the Microsoft Graph API — no template ingestion required.</p>
+<!-- more -->
+
+<video controls="" width="100%" preload="metadata">
+  <source src="https://cdrt.github.io/mk_blog/img/2026/intro_cv_policy_manager/CVPolicyManager.mp4" type="video/mp4">
+</video>
+
+<h2 id="why-an-alternative">Why an alternative?<a class="headerlink" href="#why-an-alternative" title="Permanent link">#</a></h2>
+<p>Both approaches end up writing the same policy CSPs to the device. The difference is operational:</p>
+<ul>
+<li><strong>ADMX ingestion</strong> — import the templates, then configure each policy individually in the Imported Administrative templates profile. If any new policies are introduced, you'll need to <a href="https://learn.microsoft.com/intune/device-configuration/settings-catalog/import-custom-admx-templates#replace-existing-admx-files">replace the ADMX files</a> that were imported.</li>
+<li><strong>Custom OMA-URI</strong> — one profile holds every configured policy as an explicit OMA-URI string. Easy to review, easy to export, easy to recreate in another tenant.</li>
+</ul>
+<p>The Policy Manager builds the OMA-URI profile for you so you don't have to hand-author the URIs or copy/paste each value individually from our <a href="https://docs.lenovocdrt.com/guides/lcv/configuration/#policies">docs</a>.</p>
+<h2 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">#</a></h2>
+<ul>
+<li>PowerShell <strong>5.1</strong> or higher</li>
+<li>.NET Framework <strong>4.7.2</strong> or later (shipped with Windows 10/11)</li>
+<li>
+<p>The <code>Microsoft.Graph.Authentication</code> module:</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">Install-Module</span> <span class="n">Microsoft</span><span class="p">.</span><span class="n">Graph</span><span class="p">.</span><span class="n">Authentication</span> <span class="n">-Scope</span> <span class="n">CurrentUser</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>Internet access to fetch the policy catalog (a local copy of <code>cv-policies.json</code> works as a fallback)</p>
+</li>
+<li>An Entra ID account with permission to create Intune device configuration profiles</li>
+</ul>
+<h2 id="getting-the-tool">Getting the tool<a class="headerlink" href="#getting-the-tool" title="Permanent link">#</a></h2>
+<p>Install the tool from the PowerShell gallery</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">Install-Script</span> <span class="nb">Invoke-CVPolicyManger</span>
+</span></code></pre></div>
+<h2 id="the-policy-catalog">The policy catalog<a class="headerlink" href="#the-policy-catalog" title="Permanent link">#</a></h2>
+<p>The list of policies, their OMA-URIs, data elements, and tree structure is <strong>not</strong> hardcoded in the script. It lives in <code>cv-policies.json</code> in the <a href="https://github.com/CDRT/api">CDRT/api</a> repository. On startup the tool fetches the latest copy from:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>https://raw.githubusercontent.com/CDRT/api/main/cv-policies.json
+</span></code></pre></div>
+<h2 id="workflow">Workflow<a class="headerlink" href="#workflow" title="Permanent link">#</a></h2>
+<h3 id="1-sign-in">1. Sign in<a class="headerlink" href="#1-sign-in" title="Permanent link">#</a></h3>
+<p>Click <strong>Sign In</strong> in the header to authenticate to Microsoft Graph. Choose either interactive, app registration with certificate, or app registration with secret.</p>
+<p>The tool uses the standard interactive flow exposed by <code>Microsoft.Graph.Authentication</code> and requests the <code>DeviceManagementConfiguration.ReadWrite.All</code> scope.</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="https://cdrt.github.io/mk_blog/img/2026/intro_cv_policy_manager/image2.jpg" data-desc-position="bottom"><img alt="Sign In" src="https://cdrt.github.io/mk_blog/img/2026/intro_cv_policy_manager/image2.jpg"></a></p>
+<h3 id="2-apply-the-recommended-baseline-optional">2. Apply the Recommended Baseline (optional)<a class="headerlink" href="#2-apply-the-recommended-baseline-optional" title="Permanent link">#</a></h3>
+<p>The left navigation has a <strong>Baselines</strong> section with a <em>Recommended Baseline</em> entry. Selecting it shows the policies that make up the baseline and an <strong>Apply Baseline</strong> button that enables all of them in a single click.</p>
+<p>The recommended baseline policies are:</p>
+<table>
+<thead>
+<tr>
+<th>Policy</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Accept EULA</td>
+<td>Suppresses the EULA prompt on first launch</td>
+</tr>
+<tr>
+<td>Write Warranty to WMI</td>
+<td>Exposes warranty data to WMI for inventory tools</td>
+</tr>
+<tr>
+<td>Write Battery to WMI</td>
+<td>Exposes battery health to WMI</td>
+</tr>
+<tr>
+<td>Turn off Metrics Collection</td>
+<td>Disables telemetry</td>
+</tr>
+<tr>
+<td>Turn off Network</td>
+<td>Disables the Network feature in Vantage</td>
+</tr>
+<tr>
+<td>Turn off Sustainability</td>
+<td>Hides the Sustainability page</td>
+</tr>
+<tr>
+<td>Turn off Give Feedback</td>
+<td>Hides the Give Feedback option</td>
+</tr>
+<tr>
+<td>Turn off Run Once Task</td>
+<td>Suppresses first-run popups</td>
+</tr>
+</tbody>
+</table>
+<p>These are the settings most enterprise environments end up configuring anyway, bundled so you don't have to click through each one.</p>
+<h3 id="3-browse-and-configure">3. Browse and configure<a class="headerlink" href="#3-browse-and-configure" title="Permanent link">#</a></h3>
+<p>The <strong>Policies</strong> tree mirrors the category structure from the catalog. Selecting a category renders a card for every policy in that section. Each card has three states:</p>
+<ul>
+<li><strong>Not Configured</strong> — policy is omitted from the resulting profile</li>
+<li><strong>Enabled</strong> — policy is enabled; any data elements (text fields, numeric inputs, checkboxes, dropdowns) become editable</li>
+<li><strong>Disabled</strong> — policy is explicitly set to disabled</li>
+</ul>
+<p>Numeric data elements honor the <code>min</code>/<code>max</code> values from the catalog, so out-of-range values are blocked at input time rather than failing on the device.</p>
+<p>The footer shows a running count of how many policies are currently configured.</p>
+<h3 id="4-create-the-intune-profile">4. Create the Intune profile<a class="headerlink" href="#4-create-the-intune-profile" title="Permanent link">#</a></h3>
+<p>Once the policies are set, edit the profile name at the bottom of the window if you want to override the default and click <strong>Create Profile</strong>.</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="https://cdrt.github.io/mk_blog/img/2026/intro_cv_policy_manager/image4.jpg" data-desc-position="bottom"><img alt="Create Profile" src="https://cdrt.github.io/mk_blog/img/2026/intro_cv_policy_manager/image4.jpg"></a></p>
+<p>The default name follows a convention designed for clean sorting in the Intune console:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Win - Custom - Lenovo Commercial Vantage - D - v1.0
+</span></code></pre></div>
+<ul>
+<li><strong>Win</strong> — target platform</li>
+<li><strong>Custom</strong> — profile type (Custom OMA-URI Template)</li>
+<li><strong>Lenovo Commercial Vantage</strong> — application area</li>
+<li><strong>D</strong> — assignment scope (D = Devices, U = Users)</li>
+<li><strong>v1.0</strong> — version</li>
+</ul>
+<p>The Description field is intentionally left blank — all metadata is encoded in the name itself, since descriptions are easy to overlook and tend to drift out of date.</p>
+<p>The tool POSTs a <code>windows10CustomConfiguration</code> to Graph with one OMA setting per configured policy. Not Configured policies are simply omitted from the payload. After creation the profile is visible in the Intune admin center under <strong>Devices → Configuration</strong>, ready for assignment.</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="https://cdrt.github.io/mk_blog/img/2026/intro_cv_policy_manager/image5.jpg" data-desc-position="bottom"><img alt="Intune Profile" src="https://cdrt.github.io/mk_blog/img/2026/intro_cv_policy_manager/image5.jpg"></a></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The tool creates the profile but does not assign it. Assignment is left to the admin so it doesn't accidentally roll out to every device in the tenant.</p>
+</div>
+<h2 id="logging">Logging<a class="headerlink" href="#logging" title="Permanent link">#</a></h2>
+<p>Every session writes to a date-stamped log file:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>%ProgramData%\Lenovo\CVPolicyManager\CVPolicyManager_YYYYMMDD.log
+</span></code></pre></div>
+<p>The same output streams to the <strong>Log</strong> panel inside the GUI (toggle it from the header). Log levels are <code>INFO</code>, <code>WARN</code>, <code>ERROR</code>, and <code>SUCCESS</code> — useful for confirming the catalog source, the Graph authentication result, and any failures during profile creation.</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="https://cdrt.github.io/mk_blog/img/2026/intro_cv_policy_manager/image6.jpg" data-desc-position="bottom"><img alt="Logging" src="https://cdrt.github.io/mk_blog/img/2026/intro_cv_policy_manager/image6.jpg"></a></p>
+<h2 id="theming">Theming<a class="headerlink" href="#theming" title="Permanent link">#</a></h2>
+<p>The window picks up the OS-level light/dark preference on launch by reading <code>HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize\AppsUseLightTheme</code>. The sun/moon button in the header toggles between themes if you want to override it for the current session.</p>
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">#</a></h2>
+<p>If you manage Commercial Vantage with Intune and you don't want to maintain ingested ADMX templates, the Policy Manager is a straightforward alternative:</p>
+<ul>
+<li>Fetches the policy catalog from <a href="https://github.com/CDRT/api">CDRT/api</a>, so it stays current as policies are added</li>
+<li>Builds a single Custom OMA-URI profile via Microsoft Graph</li>
+<li>One-click <strong>Recommended Baseline</strong> for typical enterprise settings</li>
+<li>Validates data element types and ranges before deployment</li>
+<li>Logs everything to <code>%ProgramData%\Lenovo\CVPolicyManager</code></li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 <a href="https://blog.lenovocdrt.com" target="_blank" rel="noopener">Lenovo Commercial Deployment Readiness Team</a><br><a href="#__consent" style="text-decoration:underline;">Change cookie settings</a>
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+      <div class="md-consent" data-md-component="consent" id="__consent" hidden="">
+        <div class="md-consent__overlay"></div>
+        <aside class="md-consent__inner">
+          <form class="md-consent__form md-grid md-typeset" name="consent">
+            
+
+
+
+  
+
+<h4>Cookie consent</h4>
+<p>We use cookies to recognize your repeated visits and preferences such as light and dark mode, as well as to measure anonymous usage data to determine effectiveness of our documentation and whether users find what they're searching for. With your consent, you're helping us to make our documentation better.</p>
+<input class="md-toggle" type="checkbox" id="__settings" checked="">
+<div class="md-consent__settings">
+  <ul class="task-list">
+    
+    
+      
+        
+  
+  
+    
+    
+  
+  <li class="task-list-item">
+    <label class="task-list-control">
+      <input type="checkbox" name="analytics" checked="">
+      <span class="task-list-indicator"></span>
+      Google Analytics
+    </label>
+  </li>
+
+      
+    
+    
+      
+    
+    
+  </ul>
+</div>
+<div class="md-consent__controls">
+  
+    
+      <button class="md-button md-button--primary">Accept</button>
+    
+    
+    
+  
+    
+    
+      <button type="reset" class="md-button md-button--primary">Reject</button>
+    
+    
+  
+</div>
+          </form>
+        </aside>
+      </div>
+      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout((function(){document.querySelector("[data-md-component=consent]").hidden=!1}),250);var form=document.forms.consent;for(var action of["submit","reset"])form.addEventListener(action,(function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map((function(e){return[e,!0]})))),location.hash="",location.reload()}))</script>
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tracking", "navigation.instant", "navigation.instant.progress", "navigation.expand", "navigation.path", "navigation.sections", "toc.integrate", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy", "content.code.select"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../js/open_in_new_tab.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>

@@ -34,8 +34,43 @@ The Policy Manager builds the OMA-URI profile for you so you don't have to hand-
     Install-Module Microsoft.Graph.Authentication -Scope CurrentUser
     ```
 
-- Internet access to fetch the policy catalog (a local copy of `cv-policies.json` works as a fallback)
+- Internet access to fetch the policy catalog
 - An Entra ID account with permission to create Intune device configuration profiles
+
+### ADMX Ingestion (OMA-URI)
+
+In a future version of the tool, the ADMX ingestion will automatically be included in the profile. Until then, you'll need to manually add it following the steps below:
+
+!!! info "CSP Guide Reference"
+    [https://learn.microsoft.com/windows/client-management/mdm/policy-configuration-service-provider]()
+
+Sign in to the Microsoft Intune [admin center](https://intune.microsoft.com)
+
+Navigate to **Devices** > **Windows** > **Configuration Profiles**. Click **Create**
+
+- Select **New Policy** > **Windows 10 and later** for the platform.
+- Select **Templates** for **Profile Type** and choose **Custom** from the list and click **Create**
+
+Enter the required information for the new profile, for example:
+
+- **Name**: Lenovo Commercial Vantage ADMX
+
+- **Description**: (Optional)
+
+On the **Configuration Settings** screen, click **Add** and enter the following:
+
+- **Name**: Commercial Vantage ADMX Ingest
+
+- **Description**: (Optional)
+
+- **OMA-URI**: ./Device/Vendor/MSFT/Policy/ConfigOperations/ADMXInstall/CommercialVantage/Policy/CommercialVantage
+
+- **Data Type**: String
+
+- **Value**: Copy the contents of the Commercial Vantage ADMX file into this field
+
+Assign this profile to the same group you intend on deploying the Commercial Vantage policies to.
+
 
 ## Getting the tool
 

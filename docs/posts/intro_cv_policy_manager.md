@@ -39,10 +39,14 @@ The Policy Manager builds the OMA-URI profile for you so you don't have to hand-
 
 ### ADMX Ingestion (OMA-URI)
 
-In a future version of the tool, the ADMX ingestion will automatically be included in the profile. Until then, you'll need to manually add it following the steps below:
+In version 1.1.0 of the tool, a **Create ADMX Profile** button will create a separate profile for ADMX ingestion.
+
+![CreateADMX](https://cdrt.github.io/mk_blog/img/2026/intro_cv_policy_manager/image7.jpg)
+
+Alternatively, you can perform the steps below:
 
 !!! info "CSP Guide Reference"
-    [https://learn.microsoft.com/windows/client-management/mdm/policy-configuration-service-provider]()
+    [https://learn.microsoft.com/windows/client-management/mdm/policy-configuration-service-provider](https://learn.microsoft.com/windows/client-management/mdm/policy-configuration-service-provider)
 
 Sign in to the Microsoft Intune [admin center](https://intune.microsoft.com)
 

@@ -77,7 +77,7 @@ Assign this profile to the same group you intend on deploying the Commercial Van
 Install the tool from the PowerShell gallery
 
 ```powershell
-Install-Script Invoke-CVPolicyManger
+Install-Script Invoke-LnvCVPolicyManger
 ```
 
 ## The policy catalog

@@ -143,7 +143,7 @@ The **DOWNLOAD METHOD** setting in Settings (or `Set-LnvRMPreference -Name 'Down
 The complete cmdlet reference is available at [docs.lenovocdrt.com](https://docs.lenovocdrt.com/guides/tvrm/module_reference).
 
 | Cmdlet | Purpose |
-|---|---|
+| --- | --- |
 | `New-LnvRMRepository` | Create a new local update repository |
 | `Get-LnvRMRepository` | List registered repositories |
 | `Set-LnvRMRepository` | Modify settings or switch the active repository |

@@ -20,6 +20,12 @@
 			</item>
 		-->
 		<item>
+			<title>Current Drivers, Firmware, and BIOS During Autopilot Pre-Provisioning With Intune and LCU</title>
+			<description>Replacing the Thin Installer method with an Intune Win32 app built around the Lenovo.Client.Update module to install drivers, firmware, and BIOS during Autopilot pre-provisioning.</description>
+			<pubDate>Mon, 08 June 2026 13:00:00 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/autopilot-pre-provisioning-current-drivers-firmware-bios-lcu/</link>
+			</item>
+		<item>
 			<title>Introducing ThinkVantage Repository Manager</title>
 			<description>An alternative to Update Retriever for managing local repositories with better automation capabilities.</description>
 			<pubDate>Tue, 02 June 2026 13:21:00 EST</pubDate>

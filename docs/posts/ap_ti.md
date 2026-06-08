@@ -9,6 +9,9 @@ categories:
 title: Autopilot + Thin Installer = Current Drivers/BIOS/Firmware
 ---
 
+!!! warning "There's a newer approach"
+    **Thin Installer is scheduled to be sunset in 2027.** This method still works for now, but it has been superseded by an [Intune Win32 app built around the Lenovo.Client.Update (LCU) module](https://blog.lenovocdrt.com/autopilot-pre-provisioning-current-drivers-firmware-bios-lcu/). The LCU approach is the current, supported way to drive driver, firmware, and BIOS updates during Autopilot pre-provisioning. Start there for new deployments.
+
 Revisiting a solution from [2020](https://blog.lenovocdrt.com/autopilot--system-update--latest-drivers) that leverages Lenovo System Update to update drivers during Autopilot which provided a way to ensure devices were up-to-date before handing off to end users.
 
 Fast forward to this 2023 Configuration Manager [OSD solution](https://blog.lenovocdrt.com/creating-local-repository-using-powershell) that will update drivers, BIOS, and firmware got me thinking: How awesome would it be to migrate this to Autopilot world and **really** provide users with completely up-to-date devices right out of the gate?

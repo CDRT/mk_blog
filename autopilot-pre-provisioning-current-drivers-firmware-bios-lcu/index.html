@@ -1,0 +1,1334 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Ideas for managing Lenovo devices in the corporate environment.">
+      
+      
+      
+        <link rel="canonical" href="https://blog.lenovocdrt.com/autopilot-pre-provisioning-current-drivers-firmware-bios-lcu/">
+      
+      
+        <link rel="prev" href="../introducing-thinkvantage-repository-manager/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../img/fav/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Current Drivers, Firmware, and BIOS During Autopilot Pre-Provisioning With Intune and LCU - ThinkDeploy Blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Work+Sans:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Work Sans";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-8K4B4NPHZB"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-8K4B4NPHZB",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-8K4B4NPHZB",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>if("undefined"!=typeof __md_analytics){var consent=__md_get("__consent");consent&&consent.analytics&&__md_analytics()}</script>
+  
+
+    
+    
+  <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="light-blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#why-a-win32-app" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="ThinkDeploy Blog" class="md-header__button md-logo" aria-label="ThinkDeploy Blog" data-md-component="logo">
+      
+  <img src="../img/CDRT-REV-Red_s.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ThinkDeploy Blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Current Drivers, Firmware, and BIOS During Autopilot Pre-Provisioning With Intune and LCU
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="light-blue" aria-label="Switch to dark mode" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="blue-grey" aria-label="Switch to light mode" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required="">
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix="">
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden="">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="ThinkDeploy Blog" class="md-nav__button md-logo" aria-label="ThinkDeploy Blog" data-md-component="logo">
+      
+  <img src="../img/CDRT-REV-Red_s.png" alt="logo">
+
+    </a>
+    ThinkDeploy Blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix="">
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../feed.xml" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RSS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3">
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Archive
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Archive
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2026/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2026
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2025/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2025
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2024/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2024
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2023/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2023
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2022/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2022
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2021/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2021
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2020/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2020
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2019/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2019
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2018/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2018
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2017/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2017
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href=".." class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="../img/fav/avatar.png" alt="Philip Jorgensen">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          Philip Jorgensen
+                        
+                      </strong>
+                      <br>
+                      Deployment Expert
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"></path></svg>
+                        <time datetime="2026-06-08 00:00:00+00:00" class="md-ellipsis">June 8, 2026</time>
+                      </div>
+                    </li>
+                    
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"></path></svg>
+                          <span class="md-ellipsis">
+                            
+                              8 min read
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+            
+          </nav>
+          
+            
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#why-a-win32-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why a Win32 app
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-the-script-does" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the script does
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What the script does">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-multiple-passes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why multiple passes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bios-is-opt-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BIOS is opt-in
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exit-codes-and-reboots" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exit codes and reboots
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detection
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prepare-the-source-directory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prepare the source directory
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#packaging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Packaging
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Packaging">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-the-win32-app-in-intune" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Create the Win32 app in Intune
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#requirement-rule-run-only-during-oobeautopilot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirement rule: run only during OOBE/Autopilot
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deployment
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deployment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#assign-to-a-device-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assign to a device group
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dont-let-it-block-the-user-esp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Don't let it block the user ESP
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+
+
+
+
+  <h1>Current Drivers, Firmware, and BIOS During Autopilot Pre-Provisioning With Intune and LCU</h1>
+
+<p>This post replaces the earlier <a href="https://blog.lenovocdrt.com/autopilot--thin-installer--current-driversbiosfirmware/">Autopilot + Thin Installer</a> method. Thin Installer still works, but the <a href="https://docs.lenovocdrt.com/guides/lcu/">Lenovo.Client.Update</a> (LCU) PowerShell module is the current, supported way to drive updates from a script: it queries, downloads, and silently installs applicable driver, firmware, and BIOS updates for a Lenovo device, without the dependency of Thin Installer. Wrapping it in a script and packaging that as an Intune Win32 app lets you run the same update pass unattended — including during an Autopilot for pre-provisioned <a href="https://learn.microsoft.com/autopilot/pre-provision">deployment</a>. This post walks through a wrapper script built for exactly that, and the packaging and detection rules that make it behave inside Intune.</p>
+<!-- more -->
+
+<h2 id="why-a-win32-app">Why a Win32 app<a class="headerlink" href="#why-a-win32-app" title="Permanent link">#</a></h2>
+<p>LCU is published to the PowerShell Gallery, but calling <code>Install-Module</code> on a freshly imaged device during ESP is fragile — it depends on the NuGet package provider and PowerShellGet being present and able to bootstrap in SYSTEM context before the user reaches the desktop. Bundling the module inside the <code>.intunewin</code> sidesteps that: the module travels with the app, imports from a local path, and pins a known version.</p>
+<p>Running it as a Win32 app (rather than a platform script) also gets you the things ESP needs — a real exit code, a <code>3010</code> reboot signal, and a detection rule the ESP can track during pre-provisioning.</p>
+<h2 id="what-the-script-does">What the script does<a class="headerlink" href="#what-the-script-does" title="Permanent link">#</a></h2>
+<p>The wrapper (<a href="https://github.com/philjorgensen/Intune/blob/main/Autopilot/Lenovo-Client-Update/Invoke-LenovoUpdate.ps1"><code>Invoke-LenovoUpdate.ps1</code></a>) handles the operational details around LCU:</p>
+<ul>
+<li>Confirms the device is a Lenovo system via <code>Win32_ComputerSystem</code> and exits cleanly on anything else.</li>
+<li>Imports the LCU module shipped alongside the script, falling back to an installed copy.</li>
+<li>Queries, downloads, and installs applicable <strong>silent</strong> updates in repeated passes until none remain.</li>
+<li>Verifies each package's Lenovo digital signature before installing (the LCU default).</li>
+<li>Writes a transcript log under <code>C:\ProgramData\Lenovo\Lenovo.Client.Update\Logs</code>.</li>
+<li>Returns an Intune-aware exit code and writes a registry detection marker.</li>
+</ul>
+<h3 id="why-multiple-passes">Why multiple passes<a class="headerlink" href="#why-multiple-passes" title="Permanent link">#</a></h3>
+<p>Installing one update can make a further update applicable — a chipset or base driver can unlock a dependent package that wasn't offered on the first query. The script loops, re-querying after each round, until a round finds nothing (or it hits <code>MaxRounds</code>, default 3).</p>
+<div class="language-powershell highlight"><span class="filename">Invoke-LenovoUpdate.ps1</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>    <span class="k">for</span> <span class="p">(</span><span class="nv">$round</span> <span class="p">=</span> <span class="n">1</span><span class="p">;</span> <span class="nv">$round</span> <span class="o">-le</span> <span class="nv">$MaxRounds</span><span class="p">;</span> <span class="nv">$round</span><span class="p">++)</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="p">{</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>        <span class="nb">Write-LcuLog</span> <span class="s2">"Round $round of $MaxRounds : querying available updates..."</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        <span class="nv">$updates</span> <span class="p">=</span> <span class="p">@(</span><span class="nb">Get-LnvUpdate</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>                <span class="nv">$_</span><span class="p">.</span><span class="n">IsApplicable</span> <span class="o">-and</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>                <span class="o">-not</span> <span class="nv">$_</span><span class="p">.</span><span class="n">IsInstalled</span> <span class="o">-and</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>                <span class="nv">$_</span><span class="p">.</span><span class="n">Installer</span><span class="p">.</span><span class="n">Unattended</span> <span class="o">-and</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>                <span class="p">(</span><span class="nv">$IncludeBIOS</span> <span class="o">-or</span> <span class="o">-not</span> <span class="p">(</span><span class="nb">Test-LnvBiosUpdate</span> <span class="n">-Update</span> <span class="nv">$_</span><span class="p">))</span> <span class="o">-and</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>                <span class="o">-not</span> <span class="nv">$processed</span><span class="p">.</span><span class="n">Contains</span><span class="p">((</span><span class="s1">'{0}|{1}'</span> <span class="o">-f</span> <span class="nv">$_</span><span class="p">.</span><span class="n">ID</span><span class="p">,</span> <span class="nv">$_</span><span class="p">.</span><span class="n">Version</span><span class="p">))</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>            <span class="p">})</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>        <span class="nb">Write-LcuLog</span> <span class="s2">"</span><span class="p">$(</span><span class="nv">$updates</span><span class="p">.</span><span class="n">Count</span><span class="p">)</span><span class="s2"> new applicable, unattended update(s) found this round."</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>        <span class="k">if</span> <span class="p">(</span><span class="nv">$updates</span><span class="p">.</span><span class="n">Count</span> <span class="o">-eq</span> <span class="n">0</span><span class="p">)</span> <span class="p">{</span> <span class="k">break</span> <span class="p">}</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>        <span class="c"># Download everything for this round first, then install.</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>        <span class="nv">$updates</span> <span class="p">|</span> <span class="nb">Save-LnvUpdate</span> <span class="p">|</span> <span class="nb">Out-Null</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>    <span class="c"># ...install each, collecting results...</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>The filter is deliberately narrow: only packages that are applicable, not already installed, and flagged <code>Unattended</code>. Anything that would prompt or require interaction is skipped — there's no one at the keyboard during ESP.</p>
+<h3 id="bios-is-opt-in">BIOS is opt-in<a class="headerlink" href="#bios-is-opt-in" title="Permanent link">#</a></h3>
+<p>BIOS updates are excluded by default. Flashing the BIOS mid-Autopilot is risky: it needs AC power and a controlled reboot, neither of which you can guarantee on a device that just came out of the box. The <code>-IncludeBIOS</code> switch turns them on for targeted, AC-powered rollouts.</p>
+<p>Identifying a BIOS-class package isn't a single property check, because the catalog represents it two ways:</p>
+<table>
+<thead>
+<tr>
+<th>Model generation</th>
+<th><code>Type</code></th>
+<th>How it's matched</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Older</td>
+<td><code>BIOS</code></td>
+<td><code>Type</code> equals <code>BIOS</code></td>
+</tr>
+<tr>
+<td>Newer</td>
+<td><code>Firmware</code></td>
+<td>Title matches <code>BIOS</code>/<code>UEFI</code>/<code>System Firmware Update Utility</code>, or <code>RebootType</code> is <code>5</code></td>
+</tr>
+</tbody>
+</table>
+<p>Scoping the <code>RebootType 5</code> check to <code>Type 'Firmware'</code> keeps it from catching ordinary firmware (docks, Thunderbolt) or regular drivers. When a BIOS-class package is installed, the script passes <code>-SaveBIOSUpdateInfoToRegistry</code> so the pending action lands under <code>HKLM\SOFTWARE\LenovoUpdate\BIOSUpdate</code> for follow-up detection.</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="https://cdrt.github.io/mk_blog/img/2026/intune_lcu_driver_updates/image1.png" data-desc-position="bottom"><img alt="BIOS Registry Marker" src="https://cdrt.github.io/mk_blog/img/2026/intune_lcu_driver_updates/image1.png"></a></p>
+<h2 id="exit-codes-and-reboots">Exit codes and reboots<a class="headerlink" href="#exit-codes-and-reboots" title="Permanent link">#</a></h2>
+<p>After all rounds complete, the script tallies results and translates them to an exit code Intune understands:</p>
+<ul>
+<li><code>0</code> — success, no reboot needed.</li>
+<li><code>3010</code> — success, but at least one update reported <code>REBOOT_SUGGESTED</code>, <code>REBOOT_MANDATORY</code>, or <code>SHUTDOWN</code>. Intune (and the ESP) treats <code>3010</code> as a soft reboot and handles the restart.</li>
+<li><code>1</code> — a fatal error was caught; check the transcript.</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Configure the app's <strong>Device restart behavior</strong> as <em>Determine behavior based on return codes</em> so the <code>3010</code> is honored instead of being forced or suppressed.</p>
+</div>
+<h2 id="detection">Detection<a class="headerlink" href="#detection" title="Permanent link">#</a></h2>
+<p>On a successful run the script writes a marker to <code>HKLM\SOFTWARE\LenovoUpdate\DriverUpdate</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LastRun</code></td>
+<td>ISO 8601 timestamp of the run</td>
+</tr>
+<tr>
+<td><code>LastExitCode</code></td>
+<td>The exit code returned</td>
+</tr>
+<tr>
+<td><code>InstalledCount</code></td>
+<td>Packages installed this run</td>
+</tr>
+<tr>
+<td><code>FailedCount</code></td>
+<td>Packages that failed</td>
+</tr>
+<tr>
+<td><code>RebootRequired</code></td>
+<td><code>1</code> if a reboot is pending</td>
+</tr>
+</tbody>
+</table>
+<p>For a one-shot Autopilot pass, a Registry detection rule of <strong>value <code>LastRun</code> exists</strong> is enough. To re-run on a schedule, use a custom detection script that only reports <em>detected</em> when <code>LastRun</code> falls inside your freshness window — anything older than that is treated as "not installed" and triggers another pass.</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="https://cdrt.github.io/mk_blog/img/2026/intune_lcu_driver_updates/image2.jpg" data-desc-position="bottom"><img alt="Driver Registry Marker" src="https://cdrt.github.io/mk_blog/img/2026/intune_lcu_driver_updates/image2.jpg"></a></p>
+<h2 id="prepare-the-source-directory">Prepare the source directory<a class="headerlink" href="#prepare-the-source-directory" title="Permanent link">#</a></h2>
+<p>Organize the module and the wrapper script into a single source directory that will be packaged for deployment.</p>
+<ol>
+<li>Create the source directory: <code>C:\Source\IntuneWin32\LCU</code></li>
+<li>
+<p>Use the <strong>Save-Module</strong> cmdlet to download LCU into the source directory. This pulls the versioned module folder straight from the PowerShell Gallery — no manual file copying.</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">Save-Module</span> <span class="n">-Name</span> <span class="n">Lenovo</span><span class="p">.</span><span class="n">Client</span><span class="p">.</span><span class="n">Update</span> <span class="n">-Path</span> <span class="s2">"C:\Source\IntuneWin32\LCU"</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>Download <a href="https://github.com/philjorgensen/Intune/blob/main/Autopilot/Lenovo-Client-Update/Invoke-LenovoUpdate.ps1"><code>Invoke-LenovoUpdate.ps1</code></a> and place it in the root of the source directory.</p>
+</li>
+</ol>
+<p>The script imports whichever module version it finds next to itself, so <code>Save-Module</code> and the script don't need to agree on a version number ahead of time.</p>
+<p><strong>Directory structure</strong></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>C:\Source\IntuneWin32\LCU\
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    Lenovo.Client.Update\
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>        &lt;ModuleVersion&gt;\
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>            ├─ Lenovo.Client.Update.psd1
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>            ├─ Lenovo.Client.Update.psm1
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>            └─ ...
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    Invoke-LenovoUpdate.ps1
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To refresh the bundled module later, delete the <code>Lenovo.Client.Update</code> folder and re-run <code>Save-Module</code>, then rebuild the <code>.intunewin</code>.</p>
+</div>
+<h2 id="packaging">Packaging<a class="headerlink" href="#packaging" title="Permanent link">#</a></h2>
+<ol>
+<li>
+<p>Build the <code>.intunewin</code> from the source directory with the <a href="https://github.com/microsoft/Microsoft-Win32-Content-Prep-Tool">Microsoft Win32 Content Prep Tool</a>:</p>
+<div class="language-text highlight"><span class="filename">Package command</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>IntuneWinAppUtil.exe -c "C:\Source\IntuneWin32\LCU" -s Invoke-LenovoUpdate.ps1 -o "C:\Source\IntuneWin32\" -q
+</span></code></pre></div>
+</li>
+<li>
+<p>Use an install command that forces the 64-bit PowerShell host, so the module's native bits load correctly:</p>
+<div class="language-text highlight"><span class="filename">Install command</span><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>%SystemRoot%\Sysnative\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -NoProfile -File .\Invoke-LenovoUpdate.ps1 -IncludeBIOS -ExportToWMI
+</span></code></pre></div>
+</li>
+</ol>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><code>Sysnative</code> is required. If a 32-bit PowerShell launches the script, the LCU module's native components fail to load.</p>
+</div>
+<h3 id="create-the-win32-app-in-intune">Create the Win32 app in Intune<a class="headerlink" href="#create-the-win32-app-in-intune" title="Permanent link">#</a></h3>
+<p>With the <code>.intunewin</code> built, add it in the <a href="https://intune.microsoft.com">Intune admin center</a>:</p>
+<ol>
+<li>Go to <strong>Apps</strong> → <strong>Windows</strong> → <strong>Add</strong>, and choose <strong>Windows app (Win32)</strong> as the app type.</li>
+<li>On <strong>App information</strong>, upload the <code>.intunewin</code> package, then fill in <strong>Name</strong>, <strong>Publisher</strong>, and any other fields you want shown in Company Portal.</li>
+<li>On <strong>Program</strong>, set the commands and behavior:<ul>
+<li><strong>Install command</strong> — the <code>Sysnative</code> line from above.</li>
+<li><strong>Uninstall command</strong> — there's nothing to remove, so use a no-op such as <code>%SystemRoot%\Sysnative\cmd.exe /c reg delete "HKLM\SOFTWARE\LenovoUpdate" /f</code>.</li>
+<li><strong>Install behavior</strong> — <strong>System</strong>.</li>
+<li><strong>Device restart behavior</strong> — <strong>Determine behavior based on return codes</strong>, so the script's <code>3010</code> is honored.</li>
+</ul>
+</li>
+<li>On <strong>Requirements</strong>, set <strong>Operating system architecture</strong> to <strong>64-bit</strong> and a <strong>Minimum operating system</strong> version that matches your fleet. Also add the <strong>OOBE-only requirement rule</strong> below so the app is applicable only during pre-provisioning/OOBE.</li>
+<li>On <strong>Detection rules</strong>, choose <strong>Manually configure detection rules</strong> and add a <strong>Registry</strong> rule: key <code>HKEY_LOCAL_MACHINE\SOFTWARE\LenovoUpdate\DriverUpdate</code>, value <code>LastRun</code>, detection method <strong>Value exists</strong>. (See <a href="#detection">Detection</a> for the recurring-run alternative.)</li>
+<li>Leave <strong>Dependencies</strong> and <strong>Supersedence</strong> empty, set <strong>Assignments</strong> on the next page (see <a href="#deployment">Deployment</a>), then <strong>Review + create</strong>.</li>
+</ol>
+<h3 id="requirement-rule-run-only-during-oobeautopilot">Requirement rule: run only during OOBE/Autopilot<a class="headerlink" href="#requirement-rule-run-only-during-oobeautopilot" title="Permanent link">#</a></h3>
+<p>Because this is a pre-provisioning one-shot, add a script-based requirement rule so the app is only <strong>applicable</strong> while the device is still in OOBE. Once OOBE completes, the rule returns <code>No</code> and the app drops out of scope — another safeguard (alongside device-only assignment and a stable detection rule) against the multi-round driver sweep re-running during the user ESP.</p>
+<ul>
+<li><strong>Rule type:</strong> Script</li>
+<li><strong>Run script as 32-bit process on 64-bit clients:</strong> No</li>
+<li><strong>Return type:</strong> Boolean</li>
+<li><strong>Operator:</strong> Equals → <strong>No</strong></li>
+</ul>
+<details class="example">
+<summary>Requirement Rule Script</summary>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nv">$Definition</span> <span class="p">=</span> <span class="sh">@"</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="sh">using System;</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="sh">using System.Text;</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="sh">using System.Collections.Generic;</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="sh">using System.Runtime.InteropServices;</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="sh">namespace Api</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="sh">{</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="sh">    public class Kernel32</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="sh">    {</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="sh">        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="sh">        public static extern int OOBEComplete(ref int bIsOOBEComplete);</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="sh">    }</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="sh">}</span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="sh">"@</span>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="nb">Add-Type</span> <span class="n">-TypeDefinition</span> <span class="nv">$Definition</span> <span class="n">-Language</span> <span class="n">CSharp</span>
+</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>
+</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="nv">$IsOOBEComplete</span> <span class="p">=</span> <span class="nv">$false</span>
+</span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="nv">$appRequirement</span> <span class="p">=</span> <span class="no">[Api.Kernel32]</span><span class="p">::</span><span class="n">OOBEComplete</span><span class="p">(</span><span class="no">[ref]</span> <span class="nv">$IsOOBEComplete</span><span class="p">)</span>
+</span><span id="__span-5-22"><a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>
+</span><span id="__span-5-23"><a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a><span class="k">if</span> <span class="p">(</span><span class="nv">$IsOOBEComplete</span> <span class="o">-eq</span> <span class="s1">'1'</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nv">$true</span> <span class="p">}</span>
+</span><span id="__span-5-24"><a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a><span class="k">else</span> <span class="p">{</span> <span class="k">return</span> <span class="nv">$false</span> <span class="p">}</span>
+</span></code></pre></div>
+</details>
+<p>The rule returns <code>$true</code> once OOBE is complete; with the operator set to <strong>Equals → No</strong>, the app is applicable only while the device is still in OOBE. Credit to <a href="https://oofhours.com/2023/09/15/detecting-when-you-are-in-oobe/">Michael Niehaus</a> for the <code>OOBEComplete</code> approach.</p>
+<h2 id="deployment">Deployment<a class="headerlink" href="#deployment" title="Permanent link">#</a></h2>
+<p>This is built for <strong>Autopilot pre-provisioning</strong> (the technician/white-glove phase), where the device is wired, on AC power, and nobody is waiting at the keyboard — so long downloads and multiple reboots are acceptable. That's also the only phase where enabling <code>-IncludeBIOS</code> makes sense.</p>
+<h3 id="assign-to-a-device-group">Assign to a device group<a class="headerlink" href="#assign-to-a-device-group" title="Permanent link">#</a></h3>
+<p>Assign the app to a <strong>device</strong> group, not a user group. User-targeted Win32 apps can't install during the technician phase — they run during account setup (the user-facing ESP), which would re-run the entire multi-round driver sweep with the user waiting at the screen.</p>
+<h3 id="dont-let-it-block-the-user-esp">Don't let it block the user ESP<a class="headerlink" href="#dont-let-it-block-the-user-esp" title="Permanent link">#</a></h3>
+<p>This is the part that trips people up. The ESP <strong>blocking-apps list is shared across phases</strong> — there is no way to block only the technician phase. Any app you add to <em>Block device use until these required apps are installed</em> is also tracked during account setup, so the user ESP waits on it again even though pre-provisioning already installed it.</p>
+<p>Because the work is already done in pre-provisioning, keep it out of the user phase's path:</p>
+<ul>
+<li>In the ESP profile, use <strong>Selected</strong> blocking apps (not <strong>All</strong>), and <strong>leave this app out</strong> of that selection. It still installs as a required device app during the technician phase; it just no longer holds the user at the ESP.</li>
+<li>Keep the detection rule <strong>stable and machine-scoped</strong> so the account setup phase sees it as already installed and never reinstalls. The <code>HKLM\SOFTWARE\LenovoUpdate\DriverUpdate</code> marker with a <strong><code>LastRun</code> exists</strong> registry rule is instant and reliable in both phases (the IME evaluates it as 64-bit SYSTEM). Prefer this over the freshness-window detection script for a pre-provisioning one-shot, which could report <em>not detected</em> and trigger a reinstall during user ESP.</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If user ESP is taking a long time even though pre-provisioning completed successfully, it's almost always one of two things: the app is <strong>user-assigned</strong> (so it reinstalls during account setup), or it's still in the <strong>blocking-apps list</strong> (so the user phase waits on it). Device-only assignment plus a stable detection rule, and excluding it from the blocking selection, resolves both.</p>
+</div>
+<h2 id="results">Results<a class="headerlink" href="#results" title="Permanent link">#</a></h2>
+<p>Before resealing the device, you can take a peek at the log to see which components have been updated.</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="https://cdrt.github.io/mk_blog/img/2026/intune_lcu_driver_updates/image3.jpg" data-desc-position="bottom"><img alt="Log" src="https://cdrt.github.io/mk_blog/img/2026/intune_lcu_driver_updates/image3.jpg"></a></p>
+<p>Additional session files can be found under <code>C:\ProgramData\Lenovo\Lenovo.Client.Update\History</code> that shows the update's package Id and version.</p>
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">#</a></h2>
+<p>A reliable unattended setup:</p>
+<ul>
+<li>Package the <strong>LCU module folder with the script</strong></li>
+<li>Run via <strong><code>Sysnative</code> 64-bit PowerShell</strong>.</li>
+<li>Leave <strong>BIOS off</strong> unless the rollout is targeted and AC-powered (<code>-IncludeBIOS</code>).</li>
+<li>Set restart behavior to <strong>Determine behavior based on return codes</strong> so <code>3010</code> works.</li>
+<li>Detect on the <strong><code>DriverUpdate</code> registry marker</strong> — <code>LastRun</code> exists for one-shot, or a freshness check for recurring runs.</li>
+<li><strong>Assign to a device group</strong> and target <strong>pre-provisioning</strong> — keep it out of the ESP blocking-apps selection so it doesn't hold up the user ESP.</li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 <a href="https://blog.lenovocdrt.com" target="_blank" rel="noopener">Lenovo Commercial Deployment Readiness Team</a><br><a href="#__consent" style="text-decoration:underline;">Change cookie settings</a>
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+      <div class="md-consent" data-md-component="consent" id="__consent" hidden="">
+        <div class="md-consent__overlay"></div>
+        <aside class="md-consent__inner">
+          <form class="md-consent__form md-grid md-typeset" name="consent">
+            
+
+
+
+  
+
+<h4>Cookie consent</h4>
+<p>We use cookies to recognize your repeated visits and preferences such as light and dark mode, as well as to measure anonymous usage data to determine effectiveness of our documentation and whether users find what they're searching for. With your consent, you're helping us to make our documentation better.</p>
+<input class="md-toggle" type="checkbox" id="__settings" checked="">
+<div class="md-consent__settings">
+  <ul class="task-list">
+    
+    
+      
+        
+  
+  
+    
+    
+  
+  <li class="task-list-item">
+    <label class="task-list-control">
+      <input type="checkbox" name="analytics" checked="">
+      <span class="task-list-indicator"></span>
+      Google Analytics
+    </label>
+  </li>
+
+      
+    
+    
+      
+    
+    
+  </ul>
+</div>
+<div class="md-consent__controls">
+  
+    
+      <button class="md-button md-button--primary">Accept</button>
+    
+    
+    
+  
+    
+    
+      <button type="reset" class="md-button md-button--primary">Reject</button>
+    
+    
+  
+</div>
+          </form>
+        </aside>
+      </div>
+      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout((function(){document.querySelector("[data-md-component=consent]").hidden=!1}),250);var form=document.forms.consent;for(var action of["submit","reset"])form.addEventListener(action,(function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map((function(e){return[e,!0]})))),location.hash="",location.reload()}))</script>
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tracking", "navigation.instant", "navigation.instant.progress", "navigation.expand", "navigation.path", "navigation.sections", "toc.integrate", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy", "content.code.select"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../js/open_in_new_tab.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>

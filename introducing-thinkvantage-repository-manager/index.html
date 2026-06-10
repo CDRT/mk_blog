@@ -1,0 +1,1224 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Ideas for managing Lenovo devices in the corporate environment.">
+      
+      
+      
+        <link rel="canonical" href="https://blog.lenovocdrt.com/introducing-thinkvantage-repository-manager/">
+      
+      
+        <link rel="prev" href="../introducing-commercial-vantage-policy-manager-for-intune/">
+      
+      
+        <link rel="next" href="../autopilot-pre-provisioning-current-drivers-firmware-bios-lcu/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../img/fav/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Introducing ThinkVantage Repository Manager - ThinkDeploy Blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Work+Sans:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Work Sans";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-8K4B4NPHZB"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-8K4B4NPHZB",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-8K4B4NPHZB",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>if("undefined"!=typeof __md_analytics){var consent=__md_get("__consent");consent&&consent.analytics&&__md_analytics()}</script>
+  
+
+    
+    
+  <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="light-blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#why-replace-update-retriever" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="ThinkDeploy Blog" class="md-header__button md-logo" aria-label="ThinkDeploy Blog" data-md-component="logo">
+      
+  <img src="../img/CDRT-REV-Red_s.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ThinkDeploy Blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Introducing ThinkVantage Repository Manager
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="light-blue" aria-label="Switch to dark mode" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="blue-grey" aria-label="Switch to light mode" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required="">
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix="">
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden="">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="ThinkDeploy Blog" class="md-nav__button md-logo" aria-label="ThinkDeploy Blog" data-md-component="logo">
+      
+  <img src="../img/CDRT-REV-Red_s.png" alt="logo">
+
+    </a>
+    ThinkDeploy Blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix="">
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../feed.xml" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RSS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3">
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Archive
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Archive
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2026/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2026
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2025/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2025
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2024/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2024
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2023/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2023
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2022/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2022
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2021/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2021
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2020/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2020
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2019/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2019
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2018/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2018
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2017/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2017
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href=".." class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="../img/fav/avatar.png" alt="Joe Parker">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          Joe Parker
+                        
+                      </strong>
+                      <br>
+                      Team Leader
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"></path></svg>
+                        <time datetime="2026-06-02 00:00:00+00:00" class="md-ellipsis">June 2, 2026</time>
+                      </div>
+                    </li>
+                    
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"></path></svg>
+                          <span class="md-ellipsis">
+                            
+                              5 min read
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+            
+          </nav>
+          
+            
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#why-replace-update-retriever" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Replace Update Retriever?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-tvrm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Getting TVRM
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-gui" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The GUI
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The GUI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#first-time-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        First-Time Setup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#searching-and-downloading-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Searching and Downloading Updates
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#managing-repository-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Managing Repository Contents
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scripted-workflows-with-the-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scripted Workflows With the Module
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Scripted Workflows With the Module">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#initial-repository-population" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Initial Repository Population
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bulk-status-promotion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bulk Status Promotion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#removing-superseded-packages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Removing Superseded Packages
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reviewing-the-audit-log" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reviewing the Audit Log
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bits-vs-webclient-downloads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BITS vs. WebClient Downloads
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#full-module-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Full Module Reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+
+
+
+
+  <h1>Introducing ThinkVantage Repository Manager</h1>
+
+<p>Managing a local Lenovo update repository has traditionally meant Update Retriever — a tool that gets the job done but leaves little room for automation or operational visibility. ThinkVantage Repository Manager (TVRM) is its modern replacement: a WPF GUI backed by a full PowerShell module that supports multiple repositories, per-model targeting, and a per-repository audit log that tracks every operation by user and timestamp.</p>
+<!-- more -->
+
+<h2 id="why-replace-update-retriever">Why Replace Update Retriever?<a class="headerlink" href="#why-replace-update-retriever" title="Permanent link">#</a></h2>
+<p>Update Retriever works, but it was designed for an era before scripted management pipelines. Two gaps matter most in modern fleet management:</p>
+<p><strong>Automation.</strong> Update Retriever has no scriptable interface. Every repository operation — searching, downloading, promoting packages — requires the GUI. TVRM ships the <code>Lenovo.Client.RepositoryManager</code> PowerShell module as its backend. Every action the GUI performs maps directly to a cmdlet, so you can drive the entire repository lifecycle from a scheduled task, a CI pipeline, or a maintenance script without any manual steps.</p>
+<p><strong>Auditability.</strong> Update Retriever gives you no record of who changed what or when. TVRM writes a daily structured audit log (<code>audit_YYYY-MM-DD.log</code>) to a <code>logs</code> subfolder inside each repository. Every download, deletion, status promotion, and signature failure is stamped with a timestamp, the Windows username, and a human-readable message. That log is queryable with <code>Get-LnvRMAuditLog</code> and pipeable to anything that accepts objects.</p>
+<p>These two capabilities — scriptable automation and structured audit history — are the primary reasons to move off Update Retriever.</p>
+<h2 id="getting-tvrm">Getting TVRM<a class="headerlink" href="#getting-tvrm" title="Permanent link">#</a></h2>
+<p>The tool ships as a single PowerShell script (<code>ThinkVantageRepositoryManager.ps1</code>) that wraps the <code>Lenovo.Client.RepositoryManager</code> module. The script handles module resolution automatically: it checks for an installed version first, then falls back to the PowerShell Gallery, then to a bundled copy in the same folder.</p>
+<p>To install the GUI script from the PowerShell Gallery manually:</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">Install-Script</span> <span class="n">-Name</span> <span class="n">ThinkVantageRepositoryManager</span> <span class="n">-Scope</span> <span class="n">CurrentUser</span>
+</span></code></pre></div>
+<p>If you only want the module, it can also be installed from the PowerShell Gallery:</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">Install-Module</span> <span class="n">-Name</span> <span class="n">Lenovo</span><span class="p">.</span><span class="n">Client</span><span class="p">.</span><span class="n">RepositoryManager</span> <span class="n">-Scope</span> <span class="n">CurrentUser</span>
+</span></code></pre></div>
+<p>Or download the <a href="https://download.lenovo.com/cdrt/tools/Lenovo.Client.RepositoryManager_1.0.1.zip">script and module bundle</a> for environments without Gallery access.</p>
+<p>Launch the GUI from an elevated PowerShell session:</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">.\</span><span class="n">ThinkVantageRepositoryManager</span><span class="p">.</span><span class="n">ps1</span>
+</span></code></pre></div>
+<p><strong>Requirements:</strong> Windows 11, PowerShell 5.1, internet access to Lenovo download servers.</p>
+<h2 id="the-gui">The GUI<a class="headerlink" href="#the-gui" title="Permanent link">#</a></h2>
+<p>The interface has three areas: the header bar, a tabbed content area, and a status bar.</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="https://cdrt.github.io/mk_blog/img/2026/intro_tvrm/tvrm_launch.png" data-desc-position="bottom"><img alt="ThinkVantage Repository Manager launch screen" src="https://cdrt.github.io/mk_blog/img/2026/intro_tvrm/tvrm_launch.png"></a></p>
+<p>The header holds a theme toggle (light/dark, auto-detected from Windows on launch) and the Settings gear. The status bar at the bottom shows the active repository name, mode (Full or Hybrid), configured model count, and a progress bar during downloads.</p>
+<h3 id="first-time-setup">First-Time Setup<a class="headerlink" href="#first-time-setup" title="Permanent link">#</a></h3>
+<p>Before searching, configure at least one repository and one model in Settings.</p>
+<p><strong>Repositories</strong> — Give it a name, a local folder path, and choose a mode:</p>
+<ul>
+<li><strong>Full</strong>: Downloads the complete package — installer, descriptor XML, readme, and external detection routine files. Use for repositories that serve as a local deployment source for Commercial Vantage, Thin Installer, or Lenovo.Client.Update scripts.</li>
+<li><strong>Hybrid</strong>: Downloads metadata only (descriptor XML and readme). Client devices fetch installers directly from the Lenovo CDN at install time. Reduces repository storage when bandwidth at download time is not a concern. Use this with Commercial Vantage, it is not supported by Thin Installer.</li>
+</ul>
+<p><strong>Models</strong> — Add each model by its 4-character Machine Type code (e.g., <code>21NT</code> for ThinkPad X1 Carbon Gen 13), a friendly name, and target OS. If you don't have the Machine Type handy, run this on the device:</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">(</span><span class="nb">Get-WmiObject</span> <span class="n">Win32_ComputerSystemProduct</span><span class="p">).</span><span class="n">Name</span><span class="p">.</span><span class="n">Substring</span><span class="p">(</span><span class="n">0</span><span class="p">,</span><span class="n">4</span><span class="p">)</span>
+</span></code></pre></div>
+<h3 id="searching-and-downloading-updates">Searching and Downloading Updates<a class="headerlink" href="#searching-and-downloading-updates" title="Permanent link">#</a></h3>
+<p>The <strong>Search Updates</strong> tab queries Lenovo's online catalogs for all configured models in parallel. Results show title, version, type, severity, reboot behavior, release date, size, and which models each package applies to. Packages already in the active repository are highlighted green — selecting them again skips the download and instead syncs any new model associations into <code>database.xml</code>.</p>
+<p>To download, select one or more rows, set the initial <strong>Status</strong> to <code>Test</code> or <code>Active</code>, and click <strong>Download Selected</strong>. TVRM verifies the SHA-256 checksum and Lenovo digital signature on each installer and descriptor XML. Any package that fails signature verification is rejected and logged to the audit trail — it never touches the repository.</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="https://cdrt.github.io/mk_blog/img/2026/intro_tvrm/tvrm_search_results.png" data-desc-position="bottom"><img alt="Search results" src="https://cdrt.github.io/mk_blog/img/2026/intro_tvrm/tvrm_search_results.png"></a></p>
+<h3 id="managing-repository-contents">Managing Repository Contents<a class="headerlink" href="#managing-repository-contents" title="Permanent link">#</a></h3>
+<p>The <strong>Repository</strong> tab shows everything in the active repository. Filter by title keyword, status, severity, or model. Superseded packages appear dimmed and italic with the superseding package ID shown — useful for identifying cleanup candidates.</p>
+<p>Status promotion is handled by a <strong>Test / Active</strong> toggle on the selected row. The change writes to <code>database.xml</code> immediately. This Test → Active workflow gives you a validation gate: download new packages at Test, validate on a pilot group, then promote to Active so the broader fleet picks them up.</p>
+<h2 id="scripted-workflows-with-the-module">Scripted Workflows With the Module<a class="headerlink" href="#scripted-workflows-with-the-module" title="Permanent link">#</a></h2>
+<p>Every GUI operation has a cmdlet equivalent. Here are the patterns that matter most:</p>
+<h3 id="initial-repository-population">Initial Repository Population<a class="headerlink" href="#initial-repository-population" title="Permanent link">#</a></h3>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">New-LnvRMRepository</span> <span class="n">-Path</span> <span class="s1">'D:\LenovoUpdates\Production'</span> <span class="n">-Name</span> <span class="s1">'Production'</span> <span class="n">-SetActive</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="nb">Add-LnvRMModel</span> <span class="n">-MachineType</span> <span class="s1">'21NT'</span> <span class="n">-FriendlyName</span> <span class="s1">'ThinkPad X1 Carbon Gen 13'</span> <span class="n">-OS</span> <span class="s1">'Windows 11'</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="nb">Add-LnvRMModel</span> <span class="n">-MachineType</span> <span class="s1">'21AH'</span> <span class="n">-FriendlyName</span> <span class="s1">'ThinkPad T14s Gen 3'</span> <span class="n">-OS</span> <span class="s1">'Windows 11'</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="nv">$updates</span> <span class="p">=</span> <span class="nb">Search-LnvRMUpdate</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span> <span class="nv">$_</span><span class="p">.</span><span class="n">Severity</span> <span class="n">-in</span> <span class="s1">'Critical'</span><span class="p">,</span> <span class="s1">'Recommended'</span> <span class="p">}</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="nv">$result</span>  <span class="p">=</span> <span class="nb">Save-LnvRMUpdate</span> <span class="n">-Update</span> <span class="nv">$updates</span> <span class="n">-Status</span> <span class="s1">'Test'</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="nb">Write-Host</span> <span class="s2">"Downloaded: </span><span class="p">$(</span><span class="nv">$result</span><span class="p">.</span><span class="n">Downloaded</span><span class="p">.</span><span class="n">Count</span><span class="p">)</span><span class="s2">"</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="nb">Write-Host</span> <span class="s2">"Signature failures: </span><span class="p">$(</span><span class="nv">$result</span><span class="p">.</span><span class="n">SignatureSkipped</span><span class="p">.</span><span class="n">Count</span><span class="p">)</span><span class="s2">"</span>
+</span></code></pre></div>
+<h3 id="bulk-status-promotion">Bulk Status Promotion<a class="headerlink" href="#bulk-status-promotion" title="Permanent link">#</a></h3>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nb">Get-LnvRMRepoContent</span> <span class="n">-Status</span> <span class="s1">'Test'</span> <span class="p">|</span> <span class="k">ForEach</span><span class="n">-Object</span> <span class="p">{</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="nb">Set-LnvRMUpdateStatus</span> <span class="n">-PackageID</span> <span class="nv">$_</span><span class="p">.</span><span class="n">PackageID</span> <span class="n">-Status</span> <span class="s1">'Active'</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="p">}</span>
+</span></code></pre></div>
+<h3 id="removing-superseded-packages">Removing Superseded Packages<a class="headerlink" href="#removing-superseded-packages" title="Permanent link">#</a></h3>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nb">Get-LnvRMRepoContent</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span> <span class="nv">$_</span><span class="p">.</span><span class="n">IsSuperseded</span> <span class="p">}</span> <span class="p">|</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="k">ForEach</span><span class="n">-Object</span> <span class="p">{</span> <span class="nb">Remove-LnvRMUpdate</span> <span class="n">-PackageID</span> <span class="nv">$_</span><span class="p">.</span><span class="n">PackageID</span> <span class="p">}</span>
+</span></code></pre></div>
+<h3 id="reviewing-the-audit-log">Reviewing the Audit Log<a class="headerlink" href="#reviewing-the-audit-log" title="Permanent link">#</a></h3>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c"># Last 20 entries</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nb">Get-LnvRMAuditLog</span> <span class="n">-Last</span> <span class="n">20</span> <span class="p">|</span> <span class="nb">Format-Table</span> <span class="n">Timestamp</span><span class="p">,</span> <span class="n">User</span><span class="p">,</span> <span class="n">Action</span><span class="p">,</span> <span class="n">Message</span> <span class="n">-AutoSize</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c"># Surface any signature failures</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="nb">Get-LnvRMAuditLog</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span> <span class="nv">$_</span><span class="p">.</span><span class="n">Action</span> <span class="o">-eq</span> <span class="s1">'SIGNATURE_FAIL'</span> <span class="p">}</span>
+</span></code></pre></div>
+<p>The audit log records these action codes: <code>REPO_CREATE</code>, <code>REPO_CONFIG</code>, <code>DOWNLOAD</code>, <code>DELETE</code>, <code>STATUS_CHANGE</code>, <code>SIGNATURE_FAIL</code>, <code>EXTERNAL_FAIL</code>, and <code>SYNC</code>. Every entry carries the Windows username, so you have a clear record of who made each change — useful when multiple admins share a repository path.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All module cmdlets that modify state support <code>-WhatIf</code> and <code>-Confirm</code>, so you can preview destructive operations before committing.</p>
+</div>
+<h2 id="bits-vs-webclient-downloads">BITS vs. WebClient Downloads<a class="headerlink" href="#bits-vs-webclient-downloads" title="Permanent link">#</a></h2>
+<p>The <strong>DOWNLOAD METHOD</strong> setting in Settings (or <code>Set-LnvRMPreference -Name 'DownloadMethod' -Value 'BITS'</code>) controls the transfer mechanism. <strong>WebClient</strong> is the default and fastest option for stable connections. <strong>BITS</strong> resumes interrupted transfers and runs at low priority — prefer it in environments with unreliable connectivity or where BranchCache/LEDBAT caching is in play.</p>
+<h2 id="full-module-reference">Full Module Reference<a class="headerlink" href="#full-module-reference" title="Permanent link">#</a></h2>
+<p>The complete cmdlet reference is available at <a href="https://docs.lenovocdrt.com/guides/tvrm/module_reference">docs.lenovocdrt.com</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Cmdlet</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>New-LnvRMRepository</code></td>
+<td>Create a new local update repository</td>
+</tr>
+<tr>
+<td><code>Get-LnvRMRepository</code></td>
+<td>List registered repositories</td>
+</tr>
+<tr>
+<td><code>Set-LnvRMRepository</code></td>
+<td>Modify settings or switch the active repository</td>
+</tr>
+<tr>
+<td><code>Remove-LnvRMRepository</code></td>
+<td>Unregister a repository</td>
+</tr>
+<tr>
+<td><code>Add-LnvRMModel</code></td>
+<td>Register a model for update searches</td>
+</tr>
+<tr>
+<td><code>Get-LnvRMModel</code></td>
+<td>List configured models</td>
+</tr>
+<tr>
+<td><code>Remove-LnvRMModel</code></td>
+<td>Remove a model</td>
+</tr>
+<tr>
+<td><code>Search-LnvRMUpdate</code></td>
+<td>Query Lenovo catalogs for available updates</td>
+</tr>
+<tr>
+<td><code>Save-LnvRMUpdate</code></td>
+<td>Download updates to the active repository</td>
+</tr>
+<tr>
+<td><code>Get-LnvRMRepoContent</code></td>
+<td>List packages in the repository</td>
+</tr>
+<tr>
+<td><code>Set-LnvRMUpdateStatus</code></td>
+<td>Promote or demote between Test and Active</td>
+</tr>
+<tr>
+<td><code>Remove-LnvRMUpdate</code></td>
+<td>Remove a package from the repository</td>
+</tr>
+<tr>
+<td><code>Sync-LnvRMSupportedSystem</code></td>
+<td>Add missing model associations to existing packages</td>
+</tr>
+<tr>
+<td><code>Get-LnvRMAuditLog</code></td>
+<td>Read repository audit log entries</td>
+</tr>
+<tr>
+<td><code>Get-LnvRMPreference</code> / <code>Set-LnvRMPreference</code></td>
+<td>Read/write application preferences</td>
+</tr>
+</tbody>
+</table>
+<p>Have questions? Visit the <a href="https://forums.lenovo.com/t5/Enterprise-Client-Management/bd-p/sa01_eg">Enterprise Client Management Forum</a>.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 <a href="https://blog.lenovocdrt.com" target="_blank" rel="noopener">Lenovo Commercial Deployment Readiness Team</a><br><a href="#__consent" style="text-decoration:underline;">Change cookie settings</a>
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+      <div class="md-consent" data-md-component="consent" id="__consent" hidden="">
+        <div class="md-consent__overlay"></div>
+        <aside class="md-consent__inner">
+          <form class="md-consent__form md-grid md-typeset" name="consent">
+            
+
+
+
+  
+
+<h4>Cookie consent</h4>
+<p>We use cookies to recognize your repeated visits and preferences such as light and dark mode, as well as to measure anonymous usage data to determine effectiveness of our documentation and whether users find what they're searching for. With your consent, you're helping us to make our documentation better.</p>
+<input class="md-toggle" type="checkbox" id="__settings" checked="">
+<div class="md-consent__settings">
+  <ul class="task-list">
+    
+    
+      
+        
+  
+  
+    
+    
+  
+  <li class="task-list-item">
+    <label class="task-list-control">
+      <input type="checkbox" name="analytics" checked="">
+      <span class="task-list-indicator"></span>
+      Google Analytics
+    </label>
+  </li>
+
+      
+    
+    
+      
+    
+    
+  </ul>
+</div>
+<div class="md-consent__controls">
+  
+    
+      <button class="md-button md-button--primary">Accept</button>
+    
+    
+    
+  
+    
+    
+      <button type="reset" class="md-button md-button--primary">Reject</button>
+    
+    
+  
+</div>
+          </form>
+        </aside>
+      </div>
+      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout((function(){document.querySelector("[data-md-component=consent]").hidden=!1}),250);var form=document.forms.consent;for(var action of["submit","reset"])form.addEventListener(action,(function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map((function(e){return[e,!0]})))),location.hash="",location.reload()}))</script>
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tracking", "navigation.instant", "navigation.instant.progress", "navigation.expand", "navigation.path", "navigation.sections", "toc.integrate", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy", "content.code.select"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../js/open_in_new_tab.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>

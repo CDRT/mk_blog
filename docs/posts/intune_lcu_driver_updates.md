@@ -157,9 +157,49 @@ With the `.intunewin` built, add it in the [Intune admin center](https://intune.
     - **Uninstall command** — there's nothing to remove, so use a no-op such as `%SystemRoot%\Sysnative\cmd.exe /c reg delete "HKLM\SOFTWARE\LenovoUpdate" /f`.
     - **Install behavior** — **System**.
     - **Device restart behavior** — **Determine behavior based on return codes**, so the script's `3010` is honored.
-4. On **Requirements**, set **Operating system architecture** to **64-bit** and a **Minimum operating system** version that matches your fleet.
+4. On **Requirements**, set **Operating system architecture** to **64-bit** and a **Minimum operating system** version that matches your fleet. Also add the **OOBE-only requirement rule** below so the app is applicable only during pre-provisioning/OOBE.
 5. On **Detection rules**, choose **Manually configure detection rules** and add a **Registry** rule: key `HKEY_LOCAL_MACHINE\SOFTWARE\LenovoUpdate\DriverUpdate`, value `LastRun`, detection method **Value exists**. (See [Detection](#detection) for the recurring-run alternative.)
 6. Leave **Dependencies** and **Supersedence** empty, set **Assignments** on the next page (see [Deployment](#deployment)), then **Review + create**.
+
+### Requirement rule: run only during OOBE/Autopilot
+
+Because this is a pre-provisioning one-shot, add a script-based requirement rule so the app is only **applicable** while the device is still in OOBE. Once OOBE completes, the rule returns `No` and the app drops out of scope — another safeguard (alongside device-only assignment and a stable detection rule) against the multi-round driver sweep re-running during the user ESP.
+
+- **Rule type:** Script
+- **Run script as 32-bit process on 64-bit clients:** No
+- **Return type:** Boolean
+- **Operator:** Equals → **No**
+
+??? example "Requirement Rule Script"
+
+    ```powershell
+    $Definition = @"
+
+    using System;
+    using System.Text;
+    using System.Collections.Generic;
+    using System.Runtime.InteropServices;
+
+    namespace Api
+    {
+        public class Kernel32
+        {
+            [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+            public static extern int OOBEComplete(ref int bIsOOBEComplete);
+        }
+    }
+    "@
+
+    Add-Type -TypeDefinition $Definition -Language CSharp
+
+    $IsOOBEComplete = $false
+    $appRequirement = [Api.Kernel32]::OOBEComplete([ref] $IsOOBEComplete)
+
+    if ($IsOOBEComplete -eq '1') { return $true }
+    else { return $false }
+    ```
+
+The rule returns `$true` once OOBE is complete; with the operator set to **Equals → No**, the app is applicable only while the device is still in OOBE. Credit to [Michael Niehaus](https://oofhours.com/2023/09/15/detecting-when-you-are-in-oobe/) for the `OOBEComplete` approach.
 
 ## Deployment
 

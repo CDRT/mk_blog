@@ -1,7 +1,7 @@
 ---
 date:
     created: 2019-03-11
-    updated: 2024-01-14
+    updated: 2026-07-28
 authors:
     - Phil
 categories:
@@ -88,8 +88,12 @@ Detection Rules can be handled several different ways. In this example, I'm choo
 
 ![Detection Rule](https://cdrt.github.io/mk_blog/img/2019/intune_bios_deploy/image5.jpg)
 
-!!! info ""
-    This detection method assumes a newer BIOS version is being deployed to a system on an older version. If you're attempting to deploy an older BIOS version, the rule will still evaluate as false and attempt to install the older version. If for some reason you're deploying an older BIOS version, make sure the **Secure Rollback Prevention** BIOS setting is disabled.
+!!! info
+    This detection method assumes a newer BIOS version is being deployed to a system on an older version. If you're attempting to deploy an older BIOS version, the rule will still evaluate as false and attempt to install the older version unless it's been specified as a superseded app.
+
+
+!!! note
+    If for some reason you're deploying an older BIOS version, make sure the **Secure Rollback Prevention** BIOS setting is disabled.
 
 Key path
 
@@ -114,6 +118,17 @@ You can find the BIOS ID in the version release matrix on the support site.
 ![BIOS ID](https://cdrt.github.io/mk_blog/img/2019/intune_bios_deploy/image6.jpg)
 
 Values will vary across models so you'll need to confirm this data in the registry.
+
+You can also grab this value using the Device Query feature in Intune using this query:
+
+```kusto
+BiosInfo
+| project SmBiosVersion
+```
+
+### Supersedence
+
+Add previous BIOS versions that have been created as a Win32 app as a superseded app.
 
 ### Assign the App
 
@@ -143,7 +158,7 @@ You can trace the workflow in the **IntuneManagementExtension.log** located unde
 
 ![Detection](https://cdrt.github.io/mk_blog/img/2019/intune_bios_deploy//image10.jpg)
 
-![Instalation](https://cdrt.github.io/mk_blog/img/2019/intune_bios_deploy//image11.jpg)
+![Installation](https://cdrt.github.io/mk_blog/img/2019/intune_bios_deploy//image11.jpg)
 
 The device installation status in Intune may show failed (app not detected after install) due to the fact that the system has not restarted. This will return as "Installed" once the device has restarted and checks back into the Intune service.
 

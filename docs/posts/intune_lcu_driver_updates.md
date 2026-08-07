@@ -216,6 +216,9 @@ This is the part that trips people up. The ESP **blocking-apps list is shared ac
 Because the work is already done in pre-provisioning, keep it out of the user phase's path:
 
 - In the ESP profile, use **Selected** blocking apps (not **All**), and **leave this app out** of that selection. It still installs as a required device app during the technician phase; it just no longer holds the user at the ESP.
+    - Set **Only fail selected blocking apps in technician phase** to **Yes**.
+    !!! info ""
+        Setting this to Yes will allow all other required apps to install as a best effort so you may notice an uptick in app count during device phase of the ESP. Refer to Rudy's [blog](https://call4cloud.nl/autopilot-esp-only-fail-selected-blocking-apps/) for a more in-depth explanation.
 - Keep the detection rule **stable and machine-scoped** so the account setup phase sees it as already installed and never reinstalls. The `HKLM\SOFTWARE\LenovoUpdate\DriverUpdate` marker with a **`LastRun` exists** registry rule is instant and reliable in both phases (the IME evaluates it as 64-bit SYSTEM). Prefer this over the freshness-window detection script for a pre-provisioning one-shot, which could report *not detected* and trigger a reinstall during user ESP.
 
 !!! note

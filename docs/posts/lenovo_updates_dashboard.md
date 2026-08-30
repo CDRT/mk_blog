@@ -1,6 +1,7 @@
 ---
 date:
     created: 2026-08-25
+    updated: 2026-08-30
 authors:
     - Joe
 categories:
@@ -89,7 +90,9 @@ One machine type covers every configuration in that model line, so you track a h
 4. Records and model associations are added or refreshed. A package that has dropped out of a model's catalog is flagged *not offered* for that model, but the record is kept so you retain the history.
 5. Supersession is recalculated across everything.
 
-The first sync for a model is the slow one because every descriptor is new. Later syncs fetch only what changed. On a fast link, raise **Max concurrent downloads** on the Settings tab, which defaults to 12.
+Step 4 only runs for a model whose catalog downloaded, parsed, and had every descriptor read successfully. If a catalog returns a 404, times out, or comes back as something that is not a Lenovo catalog, that model is marked **Failed** on the Models tab and its existing records are left exactly as they were. A transient network problem never gets recorded as Lenovo withdrawing packages.
+
+The first sync for a model is the slow one because every descriptor is new. Later syncs fetch only what changed. On a fast link, raise **Max concurrent downloads** on the Settings tab, which defaults to 8 and accepts 1 to 32.
 
 ## Keeping the data current
 
@@ -140,19 +143,21 @@ Add `-Notify` to the scheduled task arguments and Windows raises a toast when a 
 Everything the GUI does is exposed as PowerShell commands, so the same data can feed your own reporting.
 
 ``` powershell
-Import-Module ".\LenovoUpdatesDashboard.psm1" -Force
+Import-Module ".\LenovoUpdatesDashboard.psd1" -Force
 
-Add-TrackedModel -MachineType 21XF -Name 'ThinkPad X1 Carbon Gen 12'
-Invoke-CatalogSync
+Add-LnvTrackedModel -MachineType 21XF -Name 'ThinkPad X1 Carbon Gen 12'
+Invoke-LnvCatalogSync
 
-Get-Update -SearchTitle 'Intel'
-Get-Update -Category 'Display and Video Graphics'
-Get-Update -Model 21XF -LatestOnly | Export-UpdateReport -Path .\report.csv
-Get-CategorySummary
-Get-DashboardStatus
+Get-LnvUpdate -SearchTitle 'Intel'
+Get-LnvUpdate -Category 'Display and Video Graphics'
+Get-LnvUpdate -Model 21XF -LatestOnly | Export-LnvUpdateReport -Path .\report.csv
+Get-LnvCategorySummary
+Get-LnvDashboardStatus
 ```
 
-`Get-Update` filters on `-Model`, `-Category`, `-SearchTitle`, `-PackageType`, `-IncludeUnoffered`, and `-LatestOnly`. `ConvertFrom-LnvCatalogXml` and `ConvertFrom-LnvDescriptorXml` will parse a catalog or descriptor from `-Xml` or `-Path` if you only want the parser. Every command supports `Get-Help`.
+Import the `.psd1` manifest rather than the `.psm1` directly. Every command carries an `Lnv` noun prefix so nothing collides with whatever else is loaded in your session.
+
+`Get-LnvUpdate` filters on `-Model`, `-Category`, `-SearchTitle`, `-PackageType`, `-IncludeUnoffered`, and `-LatestOnly`. `ConvertFrom-LnvCatalogXml` and `ConvertFrom-LnvDescriptorXml` will parse a catalog or descriptor from `-Xml` or `-Path` if you only want the parser. Every command supports `Get-Help`.
 
 ## Where the data lives
 
@@ -161,11 +166,14 @@ Everything sits in the `data` folder beside the scripts as plain JSON and plain 
 | File | Contents |
 |---|---|
 | `data\database.json` | Models, updates, and associations. |
-| `data\database.json.bak` | Previous copy, rotated on every save. |
-| `data\config.json` | Catalog URL, download concurrency, theme. |
+| `data\database.json.bak` | Previous copy, rotated on every save. If `database.json` will not parse, the dashboard recovers from this file and sets the unreadable one aside as `database.json.corrupt-<timestamp>`. |
+| `data\config.json` | Catalog URL, download concurrency, theme. Created on first use. |
 | `data\sync.log` | Timestamped log of every sync and notable event. |
+| `data\store.lock` | Empty lock file, held only while the store is being written. |
 
-To move to another machine, copy the folder. To start over, delete `database.json` and run a sync. Because the data folder sits beside the scripts, the whole solution can live on a network share and be shared by several administrators against one data set. Only one of them should sync at a time.
+To move to another machine, copy the folder. To start over, delete `database.json` and run a sync.
+
+Because the data folder sits beside the scripts, the whole solution can live on a network share and be shared by several administrators against one data set. Writes are serialised by `store.lock`: a sync takes the lock for its duration, adding or removing a model takes it for the moment of the save, and anything else waits its turn rather than overwriting. Reading the grid never takes the lock, so a scheduled sync running in the background does not block anyone browsing.
 
 ## Summary
 

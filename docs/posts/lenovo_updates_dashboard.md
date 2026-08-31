@@ -22,7 +22,7 @@ The dashboard is a self-contained PowerShell and WPF desktop application. You gi
 From there you can browse, search, filter across models, and export. Each row is a package version, and the grid carries the details that actually drive a deployment decision:
 
 | Column | Meaning |
-|---|---|
+| --- | --- |
 | **Title** | Package title. Click it to open Lenovo's readme in your browser. |
 | **Version** | Package version. Click it to open the raw descriptor XML. |
 | **Category** | Lenovo's own category, such as *Display and Video Graphics*. |
@@ -43,14 +43,14 @@ The **Categories** tab is a cross-model rollup of how many records you have coll
 ## Requirements
 
 | Requirement | Detail |
-|---|---|
+| --- | --- |
 | Operating system | Windows 10 or Windows 11 |
 | PowerShell | Windows PowerShell 5.1 (built into Windows) |
 | .NET | .NET Framework 4.6 or later with WPF (built into Windows) |
 | Network | HTTPS to `download.lenovo.com` |
 | Privileges | Standard user. Administrator rights are not required. |
 
-That single host is the only external dependency. Connections use TLS 1.2 and follow the proxy configured for the user account. There is no installer, no registry footprint, no agent, and no extra PowerShell module to deploy.
+That single host is the only external dependency. Connections use TLS 1.3 and follow the proxy configured for the user account. There is no installer, no registry footprint, no agent, and no extra PowerShell module to deploy.
 
 Catalog coverage is **Windows 11** for Lenovo commercial products: ThinkPad, ThinkCentre, and ThinkStation.
 
@@ -117,7 +117,7 @@ Registering against the interactive user means no stored password, but the task 
 The script writes a summary to `data\sync.log` and sets an exit code the scheduler surfaces as **Last Run Result**:
 
 | Exit code | Meaning |
-|---|---|
+| --- | --- |
 | 0 | Success, no errors. |
 | 1 | Completed, but one or more catalogs or descriptors had problems. |
 | 2 | Nothing to do. No models are tracked. |
@@ -145,26 +145,26 @@ Everything the GUI does is exposed as PowerShell commands, so the same data can 
 ``` powershell
 Import-Module ".\LenovoUpdatesDashboard.psd1" -Force
 
-Add-LnvTrackedModel -MachineType 21XF -Name 'ThinkPad X1 Carbon Gen 12'
-Invoke-LnvCatalogSync
+Add-LnvUDTrackedModel -MachineType 21XF -Name 'ThinkPad X1 Carbon Gen 12'
+Invoke-LnvUDCatalogSync
 
-Get-LnvUpdate -SearchTitle 'Intel'
-Get-LnvUpdate -Category 'Display and Video Graphics'
-Get-LnvUpdate -Model 21XF -LatestOnly | Export-LnvUpdateReport -Path .\report.csv
-Get-LnvCategorySummary
-Get-LnvDashboardStatus
+Get-LnvUDUpdate -SearchTitle 'Intel'
+Get-LnvUDUpdate -Category 'Display and Video Graphics'
+Get-LnvUDUpdate -Model 21XF -LatestOnly | Export-LnvUDUpdateReport -Path .\report.csv
+Get-LnvUDCategorySummary
+Get-LnvUDDashboardStatus
 ```
 
-Import the `.psd1` manifest rather than the `.psm1` directly. Every command carries an `Lnv` noun prefix so nothing collides with whatever else is loaded in your session.
+Import the `.psd1` manifest rather than the `.psm1` directly. Every command carries an `LnvUD` noun prefix so nothing collides with whatever else is loaded in your session.
 
-`Get-LnvUpdate` filters on `-Model`, `-Category`, `-SearchTitle`, `-PackageType`, `-IncludeUnoffered`, and `-LatestOnly`. `ConvertFrom-LnvCatalogXml` and `ConvertFrom-LnvDescriptorXml` will parse a catalog or descriptor from `-Xml` or `-Path` if you only want the parser. Every command supports `Get-Help`.
+`Get-LnvUDUpdate` filters on `-Model`, `-Category`, `-SearchTitle`, `-PackageType`, `-IncludeUnoffered`, and `-LatestOnly`. `ConvertFrom-LnvUDCatalogXml` and `ConvertFrom-LnvUDDescriptorXml` will parse a catalog or descriptor from `-Xml` or `-Path` if you only want the parser. Every command supports `Get-Help`.
 
 ## Where the data lives
 
 Everything sits in the `data` folder beside the scripts as plain JSON and plain text, so it is easy to back up, inspect, or move.
 
 | File | Contents |
-|---|---|
+| --- | --- |
 | `data\database.json` | Models, updates, and associations. |
 | `data\database.json.bak` | Previous copy, rotated on every save. If `database.json` will not parse, the dashboard recovers from this file and sets the unreadable one aside as `database.json.corrupt-<timestamp>`. |
 | `data\config.json` | Catalog URL, download concurrency, theme. Created on first use. |

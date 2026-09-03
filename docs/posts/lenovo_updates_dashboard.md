@@ -1,7 +1,7 @@
 ---
 date:
     created: 2026-08-25
-    updated: 2026-08-30
+    updated: 2026-09-03
 authors:
     - Joe
 categories:
@@ -33,7 +33,7 @@ From there you can browse, search, filter across models, and export. Each row is
 | **Offered** | Ticked while the package is still in at least one selected model's catalog. |
 | **Superseded** | Ticked when a newer version of the same package exists. |
 
-Rows for packages Lenovo no longer offers are greyed out, and superseded versions are shown in italics. **Latest only** hides superseded versions; **Include no longer offered** brings withdrawn packages back into view so you can see what a model used to be offered. **Export CSV** writes exactly the rows currently displayed.
+Rows for packages Lenovo no longer offers are greyed out, and superseded versions are shown in italics. **Hide superseded** hides superseded versions; **Include no longer offered** brings withdrawn packages back into view so you can see updates a model used to be offered. **Export CSV** writes exactly the rows currently displayed.
 
 The **Categories** tab is a cross-model rollup of how many records you have collected all-time against how many are currently offered per category, which is the fastest way to spot where the churn in your fleet is. Double-click a category to jump to the Updates tab filtered to it.
 
@@ -44,7 +44,7 @@ The **Categories** tab is a cross-model rollup of how many records you have coll
 
 | Requirement | Detail |
 | --- | --- |
-| Operating system | Windows 10 or Windows 11 |
+| Operating system | Windows 11 |
 | PowerShell | Windows PowerShell 5.1 (built into Windows) |
 | .NET | .NET Framework 4.6 or later with WPF (built into Windows) |
 | Network | HTTPS to `download.lenovo.com` |
@@ -56,7 +56,9 @@ Catalog coverage is **Windows 11** for Lenovo commercial products: ThinkPad, Thi
 
 ## Getting started
 
-Download the package from [download link](#) and extract it anywhere you can write to, for example `C:\Tools\LenovoUpdatesDashboard`. Then launch it:
+Download the package from [download link](https://download.lenovo.com/cdrt/tools/LenovoUpdatesDashboard_1.1.0.zip). Right-click the downloaded zip file, select Properties, and make sure the file is Unblocked. Now extract it anywhere you can write to, for example `C:\Tools\LenovoUpdatesDashboard`.
+
+Then launch it from that folder:
 
 ``` powershell
 powershell.exe -STA -ExecutionPolicy Bypass -File ".\LenovoUpdatesDashboard.ps1"
@@ -64,7 +66,7 @@ powershell.exe -STA -ExecutionPolicy Bypass -File ".\LenovoUpdatesDashboard.ps1"
 
 `-STA` matters. WPF requires single-threaded apartment mode, and while the script will relaunch itself in STA when it can, supplying the switch avoids starting a second process.
 
-If your execution policy is enforced centrally and the launch is still blocked, unblock the extracted files once:
+If your execution policy is enforced centrally and the launch is still blocked (in case you did not unblock the zip file before extracting it), unblock the extracted files once:
 
 ``` powershell
 Get-ChildItem -Path . -Recurse | Unblock-File

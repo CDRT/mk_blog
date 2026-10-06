@@ -1,6 +1,6 @@
 ---
 date:
-    created: 2026-09-24
+    created: 2026-10-06
 authors:
     - Phil
 categories:
@@ -51,6 +51,7 @@ Rule length is not a concern. The largest model in the catalog is the ThinkCentr
 
 ## Requirements
 
+- [PowerShell 7](https://learn.microsoft.com/powershell/scripting/install/installing-powershell-on-windows)
 - The `Microsoft.Graph.Authentication` module
 - The `DeviceManagementConfiguration.ReadWrite.All` Graph API permission scope
 - [New-LnvAssignmentFilter.ps1](https://github.com/philjorgensen/Intune/blob/main/AssignmentFilters/New-LnvAssignmentFilter.ps1)

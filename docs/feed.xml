@@ -82,7 +82,7 @@
         <item>
 			<title>Introducing Think BIOS Config Tool V2 and Lenovo BIOS Certificate Tool V2</title>
 			<description>Introducing the new PowerShell-based Think BIOS Config Tool V2 and Lenovo BIOS Certificate Tool V2</description>
-			<pubDate>Thur, 06 Nov 2025 19:37:00 EST</pubDate>
+			<pubDate>Thu, 06 Nov 2025 19:37:00 EST</pubDate>
 			<link>https://blog.lenovocdrt.com/introducing-think-bios-config-tool-v2-and-lenovo-bios-certificate-tool-v2/</link>
 			</item>
 		<item>
@@ -94,19 +94,19 @@
 		<item>
 			<title>Deploying Certificate-based BIOS Authentication</title>
 			<description>Using a Microsoft Configuration Manager task sequence to deploy certificate-based BIOS authentication</description>
-			<pubDate>Thur, 04 Sept 2025 09:00:00 EST</pubDate>
+			<pubDate>Thu, 04 Sept 2025 09:00:00 EST</pubDate>
 			<link>https://blog.lenovocdrt.com/deploying-certificate-based-bios-authentication-with-microsoft-configuration-manager</link>
 			</item>
 		<item>
 			<title>What Is The System Firmware Update Utility?</title>
 			<description>Understanding capsule-based updates</description>
-			<pubDate>Thur, 27 Mar 2025 09:00:00 EST</pubDate>
+			<pubDate>Thu, 27 Mar 2025 09:00:00 EST</pubDate>
 			<link>https://blog.lenovocdrt.com/what-is-the-system-firmware-update-utility</link>
 			</item>
 		<item>
 			<title>Use Cases for SU Helper</title>
 			<description>Demonstrating different use cases for SU Helper across Microsoft's Endpoint Management solutions</description>
-			<pubDate>Thur, 19 Feb 2025 09:00:00 EST</pubDate>
+			<pubDate>Thu, 19 Feb 2025 09:00:00 EST</pubDate>
 			<link>https://blog.lenovocdrt.com/su-helper-use-cases-in-a-modern-world</link>
 			</item>
 		<item>
@@ -118,13 +118,13 @@
         <item>
 			<title>Introducing: Lenovo Client Sripting Module 2.0.0</title>
 			<description>Article describes our Lenovo.Client.Scripting PowerShell module and how to use it.</description>
-			<pubDate>Thur, 07 Nov 2024 13:44:01 EST</pubDate>
+			<pubDate>Thu, 07 Nov 2024 13:44:01 EST</pubDate>
 			<link>https://blog.lenovocdrt.com/introducing-lenovo-client-scripting-module-200</link>
 			</item>
 		<item>
             <title>Deploying Intel Processor Power Management Package</title>
             <description>Deploying the Intel PPM package using Intune</description>
-			<pubDate>Thur, 17 October 2024 10:00:00 EST</pubDate>
+			<pubDate>Thu, 17 October 2024 10:00:00 EST</pubDate>
 			<link>https://blog.lenovocdrt.com/deploying-the-intel-processor-power-management-package</link>
             </item>
         <item>
@@ -142,7 +142,7 @@
 		<item>
 			<title>ARM-based Operating System Deployment</title>
 			<description>Deploying Windows to ARM-based devices using Configuration Manager</description>
-			<pubDate>Thur, 25 April 2024 10:00:00 EST</pubDate>
+			<pubDate>Thu, 25 April 2024 10:00:00 EST</pubDate>
 			<link>https://blog.lenovocdrt.com/arm-based-operating-system-deployment</link>
 			</item>
 		<item>
@@ -172,7 +172,7 @@
 		<item>
 			<title>Enable Logging for Commercial Vantage</title>
 			<description>Example solutions on how to enable logging for Commercial Vantage</description>
-			<pubDate>Thur, 10 August 2023 13:00:00 EST</pubDate>
+			<pubDate>Thu, 10 August 2023 13:00:00 EST</pubDate>
 			<link>https://blog.lenovocdrt.com/enabling-logging-for-commercial-vantage</link>
 			</item>
 		<item>
@@ -316,7 +316,7 @@
 		<item>
 			<title>Managing System Update with Intune</title>
 			<description>Creating a Custom Configuration Profile to manage Lenovo System Update</description>
-			<pubDate>Thur, 12 Mar 2020 12:07:00 EST</pubDate>
+			<pubDate>Thu, 12 Mar 2020 12:07:00 EST</pubDate>
 			<link>https://blog.lenovocdrt.com/managing-system-update-with-intune</link>
 			</item>
 		<item>

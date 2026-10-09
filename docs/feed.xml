@@ -28,19 +28,19 @@
 		<item>
 			<title>Introducing the Lenovo Updates Dashboard</title>
 			<description>This article describes a PowerShell-based solution for monitoring the available updates through the System Update catalogs for Lenovo devices.</description>
-			<pubDate>Thu, 03 Sept 2026 13:00:00 EST</pubDate>
+			<pubDate>Thu, 03 Sep 2026 13:00:00 EST</pubDate>
 			<link>https://blog.lenovocdrt.com/introducing-the-lenovo-updates-dashboard/</link>
 			</item>
 		<item>
 			<title>Current Drivers, Firmware, and BIOS During Autopilot Pre-Provisioning With Intune and LCU</title>
 			<description>Replacing the Thin Installer method with an Intune Win32 app built around the Lenovo.Client.Update module to install drivers, firmware, and BIOS during Autopilot pre-provisioning.</description>
-			<pubDate>Mon, 08 June 2026 13:00:00 EST</pubDate>
+			<pubDate>Mon, 08 Jun 2026 13:00:00 EST</pubDate>
 			<link>https://blog.lenovocdrt.com/autopilot-pre-provisioning-current-drivers-firmware-bios-lcu/</link>
 			</item>
 		<item>
 			<title>Introducing ThinkVantage Repository Manager</title>
 			<description>An alternative to Update Retriever for managing local repositories with better automation capabilities.</description>
-			<pubDate>Tue, 02 June 2026 13:21:00 EST</pubDate>
+			<pubDate>Tue, 02 Jun 2026 13:21:00 EST</pubDate>
 			<link>https://blog.lenovocdrt.com/introducing-thinkvantage-repository-manager</link>
 			</item>
 		<item>
@@ -88,13 +88,13 @@
 		<item>
 			<title>Automate Partition Sizes When Using Windows 11 ISO</title>
 			<description>Updating the Windows 11 ISO file to automate partition sizes to accomodate OEM Tooling requirements.</description>
-			<pubDate>Mon, 15 Sept 2025 09:00:00 EST</pubDate>
+			<pubDate>Mon, 15 Sep 2025 09:00:00 EST</pubDate>
 			<link>https://blog.lenovocdrt.com/automate-partition-sizes-when-using-windows-11-iso/</link>
 			</item>
 		<item>
 			<title>Deploying Certificate-based BIOS Authentication</title>
 			<description>Using a Microsoft Configuration Manager task sequence to deploy certificate-based BIOS authentication</description>
-			<pubDate>Thu, 04 Sept 2025 09:00:00 EST</pubDate>
+			<pubDate>Thu, 04 Sep 2025 09:00:00 EST</pubDate>
 			<link>https://blog.lenovocdrt.com/deploying-certificate-based-bios-authentication-with-microsoft-configuration-manager</link>
 			</item>
 		<item>
@@ -106,7 +106,7 @@
 		<item>
 			<title>Use Cases for SU Helper</title>
 			<description>Demonstrating different use cases for SU Helper across Microsoft's Endpoint Management solutions</description>
-			<pubDate>Thu, 19 Feb 2025 09:00:00 EST</pubDate>
+			<pubDate>Wed, 19 Feb 2025 09:00:00 EST</pubDate>
 			<link>https://blog.lenovocdrt.com/su-helper-use-cases-in-a-modern-world</link>
 			</item>
 		<item>
@@ -124,73 +124,73 @@
 		<item>
             <title>Deploying Intel Processor Power Management Package</title>
             <description>Deploying the Intel PPM package using Intune</description>
-			<pubDate>Thu, 17 October 2024 10:00:00 EST</pubDate>
+			<pubDate>Thu, 17 Oct 2024 10:00:00 EST</pubDate>
 			<link>https://blog.lenovocdrt.com/deploying-the-intel-processor-power-management-package</link>
             </item>
         <item>
             <title>Introducing: SU Helper</title>
             <description>The SU Helper Utility provides a command-line interface for triggering the System Update process of Commercial Vantage.</description>
-			<pubDate>Mon, 19 August 2024 10:00:00 EST</pubDate>
+			<pubDate>Mon, 19 Aug 2024 10:00:00 EST</pubDate>
 			<link>https://blog.lenovocdrt.com/introducing-su-helper-utility</link>
             </item>
 		<item>
 			<title>Changing the BIOS Password with Intune and Think BIOS Config Tool</title>
 			<description>Changing the BIOS supervisor password with Intune and Think BIOS config tool</description>
-			<pubDate>Tue, 16 July 2024 10:00:00 EST</pubDate>
+			<pubDate>Tue, 16 Jul 2024 10:00:00 EST</pubDate>
 			<link>https://blog.lenovocdrt.com/changing-the-bios-supervisor-password-with-intune-and-the-think-bios-config-tool</link>
 			</item>
 		<item>
 			<title>ARM-based Operating System Deployment</title>
 			<description>Deploying Windows to ARM-based devices using Configuration Manager</description>
-			<pubDate>Thu, 25 April 2024 10:00:00 EST</pubDate>
+			<pubDate>Thu, 25 Apr 2024 10:00:00 EST</pubDate>
 			<link>https://blog.lenovocdrt.com/arm-based-operating-system-deployment</link>
 			</item>
 		<item>
 			<title>Introducing: Lenovo Device Management Module</title>
 			<description>The Lenovo Device Management Module (PowerShell) simplifies automation of tasks for Lenovo PCs.</description>
-			<pubDate>Mon, 15 January 2024 10:30:00 EST</pubDate>
+			<pubDate>Mon, 15 Jan 2024 10:30:00 EST</pubDate>
 			<link>https://blog.lenovocdrt.com/introducing-lenovo-device-management-module</link>
 			</item>
 		<item>
 			<title>Configuration Manager - Driver Import Error: "Some packages cannot be updated"</title>
 			<description>How to address this error when importing driver packs.</description>
-			<pubDate>Mon, 17 January 2024 10:30:00 EST</pubDate>
+			<pubDate>Wed, 17 Jan 2024 10:30:00 EST</pubDate>
 			<link>https://blog.lenovocdrt.com/configuration-manager---driver-import-error-some-packages-cannot-be-updated</link>
 			</item>
 		<item>
 			<title>The Windows 365 Experience on Lenovo ThinkPhone</title>
 			<description>Enrolling ThinkPhone in Intune to connect to your Windows 365 Cloud PC</description>
-			<pubDate>Wed, 25 October 2023 10:30:00 EST</pubDate>
+			<pubDate>Wed, 25 Oct 2023 10:30:00 EST</pubDate>
 			<link>https://blog.lenovocdrt.com/windows-365-and-thinkphone</link>
 			</item>
 		<item>
 			<title>Autopilot + Thin Installer = Current Drivers/BIOS/Firmware</title>
 			<description>Update drivers/BIOS/Firmware during Autopilot</description>
-			<pubDate>Tue, 10 October 2023 13:00:00 EST</pubDate>
+			<pubDate>Tue, 10 Oct 2023 13:00:00 EST</pubDate>
 			<link>https://blog.lenovocdrt.com/autopilot--thin-installer--current-driversbiosfirmware</link>
 			</item>
 		<item>
 			<title>Enable Logging for Commercial Vantage</title>
 			<description>Example solutions on how to enable logging for Commercial Vantage</description>
-			<pubDate>Thu, 10 August 2023 13:00:00 EST</pubDate>
+			<pubDate>Thu, 10 Aug 2023 13:00:00 EST</pubDate>
 			<link>https://blog.lenovocdrt.com/enabling-logging-for-commercial-vantage</link>
 			</item>
 		<item>
 			<title>Updating Intel ME Firmware with Intune</title>
 			<description>Deploying Intel ME firmware updates as Win32 apps with Intune</description>
-			<pubDate>Wed, 26 July 2023 13:00:00 EST</pubDate>
+			<pubDate>Wed, 26 Jul 2023 13:00:00 EST</pubDate>
 			<link>https://blog.lenovocdrt.com/deploying-intel-me-firmware--updates-with-intune</link>
 			</item>
 		<item>
 			<title>Certifice-based BIOS Authentication</title>
 			<description>How to leverage certificates instead of passwords with Lenovo WMI BIOS interface.</description>
-			<pubDate>Mon, 24 July 2023 16:13:00 EST</pubDate>
+			<pubDate>Mon, 24 Jul 2023 16:13:00 EST</pubDate>
 			<link>https://blog.lenovocdrt.com/certificate-based-bios-authentication</link>
 			</item>
 		<item>
 			<title>Updating Thin Installer With Proactive Remediations</title>
 			<description>Updating Thin Installer with Intune Proactive Remediations</description>
-			<pubDate>Wed, 12 April 2023 14:30:00 EST</pubDate>
+			<pubDate>Wed, 12 Apr 2023 14:30:00 EST</pubDate>
 			<link>https://blog.lenovocdrt.com/updating-lenovo-thin-installer-with-proactive-remediations</link>
 			</item>
 		<item>
@@ -202,13 +202,13 @@
 		<item>
 			<title>Graph API and Intune Device Notes</title>
 			<description>Adding Model Friendly Name to an Intune Device Note using Graph API</description>
-			<pubDate>Tue, 7 Feb 2023 16:00:00 EST</pubDate>
+			<pubDate>Tue, 07 Feb 2023 16:00:00 EST</pubDate>
 			<link>https://blog.lenovocdrt.com/adding-model-friendly-name-to-intune-device-notes</link>
 			</item>
 		<item>
 			<title>Lenovo Device Health and Log Analytics</title>
 			<description>Reporting on Lenovo Updates, Warranty, and Battery Health in Intune</description>
-			<pubDate>Tue, 27 Sept 2022 10:00:00 EST</pubDate>
+			<pubDate>Tue, 27 Sep 2022 10:00:00 EST</pubDate>
 			<link>https://blog.lenovocdrt.com/reporting-on-update-status-bios-level-cves-and-more</link>
 			</item>
 		<item>
@@ -370,7 +370,7 @@
 		<item>
 			<title>ThinkCentre TPM Firmware Switch Tool</title>
 			<description>Demonstrating how to update TPM firmware with ConfigMgr</description>
-			<pubDate>Mon, 26 March 2018 09:59:00 EST</pubDate>
+			<pubDate>Mon, 26 Mar 2018 09:59:00 EST</pubDate>
 			<link>https://blog.lenovocdrt.com/how-to-use-thinkcentres-tpm-firmware--switch-tool-with-configmgr</link>
 			</item>
 		<item>

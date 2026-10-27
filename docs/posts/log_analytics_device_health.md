@@ -14,7 +14,7 @@ title: Reporting on Update Status, BIOS Level, CVEs, and More
 This post will walk through deploying a [Remediation](https://learn.microsoft.com/mem/intune/fundamentals/remediations) script that will collect data from specific Lenovo WMI classes and send it to a [Log Analytics Workspace](https://learn.microsoft.com/azure/azure-monitor/logs/log-analytics-workspace-overview) in Azure Monitor using the [Logs Ingestion API](https://learn.microsoft.com/azure/azure-monitor/logs/logs-ingestion-api-overview).
 <!-- more -->
 !!! note
-    This post was updated on **2026-10-22** to use the Logs Ingestion API. Support for the HTTP Data Collector API used by previous versions of this solution ended on **2026-09-14**. If you deployed a previous version, follow the steps in [Upgrading From the HTTP Data Collector API](#upgrading-from-the-http-data-collector-api).
+    This post was updated on **2026-10-27** to use the Logs Ingestion API. Support for the HTTP Data Collector API used by previous versions of this solution ended on **2026-09-14**. If you deployed a previous version, follow the steps in [Upgrading From the HTTP Data Collector API](#upgrading-from-the-http-data-collector-api).
 
 We can then create an [Azure Monitor Workbook](https://learn.microsoft.com/azure/azure-monitor/visualize/workbooks-overview) to report on the following data from your Lenovo devices.
 

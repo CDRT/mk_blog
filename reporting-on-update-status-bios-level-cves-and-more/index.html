@@ -1,0 +1,1670 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Ideas for managing Lenovo devices in the corporate environment.">
+      
+      
+      
+        <link rel="canonical" href="https://blog.lenovocdrt.com/reporting-on-update-status-bios-level-cves-and-more/">
+      
+      
+        <link rel="prev" href="../correcting-the-qualcomm-x55-wwan-excessive-logging-issue/">
+      
+      
+        <link rel="next" href="../adding-model-friendly-name-to-intune-device-notes/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../img/fav/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+    
+    
+      
+        <title>Reporting on Update Status, BIOS Level, CVEs, and More - ThinkDeploy Blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Work+Sans:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Work Sans";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-8K4B4NPHZB"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-8K4B4NPHZB",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-8K4B4NPHZB",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>if("undefined"!=typeof __md_analytics){var consent=__md_get("__consent");consent&&consent.analytics&&__md_analytics()}</script>
+  
+
+    
+    
+  <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="light-blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#overview" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="ThinkDeploy Blog" class="md-header__button md-logo" aria-label="ThinkDeploy Blog" data-md-component="logo">
+      
+  <img src="../img/CDRT-REV-Red_s.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ThinkDeploy Blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Reporting on Update Status, BIOS Level, CVEs, and More
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="light-blue" aria-label="Switch to dark mode" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="blue-grey" aria-label="Switch to light mode" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden="">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required="">
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix="">
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden="">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="ThinkDeploy Blog" class="md-nav__button md-logo" aria-label="ThinkDeploy Blog" data-md-component="logo">
+      
+  <img src="../img/CDRT-REV-Red_s.png" alt="logo">
+
+    </a>
+    ThinkDeploy Blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix="">
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../feed.xml" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RSS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3">
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Archive
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Archive
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2026/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2026
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2025/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2025
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2024/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2024
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2023/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2023
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2022/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2022
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2021/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2021
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2020/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2020
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2019/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2019
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2018/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2018
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/2017/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2017
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href=".." class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="../img/fav/avatar.png" alt="Philip Jorgensen">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          Philip Jorgensen
+                        
+                      </strong>
+                      <br>
+                      Deployment Expert
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"></path></svg>
+                        <time datetime="2022-09-27 00:00:00+00:00" class="md-ellipsis">September 27, 2022</time>
+                      </div>
+                    </li>
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15 13h1.5v2.82l2.44 1.41-.75 1.3L15 16.69zm4-5H5v11h4.67c-.43-.91-.67-1.93-.67-3a7 7 0 0 1 7-7c1.07 0 2.09.24 3 .67zM5 21a2 2 0 0 1-2-2V5c0-1.11.89-2 2-2h1V1h2v2h8V1h2v2h1a2 2 0 0 1 2 2v6.1c1.24 1.26 2 2.99 2 4.9a7 7 0 0 1-7 7c-1.91 0-3.64-.76-4.9-2zm11-9.85A4.85 4.85 0 0 0 11.15 16c0 2.68 2.17 4.85 4.85 4.85A4.85 4.85 0 0 0 20.85 16c0-2.68-2.17-4.85-4.85-4.85"></path></svg>
+                          <time datetime="2026-10-27 00:00:00+00:00" class="md-ellipsis">October 27, 2026</time>
+                        </div>
+                      </li>
+                    
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"></path></svg>
+                          <span class="md-ellipsis">
+                            
+                              10 min read
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+            
+          </nav>
+          
+            
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#update-installation-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Update Installation Status
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bios-level-and-cves" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BIOS Level and CVEs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#battery-health-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Battery Health Status
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#warranty-end-date" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Warranty End Date
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Prerequisites">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#commercial-vantage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commercial Vantage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lenovo-client-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lenovo Client Update
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#required-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Required Files
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#azure-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Azure Setup
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Azure Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#log-analytics-workspace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Log Analytics Workspace
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-the-data-collection-endpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Create the Data Collection Endpoint
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Create the Data Collection Endpoint">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#azure-portal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Azure Portal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#powershell" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PowerShell
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-the-app-registration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Create the App Registration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Create the App Registration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#microsoft-entra-admin-center" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Microsoft Entra Admin Center
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#powershell_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PowerShell
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deploy-the-data-collection-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deploy the Data Collection Rule
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deploy the Data Collection Rule">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#upgrading-from-the-http-data-collector-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Upgrading From the HTTP Data Collector API
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azure-portal_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Azure Portal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#powershell_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PowerShell
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploying-the-remediation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deploying the Remediation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reporting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reporting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reporting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adding-the-workbook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adding the Workbook
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+  
+
+
+
+
+  <h1>Reporting on Update Status, BIOS Level, CVEs, and More</h1>
+
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="https://cdrt.github.io/mk_blog/img/2022/log_analytics_device_health/azure-workbooks.png" data-desc-position="bottom"><img alt="Azure Workbooks Icon" src="https://cdrt.github.io/mk_blog/img/2022/log_analytics_device_health/azure-workbooks.png"></a></p>
+<p>This post will walk through deploying a <a href="https://learn.microsoft.com/mem/intune/fundamentals/remediations">Remediation</a> script that will collect data from specific Lenovo WMI classes and send it to a <a href="https://learn.microsoft.com/azure/azure-monitor/logs/log-analytics-workspace-overview">Log Analytics Workspace</a> in Azure Monitor using the <a href="https://learn.microsoft.com/azure/azure-monitor/logs/logs-ingestion-api-overview">Logs Ingestion API</a>.</p>
+<!-- more -->
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This post was updated on <strong>2026-10-27</strong> to use the Logs Ingestion API. Support for the HTTP Data Collector API used by previous versions of this solution ended on <strong>2026-09-14</strong>. If you deployed a previous version, follow the steps in <a href="#upgrading-from-the-http-data-collector-api">Upgrading From the HTTP Data Collector API</a>.</p>
+</div>
+<p>We can then create an <a href="https://learn.microsoft.com/azure/azure-monitor/visualize/workbooks-overview">Azure Monitor Workbook</a> to report on the following data from your Lenovo devices.</p>
+<div class="admonition info">
+<p>This solution is not supported on ThinkBook</p>
+</div>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">#</a></h2>
+<blockquote>
+<p>Summarizes the fleet in tiles: devices reporting, BIOS out of date, devices with pending or failed updates, batteries in red health, warranties expiring within 90 days, and devices that haven't reported in more than 7 days</p>
+</blockquote>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="https://cdrt.github.io/mk_blog/img/2022/log_analytics_device_health/overview.jpg" data-desc-position="bottom"><img alt="Overview" src="https://cdrt.github.io/mk_blog/img/2022/log_analytics_device_health/overview.jpg"></a></p>
+<hr>
+<h2 id="update-installation-status">Update Installation Status<a class="headerlink" href="#update-installation-status" title="Permanent link">#</a></h2>
+<blockquote>
+<p>Summarizes installed, pending, failed, and not applicable updates for each device. Select a device to list its updates by title, version, severity, and install status.</p>
+</blockquote>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="https://cdrt.github.io/mk_blog/img/2022/log_analytics_device_health/image1.jpg" data-desc-position="bottom"><img alt="UpdateStatus" src="https://cdrt.github.io/mk_blog/img/2022/log_analytics_device_health/image1.jpg"></a></p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="https://cdrt.github.io/mk_blog/img/2022/log_analytics_device_health/image2.jpg" data-desc-position="bottom"><img alt="UpdateStatus" src="https://cdrt.github.io/mk_blog/img/2022/log_analytics_device_health/image2.jpg"></a></p>
+<hr>
+<h2 id="bios-level-and-cves">BIOS Level and CVEs<a class="headerlink" href="#bios-level-and-cves" title="Permanent link">#</a></h2>
+<blockquote>
+<p>Compares the installed BIOS on each device with the latest version in the Lenovo catalog and lists the CVEs addressed by the latest BIOS.</p>
+</blockquote>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="https://cdrt.github.io/mk_blog/img/2022/log_analytics_device_health/image3.jpg" data-desc-position="bottom"><img alt="BIOS" src="https://cdrt.github.io/mk_blog/img/2022/log_analytics_device_health/image3.jpg"></a></p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="https://cdrt.github.io/mk_blog/img/2022/log_analytics_device_health/image4.jpg" data-desc-position="bottom"><img alt="BIOS" src="https://cdrt.github.io/mk_blog/img/2022/log_analytics_device_health/image4.jpg"></a></p>
+<h2 id="battery-health-status">Battery Health Status<a class="headerlink" href="#battery-health-status" title="Permanent link">#</a></h2>
+<blockquote>
+<p>Lists the battery health of each ThinkPad. Select a slice of the chart to filter the list.</p>
+</blockquote>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="https://cdrt.github.io/mk_blog/img/2022/log_analytics_device_health/image5.jpg" data-desc-position="bottom"><img alt="BatteryHealth" src="https://cdrt.github.io/mk_blog/img/2022/log_analytics_device_health/image5.jpg"></a></p>
+<hr>
+<h2 id="warranty-end-date">Warranty End Date<a class="headerlink" href="#warranty-end-date" title="Permanent link">#</a></h2>
+<blockquote>
+<p>Groups devices by warranty status (expired, expiring within 90 days, expiring within 1 year, or more than 1 year) and lists the end date and days remaining for each device</p>
+</blockquote>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="https://cdrt.github.io/mk_blog/img/2022/log_analytics_device_health/image6.jpg" data-desc-position="bottom"><img alt="WarrantyEnd" src="https://cdrt.github.io/mk_blog/img/2022/log_analytics_device_health/image6.jpg"></a></p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="https://cdrt.github.io/mk_blog/img/2022/log_analytics_device_health/image7.jpg" data-desc-position="bottom"><img alt="WarrantyEnd" src="https://cdrt.github.io/mk_blog/img/2022/log_analytics_device_health/image7.jpg"></a></p>
+<h2 id="prerequisites"><strong>Prerequisites</strong><a class="headerlink" href="#prerequisites" title="Permanent link">#</a></h2>
+<p>Each report in the workbook relies on a data source on the endpoint.</p>
+<table>
+<thead>
+<tr>
+<th>Report</th>
+<th>WMI class</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Update Installation Status</td>
+<td><strong>root\Lenovo\Lenovo_Updates</strong></td>
+<td>Commercial Vantage or Lenovo Client Update</td>
+</tr>
+<tr>
+<td>Battery Health Status</td>
+<td><strong>root\Lenovo\Lenovo_Battery</strong></td>
+<td>Commercial Vantage (ThinkPad only)</td>
+</tr>
+<tr>
+<td>Warranty End Date</td>
+<td><strong>root\Lenovo\Lenovo_WarrantyInformation</strong></td>
+<td>Commercial Vantage</td>
+</tr>
+<tr>
+<td>BIOS Level and CVEs</td>
+<td><strong>root\CIMV2\Win32_BIOS</strong></td>
+<td>None. The script installs the Lenovo Client Scripting Module to look up the available BIOS version and CVEs.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="commercial-vantage">Commercial Vantage<a class="headerlink" href="#commercial-vantage" title="Permanent link">#</a></h3>
+<p><a href="https://support.lenovo.com/solutions/hf003321-lenovo-vantage-for-enterprise">Lenovo Commercial Vantage</a> is required for the battery and warranty data, and can also provide the update installation status.</p>
+<div class="admonition info">
+<p>For a step by step guide on how to deploy Commercial Vantage through Intune, refer to this blog <a href="https://blog.lenovocdrt.com/deploying-commercial-vantage-with-intune">article</a>.</p>
+</div>
+<p>The following policies need to be enabled in order to create the WMI classes that will be inventoried</p>
+<ul>
+<li>Configure System Update</li>
+<li>Write warranty information to WMI table</li>
+<li>Write battery information to WMI table</li>
+</ul>
+<p>If the battery or warranty policies aren't enabled, the status will return as "Unavailable" in the workbook.</p>
+<h3 id="lenovo-client-update">Lenovo Client Update<a class="headerlink" href="#lenovo-client-update" title="Permanent link">#</a></h3>
+<p>If you update devices with the <a href="https://docs.lenovocdrt.com/guides/lcu/">Lenovo Client Update</a> module, it writes installation history to the same <strong>Lenovo_Updates</strong> WMI class when <a href="https://docs.lenovocdrt.com/guides/lcu/functions/install-lnvupdate/">Install-LnvUpdate</a> is run with the <code>-ExportToWMI</code> parameter. The Update Installation Status report includes these results without Commercial Vantage installed.</p>
+<h3 id="required-files">Required Files<a class="headerlink" href="#required-files" title="Permanent link">#</a></h3>
+<ul>
+<li>
+<p><strong>Get-LenovoDeviceStatus.ps1</strong></p>
+</li>
+<li>
+<p><strong>LenovoDeviceHealth.json</strong></p>
+</li>
+<li>
+<p><strong>LenovoDeviceHealthDcr.json</strong></p>
+</li>
+</ul>
+<p>Download all three files from our GitHub <a href="https://github.com/CDRT/Library/tree/master/lenovo-device-health/Log%20Analytics">here</a>.</p>
+<h2 id="azure-setup"><strong>Azure Setup</strong><a class="headerlink" href="#azure-setup" title="Permanent link">#</a></h2>
+<h3 id="log-analytics-workspace">Log Analytics Workspace<a class="headerlink" href="#log-analytics-workspace" title="Permanent link">#</a></h3>
+<p>Assuming a Log Analytics Workspace has been created, note its <strong>Name</strong>, <strong>Resource group</strong>, and <strong>Location</strong> from the workspace <strong>Overview</strong> page. The Data Collection Endpoint and Data Collection Rule created in the next steps must be in the same region as the workspace.</p>
+<h3 id="create-the-data-collection-endpoint">Create the Data Collection Endpoint<a class="headerlink" href="#create-the-data-collection-endpoint" title="Permanent link">#</a></h3>
+<p>The Data Collection Endpoint (DCE) provides the URL the Remediation script sends inventory data to.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <strong>Microsoft.Insights</strong> resource provider must be registered in the subscription before creating a DCE. Check its status under <strong>Subscriptions</strong> &gt; <strong>Resource providers</strong>, or register it with <code>Register-AzResourceProvider -ProviderNamespace Microsoft.Insights</code>.</p>
+</div>
+<h4 id="azure-portal">Azure Portal<a class="headerlink" href="#azure-portal" title="Permanent link">#</a></h4>
+<ul>
+<li>Login to the Azure <a href="https://portal.azure.com">Portal</a></li>
+<li>Go to <strong>Monitor</strong> &gt; <strong>Settings</strong> &gt; <strong>Data Collection Endpoints</strong></li>
+<li>Click <strong>Create</strong></li>
+<li>Enter a <strong>Name</strong>, such as <strong>dce-lenovo-device-health</strong></li>
+<li>Select the <strong>Subscription</strong> and <strong>Resource group</strong>, and set the <strong>Region</strong> to the region of your workspace</li>
+<li>Click <strong>Review + create</strong>, then <strong>Create</strong></li>
+<li>Once the deployment completes, click <strong>Go to resource</strong> and confirm the <strong>Provisioning Status</strong> is <strong>Succeeded</strong></li>
+<li>On the <strong>Overview</strong> page, click <strong>JSON View</strong> and copy the following values:<ul>
+<li><strong>Resource ID</strong></li>
+<li><strong>logsIngestion</strong> &gt; <strong>endpoint</strong> (for example, <code>https://dce-lenovo-device-health-a1b2.eastus-1.ingest.monitor.azure.com</code>)</li>
+</ul>
+</li>
+</ul>
+<h4 id="powershell">PowerShell<a class="headerlink" href="#powershell" title="Permanent link">#</a></h4>
+<p>Alternatively, create the DCE with the <strong>Az.Monitor</strong> module after signing in with <code>Connect-AzAccount</code>.</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nv">$dceParams</span> <span class="p">=</span> <span class="p">@{</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">Name</span>                           <span class="p">=</span> <span class="s1">'dce-lenovo-device-health'</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">ResourceGroupName</span>              <span class="p">=</span> <span class="s1">'rg-log-analytics'</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">Location</span>                       <span class="p">=</span> <span class="s1">'eastus'</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">NetworkAclsPublicNetworkAccess</span> <span class="p">=</span> <span class="s1">'Enabled'</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="p">}</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="nv">$dce</span> <span class="p">=</span> <span class="nb">New-AzDataCollectionEndpoint</span> <span class="nv">@dceParams</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c"># Resource ID for the Data Collection Rule template</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="nv">$dce</span><span class="p">.</span><span class="n">Id</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="c"># Logs ingestion endpoint for the Remediation script</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="nv">$dce</span><span class="p">.</span><span class="n">LogIngestionEndpoint</span>
+</span></code></pre></div>
+<p>Replace the <strong>ResourceGroupName</strong> and <strong>Location</strong> values with those of your workspace.</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Used by</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Resource ID</td>
+<td><strong>dataCollectionEndpointResourceId</strong> parameter of the Data Collection Rule template</td>
+</tr>
+<tr>
+<td>Logs ingestion endpoint</td>
+<td><strong>Get-LenovoDeviceStatus.ps1</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="create-the-app-registration">Create the App Registration<a class="headerlink" href="#create-the-app-registration" title="Permanent link">#</a></h3>
+<p>The Remediation script authenticates to the Logs Ingestion API with a Microsoft Entra app registration and client secret. The app doesn't need any API permissions. Its only access is the <strong>Monitoring Metrics Publisher</strong> role on the Data Collection Rule, which is assigned when the rule is deployed.</p>
+<h4 id="microsoft-entra-admin-center">Microsoft Entra Admin Center<a class="headerlink" href="#microsoft-entra-admin-center" title="Permanent link">#</a></h4>
+<ul>
+<li>Login to the Microsoft Entra <a href="https://entra.microsoft.com">admin center</a></li>
+<li>Go to <strong>Entra ID</strong> &gt; <strong>App registrations</strong></li>
+<li>Click <strong>New registration</strong></li>
+<li>Enter a <strong>Name</strong>, such as <strong>Lenovo Device Health Ingestion</strong></li>
+<li>Leave <strong>Supported account types</strong> set to <strong>Single tenant only</strong> and leave the <strong>Redirect URI</strong> blank</li>
+<li>Click <strong>Register</strong></li>
+<li>On the <strong>Overview</strong> page, copy the <strong>Application (client) ID</strong> and <strong>Directory (tenant) ID</strong></li>
+<li>Go to <strong>Certificates &amp; secrets</strong> &gt; <strong>Client secrets</strong> and click <strong>New client secret</strong></li>
+<li>Enter a <strong>Description</strong>, select an <strong>Expires</strong> duration, and click <strong>Add</strong></li>
+<li>Copy the secret <strong>Value</strong> right away. It's only displayed once.</li>
+<li>Go to <strong>Entra ID</strong> &gt; <strong>Enterprise apps</strong>, search for the app name, and copy its <strong>Object ID</strong></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The Object ID on the <strong>Enterprise apps</strong> page belongs to the service principal and is the value the role assignment needs. The <strong>Object ID</strong> on the <strong>App registrations</strong> page is a different value.</p>
+</div>
+<h4 id="powershell_1">PowerShell<a class="headerlink" href="#powershell_1" title="Permanent link">#</a></h4>
+<p>Alternatively, create the app registration with the <strong>Az.Resources</strong> module after signing in with <code>Connect-AzAccount</code>.</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nv">$app</span> <span class="p">=</span> <span class="nb">New-AzADApplication</span> <span class="n">-DisplayName</span> <span class="s1">'Lenovo Device Health Ingestion'</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nv">$servicePrincipal</span> <span class="p">=</span> <span class="nb">New-AzADServicePrincipal</span> <span class="n">-ApplicationId</span> <span class="nv">$app</span><span class="p">.</span><span class="n">AppId</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nv">$secret</span> <span class="p">=</span> <span class="nb">New-AzADAppCredential</span> <span class="n">-ApplicationId</span> <span class="nv">$app</span><span class="p">.</span><span class="n">AppId</span> <span class="n">-EndDate</span> <span class="p">(</span><span class="nb">Get-Date</span><span class="p">).</span><span class="n">AddMonths</span><span class="p">(</span><span class="n">12</span><span class="p">)</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="c"># Values for the Data Collection Rule template and Remediation script</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="no">[PSCustomObject]</span><span class="p">@{</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">TenantId</span>                 <span class="p">=</span> <span class="p">(</span><span class="nb">Get-AzContext</span><span class="p">).</span><span class="n">Tenant</span><span class="p">.</span><span class="n">Id</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="n">ClientId</span>                 <span class="p">=</span> <span class="nv">$app</span><span class="p">.</span><span class="n">AppId</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="n">ClientSecret</span>             <span class="p">=</span> <span class="nv">$secret</span><span class="p">.</span><span class="n">SecretText</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    <span class="n">ServicePrincipalObjectId</span> <span class="p">=</span> <span class="nv">$servicePrincipal</span><span class="p">.</span><span class="n">Id</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="p">}</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Used by</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Directory (tenant) ID</td>
+<td><strong>Get-LenovoDeviceStatus.ps1</strong></td>
+</tr>
+<tr>
+<td>Application (client) ID</td>
+<td><strong>Get-LenovoDeviceStatus.ps1</strong></td>
+</tr>
+<tr>
+<td>Client secret value</td>
+<td><strong>Get-LenovoDeviceStatus.ps1</strong></td>
+</tr>
+<tr>
+<td>Enterprise app Object ID</td>
+<td><strong>servicePrincipalObjectId</strong> parameter of the Data Collection Rule template</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The client secret is stored in plain text in the Remediation script on each device. The secret can only send data to this Data Collection Rule and can't read any data from the workspace. Ingestion stops when the secret expires, so set a reminder to create a new secret and update the Remediation script before the expiration date.</p>
+</div>
+<h3 id="deploy-the-data-collection-rule">Deploy the Data Collection Rule<a class="headerlink" href="#deploy-the-data-collection-rule" title="Permanent link">#</a></h3>
+<p>The <strong>LenovoDeviceHealthDcr.json</strong> template deploys the following resources:</p>
+<ul>
+<li>The <strong>Lenovo_Device_Health_CL</strong> and <strong>Lenovo_Device_Properties_CL</strong> custom tables in your workspace</li>
+<li>A Data Collection Rule (DCR) that receives data through the DCE and writes it to both tables</li>
+<li>The <strong>Monitoring Metrics Publisher</strong> role assignment on the DCR for the app registration</li>
+</ul>
+<p>The template uses the same column names as the original HTTP Data Collector API tables, so the workbook queries work with both new and migrated tables.</p>
+<h4 id="upgrading-from-the-http-data-collector-api">Upgrading From the HTTP Data Collector API<a class="headerlink" href="#upgrading-from-the-http-data-collector-api" title="Permanent link">#</a></h4>
+<p>If you already have the <strong>Lenovo_Device_Health_CL</strong> and <strong>Lenovo_Device_Properties_CL</strong> tables from a previous version of this solution, migrate them to Data Collection Rule-based tables before deploying the template. Existing data is retained.</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nv">$migrateParams</span> <span class="p">=</span> <span class="p">@{</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">ResourceGroupName</span> <span class="p">=</span> <span class="s1">'rg-log-analytics'</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">WorkspaceName</span>     <span class="p">=</span> <span class="s1">'law-lenovo'</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="p">}</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="nb">Invoke-AzOperationalInsightsMigrateTable</span> <span class="nv">@migrateParams</span> <span class="n">-TableName</span> <span class="s1">'Lenovo_Device_Health_CL'</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="nb">Invoke-AzOperationalInsightsMigrateTable</span> <span class="nv">@migrateParams</span> <span class="n">-TableName</span> <span class="s1">'Lenovo_Device_Properties_CL'</span>
+</span></code></pre></div>
+<p>Confirm the migration in the Azure portal before deploying the template:</p>
+<ul>
+<li>Go to your <strong>Log Analytics workspace</strong> &gt; <strong>Settings</strong> &gt; <strong>Tables</strong></li>
+<li>Search for <strong>Lenovo_Device</strong></li>
+<li>Verify the <strong>Type</strong> column for both tables shows <strong>Custom table</strong>. A table that hasn't been migrated shows <strong>Custom table (classic)</strong>.</li>
+</ul>
+<p>When deploying the template, set <strong>deployTables</strong> to <strong>false</strong> so the migrated tables are left as they are. Deploying the template against tables that haven't been migrated fails with <strong>Data collection rule is invalid (Code: InvalidPayload)</strong>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Table migration can't be rolled back. Devices running the previous version of <strong>Get-LenovoDeviceStatus.ps1</strong> continue to send data to migrated tables until the updated Remediation script is deployed.</p>
+</div>
+<h4 id="azure-portal_1">Azure Portal<a class="headerlink" href="#azure-portal_1" title="Permanent link">#</a></h4>
+<ul>
+<li>Login to the Azure <a href="https://portal.azure.com">Portal</a></li>
+<li>Search for <strong>Deploy a custom template</strong> and select it</li>
+<li>Click <strong>Build your own template in the editor</strong></li>
+<li>Click <strong>Load file</strong>, browse to <strong>LenovoDeviceHealthDcr.json</strong>, and click <strong>Save</strong></li>
+<li>Select the <strong>Subscription</strong> and the <strong>Resource group</strong> that contains your workspace</li>
+<li>Fill in the parameters</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Workspace Name</td>
+<td>Name of your Log Analytics workspace</td>
+</tr>
+<tr>
+<td>Location</td>
+<td>Region of your workspace. Defaults to the region of the resource group.</td>
+</tr>
+<tr>
+<td>Data Collection Endpoint Resource Id</td>
+<td>Resource ID of the DCE</td>
+</tr>
+<tr>
+<td>Data Collection Rule Name</td>
+<td>Defaults to <strong>dcr-lenovo-device-health</strong></td>
+</tr>
+<tr>
+<td>Service Principal Object Id</td>
+<td>Object ID from <strong>Enterprise apps</strong></td>
+</tr>
+<tr>
+<td>Deploy Tables</td>
+<td><strong>true</strong> for new deployments, <strong>false</strong> for migrated tables</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Click <strong>Review + create</strong>, then <strong>Create</strong></li>
+<li>Once the deployment completes, select <strong>Outputs</strong> and copy the <strong>dcrImmutableId</strong> value</li>
+</ul>
+<h4 id="powershell_2">PowerShell<a class="headerlink" href="#powershell_2" title="Permanent link">#</a></h4>
+<p>Alternatively, deploy the template with the <strong>Az.Resources</strong> module.</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nv">$deploymentParams</span> <span class="p">=</span> <span class="p">@{</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="n">ResourceGroupName</span>       <span class="p">=</span> <span class="s1">'rg-log-analytics'</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="n">TemplateFile</span>            <span class="p">=</span> <span class="s1">'.\LenovoDeviceHealthDcr.json'</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">TemplateParameterObject</span> <span class="p">=</span> <span class="p">@{</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>        <span class="n">workspaceName</span>                    <span class="p">=</span> <span class="s1">'law-lenovo'</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>        <span class="n">dataCollectionEndpointResourceId</span> <span class="p">=</span> <span class="s1">'/subscriptions/&lt;subscription-id&gt;/resourceGroups/rg-log-analytics/providers/Microsoft.Insights/dataCollectionEndpoints/dce-lenovo-device-health'</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>        <span class="n">servicePrincipalObjectId</span>         <span class="p">=</span> <span class="s1">'&lt;enterprise-app-object-id&gt;'</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>        <span class="n">deployTables</span>                     <span class="p">=</span> <span class="nv">$true</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    <span class="p">}</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="p">}</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="nv">$deployment</span> <span class="p">=</span> <span class="nb">New-AzResourceGroupDeployment</span> <span class="nv">@deploymentParams</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="c"># DCR immutable ID for the Remediation script</span>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="nv">$deployment</span><span class="p">.</span><span class="n">Outputs</span><span class="p">.</span><span class="n">dcrImmutableId</span><span class="p">.</span><span class="n">Value</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Used by</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dcrImmutableId</td>
+<td><strong>Get-LenovoDeviceStatus.ps1</strong></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you leave <strong>servicePrincipalObjectId</strong> blank, assign the role manually. Open the DCR, go to <strong>Access control (IAM)</strong> &gt; <strong>Add role assignment</strong>, select <strong>Monitoring Metrics Publisher</strong>, and add the app registration as a member.</p>
+<p>Data can take 10-15 minutes to appear in new tables after the first upload.</p>
+</div>
+<h2 id="deploying-the-remediation">Deploying the Remediation<a class="headerlink" href="#deploying-the-remediation" title="Permanent link">#</a></h2>
+<p>Once you have Commercial Vantage installed and the necessary policies enabled on your endpoints, it's time to deploy the Remediation script to collect inventory. The script will install the <a href="https://www.powershellgallery.com/packages/Lenovo.Client.Scripting">Lenovo Client Scripting Module</a> from the PowerShell Gallery on the endpoint to help gather certain data, such as Available BIOS versions and CVEs.</p>
+<p>Replace the following variables in the <strong>Get-LenovoDeviceStatus.ps1</strong> script with the values collected in the previous steps.</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>$TenantId</strong></td>
+<td>Directory (tenant) ID of the app registration</td>
+</tr>
+<tr>
+<td><strong>$ClientId</strong></td>
+<td>Application (client) ID of the app registration</td>
+</tr>
+<tr>
+<td><strong>$ClientSecret</strong></td>
+<td>Client secret value of the app registration</td>
+</tr>
+<tr>
+<td><strong>$DceEndpoint</strong></td>
+<td>Logs ingestion endpoint of the Data Collection Endpoint</td>
+</tr>
+<tr>
+<td><strong>$DcrImmutableId</strong></td>
+<td><strong>dcrImmutableId</strong> output of the Data Collection Rule deployment</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Login to the Microsoft Endpoint Manager <a href="https://endpoint.microsoft.com">admin center</a></li>
+<li>Navigate to <strong>Devices</strong> &gt; <strong>Scripts and remediations</strong></li>
+<li>Click <strong>Create</strong></li>
+<li>Enter a name for the script and click <strong>Next</strong></li>
+<li>Browse to <strong>Get-LenovoDeviceStatus.ps1</strong> for the <strong>Detection script file</strong></li>
+<li>Select <strong>Yes</strong> to <strong>Run script in 64-bit PowerShell</strong> and click <strong>Next</strong></li>
+<li>Assign to a group and edit the schedule. Set <strong>Frequency</strong> to <strong>Daily</strong>, <strong>Repeats every</strong> to <strong>7 days</strong>, and choose a <strong>Start time</strong>.</li>
+<li><strong>Create</strong></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The workbook reports on the last 30 days of data by default and shows the most recent inventory of each device. A weekly schedule gives each device several chances to report within that window, including devices that are offline for a run. Running the Remediation more often adds rows to the tables without affecting the workbook counts.</p>
+</div>
+<p>As devices receive the policy, review the <strong>Device status</strong> blade to verify if devices don't have Commercial Vantage installed or the necessary policies enabled. You can review this by adding the <strong>Pre-remediation detection output</strong> column.</p>
+<h2 id="reporting">Reporting<a class="headerlink" href="#reporting" title="Permanent link">#</a></h2>
+<p>Once devices run the Remediation, confirm the data is arriving in your workspace.</p>
+<ul>
+<li>Login to the Azure <a href="https://portal.azure.com">Portal</a></li>
+<li>Go to your <strong>Log Analytics workspace</strong> &gt; <strong>Logs</strong></li>
+<li>If the query editor opens in <strong>Simple mode</strong>, switch to <strong>KQL mode</strong> with the toggle in the top right</li>
+<li>Run the following queries to view the most recent data in each table</li>
+</ul>
+<div class="language-kusto highlight"><span class="filename">Device properties</span><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">Lenovo_Device_Properties_CL</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="p">|</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">TimeGenerated</span><span class="w"> </span><span class="p">&gt;</span><span class="w"> </span><span class="n">ago</span><span class="p">(</span><span class="mi">1</span><span class="n">d</span><span class="p">)</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="p">|</span><span class="w"> </span><span class="k">project</span><span class="w"> </span><span class="n">TimeGenerated</span><span class="p">,</span><span class="w"> </span><span class="n">Hostname_s</span><span class="p">,</span><span class="w"> </span><span class="n">MTM_s</span><span class="p">,</span><span class="w"> </span><span class="n">Product_s</span><span class="p">,</span><span class="w"> </span><span class="n">BatteryHealth_s</span><span class="p">,</span><span class="w"> </span><span class="n">WarrantyEnd_s</span><span class="p">,</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">          </span><span class="n">InstalledBiosVersion_s</span><span class="p">,</span><span class="w"> </span><span class="n">AvailableBiosVersion_s</span><span class="p">,</span><span class="w"> </span><span class="n">CVE_s</span>
+</span></code></pre></div>
+<div class="language-kusto highlight"><span class="filename">Update status</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">Lenovo_Device_Health_CL</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="p">|</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">TimeGenerated</span><span class="w"> </span><span class="p">&gt;</span><span class="w"> </span><span class="n">ago</span><span class="p">(</span><span class="mi">1</span><span class="n">d</span><span class="p">)</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="p">|</span><span class="w"> </span><span class="k">project</span><span class="w"> </span><span class="n">TimeGenerated</span><span class="p">,</span><span class="w"> </span><span class="n">Hostname_s</span><span class="p">,</span><span class="w"> </span><span class="n">PackageID_s</span><span class="p">,</span><span class="w"> </span><span class="n">Title_s</span><span class="p">,</span><span class="w"> </span><span class="n">Version_s</span><span class="p">,</span><span class="w"> </span><span class="n">Severity_s</span><span class="p">,</span><span class="w"> </span><span class="n">Status_s</span>
+</span></code></pre></div>
+<p>Both tables are also listed under <strong>Custom Logs</strong> in the table list on the left side of the query editor.</p>
+<p>To review the columns of each table, go to <strong>Settings</strong> &gt; <strong>Tables</strong>, click the <strong>...</strong> menu on the table, and select <strong>Edit schema</strong>.</p>
+<p>Everything being inventoried here can be found on the device in the <strong>root/Lenovo</strong> WMI namespace under one of the following classes</p>
+<ul>
+<li><strong>Lenovo_Updates</strong></li>
+<li><strong>Lenovo_Battery</strong></li>
+<li><strong>Lenovo_WarrantyInformation</strong></li>
+</ul>
+<h3 id="adding-the-workbook">Adding the Workbook<a class="headerlink" href="#adding-the-workbook" title="Permanent link">#</a></h3>
+<p>Add the sample Workbook to your Log Analytics Workspace</p>
+<ul>
+<li>Login to the Azure <a href="https://portal.azure.com">Portal</a></li>
+<li>Go to <strong>Log Analytics Workspace</strong> &gt; <strong>Workbooks</strong></li>
+<li>Click <strong>+New</strong></li>
+<li>Click the <strong>Advanced Editor</strong> button</li>
+</ul>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="https://cdrt.github.io/mk_blog/img/2022/log_analytics_device_health/image6.jpg" data-desc-position="bottom"><img alt="LA-Workspace" src="https://cdrt.github.io/mk_blog/img/2022/log_analytics_device_health/image6.jpg"></a></p>
+<ul>
+<li>Clear the contents and copy/paste the contents from <strong>LenovoDeviceHealth.json</strong> here</li>
+<li>Click <strong>Apply</strong></li>
+</ul>
+<p>Use the parameters at the top of the workbook to filter every tab.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Time Range</strong></td>
+<td>How far back to look for inventory. Defaults to 30 days. Ranges longer than the workspace retention period return no additional data.</td>
+</tr>
+<tr>
+<td><strong>Product</strong></td>
+<td>Limits the reports to one or more product families, such as <strong>ThinkPad X1 Carbon Gen 14</strong></td>
+</tr>
+</tbody>
+</table>
+<p>To export a list of devices, filter the tab and click <strong>Export to Excel</strong> above the grid. The export contains the rows that match the selected filters. For example, set <strong>BIOS Status</strong> to <strong>Out of Date</strong> on the <strong>BIOS</strong> tab to export the devices that need a BIOS update.</p>
+<p>Happy reporting!</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 <a href="https://blog.lenovocdrt.com" target="_blank" rel="noopener">Lenovo Commercial Deployment Readiness Team</a><br><a href="#__consent" style="text-decoration:underline;">Change cookie settings</a>
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+      <div class="md-consent" data-md-component="consent" id="__consent" hidden="">
+        <div class="md-consent__overlay"></div>
+        <aside class="md-consent__inner">
+          <form class="md-consent__form md-grid md-typeset" name="consent">
+            
+
+
+
+  
+
+<h4>Cookie consent</h4>
+<p>We use cookies to recognize your repeated visits and preferences such as light and dark mode, as well as to measure anonymous usage data to determine effectiveness of our documentation and whether users find what they're searching for. With your consent, you're helping us to make our documentation better.</p>
+<input class="md-toggle" type="checkbox" id="__settings" checked="">
+<div class="md-consent__settings">
+  <ul class="task-list">
+    
+    
+      
+        
+  
+  
+    
+    
+  
+  <li class="task-list-item">
+    <label class="task-list-control">
+      <input type="checkbox" name="analytics" checked="">
+      <span class="task-list-indicator"></span>
+      Google Analytics
+    </label>
+  </li>
+
+      
+    
+    
+      
+    
+    
+  </ul>
+</div>
+<div class="md-consent__controls">
+  
+    
+      <button class="md-button md-button--primary">Accept</button>
+    
+    
+    
+  
+    
+    
+      <button type="reset" class="md-button md-button--primary">Reject</button>
+    
+    
+  
+</div>
+          </form>
+        </aside>
+      </div>
+      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout((function(){document.querySelector("[data-md-component=consent]").hidden=!1}),250);var form=document.forms.consent;for(var action of["submit","reset"])form.addEventListener(action,(function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map((function(e){return[e,!0]})))),location.hash="",location.reload()}))</script>
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tracking", "navigation.instant", "navigation.instant.progress", "navigation.expand", "navigation.path", "navigation.sections", "toc.integrate", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy", "content.code.select"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+        <script src="../js/open_in_new_tab.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>

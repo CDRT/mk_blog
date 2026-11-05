@@ -62,7 +62,9 @@ markdown_extensions:
       pygments_lang_class: true
   - pymdownx.inlinehilite
   - pymdownx.details
-  - pymdownx.snippets
+  - pymdownx.snippets:
+      url_download: true
+      check_paths: true
   - pymdownx.superfences
   - toc:
       permalink: "#"

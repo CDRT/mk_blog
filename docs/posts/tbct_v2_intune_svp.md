@@ -1,7 +1,7 @@
 ---
 date:
     created: 2026-04-16
-    updated: 2026-04-20
+    updated: 2026-11-05
 authors:
     - Phil
 categories:
@@ -40,91 +40,16 @@ Organize the module files and script into the source directory that will be pack
     Save-Module -Name Lenovo.BIOS.Config -Path "C:\Source\IntuneWin32\TBCT"
     ```
 
-3. Create a PowerShell script named `Update-SupervisorPassword.ps1` in the root of the source directory.
+3. Download [`Update-SupervisorPassword.ps1`](https://github.com/philjorgensen/Intune/blob/main/Win32%20Apps/ThinkBiosConfigTool_V2/Update-SupervisorPassword.ps1) into the root of the source directory and set `$SecretKey` to the passphrase used when generating the password change file.
 
 ??? example "Update-SupervisorPassword.ps1"
 
     ```powershell
-    $ErrorActionPreference = 'Stop'
-
-    # === Log File ===
-    $LogFile = "$env:ProgramData\Lenovo\ThinkBiosConfig\Logs\PasswordChange.log"
-    $LogDir = Split-Path $LogFile -Parent
-    if (-not (Test-Path $LogDir)) { New-Item -ItemType Directory -Path $LogDir -Force | Out-Null }
-
-    # === Write-Log Function ===
-    function Write-Log
-    {
-        param (
-            [Parameter(Mandatory = $true)]
-            [string]$Message,
-            [ValidateSet('INFO', 'WARN', 'ERROR', 'SUCCESS')]
-            [string]$Level = 'INFO'
-        )
-        $timestamp = Get-Date -Format 'yyyy-MM-dd HH:mm:ss'
-        $logEntry = "$timestamp [$Level]: $Message"
-        Add-Content -Path $LogFile -Value $logEntry -Encoding UTF8
-    }
-
-    # === Initial log entry ===
-    Write-Log "=== LENOVO PASSWORD CHANGE CONFIG INSTALL STARTED ===" 'INFO'
-
-    # --- Paths ---
-    $ModulePath = Join-Path $PSScriptRoot 'Lenovo.BIOS.Config\*\*.psd1'
-
-    # --- Secret Key ---
-    $SecretKey = "secretkey"  # Secret key for decryption - update as needed
-
-    # -------------------------------------------------
-    # 1. Load Lenovo BIOS Config Module
-    # -------------------------------------------------
-    try
-    {
-        $ModuleFile = Get-Item $ModulePath | Select-Object -First 1
-        if (-not $ModuleFile) { throw "No .psd1 module found in $ModulePath" }
-
-        Import-Module $ModuleFile.FullName -Force
-        Write-Log "Loaded module: $($ModuleFile.Directory.Name)" 'SUCCESS'
-    }
-    catch
-    {
-        Write-Log "Failed to load Lenovo BIOS Config module: $($_.Exception.Message)" 'ERROR'
-        exit 1
-    }
-
-    # -------------------------------------------------
-    # 2. Verify Password Change File
-    # -------------------------------------------------
-    try
-    {
-        $ConfigFile = Get-ChildItem -Path $PSScriptRoot -Filter "*.ini" | Select-Object -First 1
-        if (-not $ConfigFile) { throw "No .ini file found in $PSScriptRoot" }
-        $ConfigFilePath = $ConfigFile.FullName
-        Write-Log "Found password change file: $ConfigFilePath" 'INFO'
-    }
-    catch
-    {
-        Write-Log "Failed to find password change file: $($_.Exception.Message)" 'ERROR'
-        exit 1
-    }
-
-    # -------------------------------------------------
-    # 3. Import Password Change File
-    # -------------------------------------------------
-    try
-    {
-        Import-LnvPasswordChangeFile -ConfigFile $ConfigFilePath -Key $SecretKey | Out-Null
-        Write-Log "Password change configuration imported successfully." 'SUCCESS'
-
-        Write-Log "=== PASSWORD CHANGE CONFIG INSTALL COMPLETE (Exit 3010) ===" 'SUCCESS'
-        exit 3010
-    }
-    catch
-    {
-        Write-Log "EXCEPTION during password change import: $($_.Exception.Message)" 'ERROR'
-        exit 1
-    }
+    --8<-- "https://raw.githubusercontent.com/philjorgensen/Intune/main/Win32%20Apps/ThinkBiosConfigTool_V2/Update-SupervisorPassword.ps1"
     ```
+
+!!! tip
+    All scripts used in this guide can be downloaded from my GitHub [here](https://github.com/philjorgensen/Intune/tree/main/Win32%20Apps/ThinkBiosConfigTool_V2).
 
 !!! note
     Alternatively, you can add code to install the module from the PowerShell gallery but not everyone may want to do this. Hence, saving the module in the Win32 app for this example.
@@ -215,38 +140,15 @@ Add a new **Windows app (Win32)** in the [Intune admin center](https://intune.mi
 This rule checks is if the device is in OOBE. Ideal for pre-provisioning.
 
 - **Rule type:** Script
-- **Script:** (save/add the script below. Slightly modified from [here](https://oofhours.com/2023/09/15/detecting-when-you-are-in-oobe/))
+- **Script:** [`Test-OOBEComplete.ps1`](https://github.com/philjorgensen/Intune/blob/main/Win32%20Apps/ThinkBiosConfigTool_V2/Test-OOBEComplete.ps1) (slightly modified from [here](https://oofhours.com/2023/09/15/detecting-when-you-are-in-oobe/))
 - **Run script as 32-bit process on 64-bit clients:** No
 - **Return type:** Boolean
 - **Operator:** Equals → **No**
 
-??? example "Requirement Rule Script #1"
+??? example "Test-OOBEComplete.ps1"
 
     ```powershell
-    $Definition = @"
-
-    using System;
-    using System.Text;
-    using System.Collections.Generic;
-    using System.Runtime.InteropServices;
-
-    namespace Api
-    {
-        public class Kernel32
-        {
-            [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-            public static extern int OOBEComplete(ref int bIsOOBEComplete);
-        }
-    }
-    "@
-
-    Add-Type -TypeDefinition $Definition -Language CSharp
-
-    $IsOOBEComplete = $false
-    $appRequirement = [Api.Kernel32]::OOBEComplete([ref] $IsOOBEComplete)
-
-    if ($IsOOBEComplete -eq '1') { return $true }
-    else { return $false }
+    --8<-- "https://raw.githubusercontent.com/philjorgensen/Intune/main/Win32%20Apps/ThinkBiosConfigTool_V2/Test-OOBEComplete.ps1"
     ```
 
 #### Additional Requirement Rule # 2 (Optional)
@@ -254,81 +156,25 @@ This rule checks is if the device is in OOBE. Ideal for pre-provisioning.
 This rule checks the PasswordState value in the Lenovo_BiosPasswordSettings WMI class. If no password is set (value = 0), the requirement fails. The app will appear in Company Portal but will be greyed out to install if the assignment is set as available.
 
 - **Rule type:** Script
-- **Script:** (save/add the script below.)
+- **Script:** [`Test-SupervisorPassword.ps1`](https://github.com/philjorgensen/Intune/blob/main/Win32%20Apps/ThinkBiosConfigTool_V2/Test-SupervisorPassword.ps1)
 - **Run script as 32-bit process on 64-bit clients:** No
 - **Return type:** Boolean
 - **Operator:** Equals → **Yes**
 
-??? example "Requirement Rule Script #2"
+??? example "Test-SupervisorPassword.ps1"
 
     ```powershell
-    $namespace = "root\wmi"
-    $class = "Lenovo_BiosPasswordSettings"
-    $value = (Get-CimInstance -Namespace $namespace -ClassName $class -ErrorAction SilentlyContinue).PasswordState
-
-    if ($value -ne 0) { return $true } # Password is set
-    else { return $false } # No password set
+    --8<-- "https://raw.githubusercontent.com/philjorgensen/Intune/main/Win32%20Apps/ThinkBiosConfigTool_V2/Test-SupervisorPassword.ps1"
     ```
 
 ### Detection Rules
 
-Add a **custom detection script** for the rule
+Add a **custom detection script** for the rule using [`Detect-SupervisorPasswordChange.ps1`](https://github.com/philjorgensen/Intune/blob/main/Win32%20Apps/ThinkBiosConfigTool_V2/Detect-SupervisorPasswordChange.ps1).
 
-??? example "Detection Script"
+??? example "Detect-SupervisorPasswordChange.ps1"
 
     ```powershell
-
-    # Define the path where the log file is located
-    $tbctPath = Join-Path -Path $env:ProgramData -ChildPath "Lenovo\ThinkBiosConfig"
-
-    # Find the latest log file (*.log or *.txt) in the Lenovo ThinkBiosConfig directory
-    $logFile = Get-ChildItem -Path $tbctPath -Filter "*.log" -Recurse -ErrorAction SilentlyContinue |
-        Sort-Object -Property LastWriteTime -Descending |
-        Select-Object -Last 1
-
-    if ($logFile)
-    {
-        # Read the log file content and isolate the last run block
-        $logContent = Get-Content -Path $logFile.FullName
-        $lastBlockStart = ($logContent | Select-String -SimpleMatch -Pattern "Import-LnvPasswordChangeFile" | Select-Object -Last 1).LineNumber
-        if ($lastBlockStart) { $logContent = $logContent[($lastBlockStart)..($logContent.Count - 1)] }
-
-        # Define the expected success messages for each step
-        $expectedSuccesses = @(
-            "Targeting password type: Success",
-            "Setting current password: Success",
-            "Setting new password: Success",
-            "Authenticating: Success",
-            "Committing change: Success"
-        )
-
-        # Check if all expected success messages are present in the log
-        $missing = @()
-        foreach ($success in $expectedSuccesses)
-        {
-            if (-not ($logContent | Select-String -SimpleMatch -Pattern $success))
-            {
-                $missing += $success
-            }
-        }
-
-        if ($missing.Count -eq 0)
-        {
-            Write-Output "Supervisor Password change detected as successful."
-            exit 0  # Detection successful
-        }
-        else
-        {
-            Write-Output "Supervisor Password change not successful. Missing expected entries:"
-            $missing | ForEach-Object { Write-Output " - $_" }
-            exit 1  # Not detected
-        }
-    }
-    else
-    {
-        Write-Output "Log file not found."
-        exit 1  # Not detected
-    }
+    --8<-- "https://raw.githubusercontent.com/philjorgensen/Intune/main/Win32%20Apps/ThinkBiosConfigTool_V2/Detect-SupervisorPasswordChange.ps1"
     ```
 
 ### Assignment

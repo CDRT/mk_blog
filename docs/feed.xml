@@ -20,6 +20,12 @@
 			</item>
 		-->
 		<item>
+			<title>Deploying the Lenovo USB3.0 LAN Driver for Docks With Intune</title>
+			<description>Packaging the Lenovo USB3.0 LAN Driver for Docks, Adapters and Monitors as an Intune Win32 app, with registry detection rules and supersedence to remove the previous ThinkPad USB Ethernet Adapter Driver.</description>
+			<pubDate>Tue, 10 Nov 2026 12:00:00 EST</pubDate>
+			<link>https://blog.lenovocdrt.com/deploying-the-lenovo-usb30-lan-driver-for-docks-with-intune/</link>
+			</item>
+		<item>
 			<title>Creating Intune Assignment Filters for Lenovo Think Devices</title>
 			<description>A PowerShell solution to automatically create Intune Assignment Filters for Lenovo Think devices.</description>
 			<pubDate>Tue, 06 Oct 2026 12:00:00 EST</pubDate>

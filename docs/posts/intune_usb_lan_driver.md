@@ -1,6 +1,6 @@
 ---
 date:
-    created: 2026-11-10
+    created: 2026-11-11
 authors:
     - Phil
 categories:
@@ -47,6 +47,9 @@ Both driver versions share the `21.1009.2025` suffix with the package's `Display
 ## Package the new version
 
 Download the package from the [Lenovo USB3.0 LAN Driver for Windows 11 download page](https://support.lenovo.com/downloads/ds504778). At the time of writing, `u3etn16w_v3.exe` is the latest version.
+
+!!! tip
+    This driver can also be deployed with [Windows Autopatch driver and firmware updates](https://learn.microsoft.com/windows/deployment/windows-autopatch/manage/windows-autopatch-manage-driver-and-firmware-updates). Autopatch delivers the driver package itself, without the Inno Setup installer, so it doesn't create the Uninstall key used for detection here or remove the previous `u3etn15w` product.
 
 Wrap the installer with `IntuneWinAppUtil.exe` and create the Win32 app with these commands:
 
